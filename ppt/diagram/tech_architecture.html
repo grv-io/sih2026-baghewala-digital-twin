@@ -1,0 +1,298 @@
+<title>Baghewala Digital Twin — Technical Architecture</title>
+<style>
+  html,body{margin:0;padding:0;background:#ffffff;overflow:hidden}
+  #canvas{
+    position:relative;width:1980px;height:780px;background:#ffffff;
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:#1D2530;
+    -webkit-font-smoothing:antialiased;
+  }
+  svg#wires{position:absolute;left:0;top:0;width:1980px;height:780px;pointer-events:none;z-index:1}
+
+  /* ---------- zone blocks ---------- */
+  .zone{
+    position:absolute;width:396px;height:424px;top:64px;border-radius:14px;
+    background:#fff;border:2px solid;overflow:hidden;z-index:3;
+    box-shadow:0 3px 9px rgba(20,34,58,.14);
+  }
+  .zhead{height:78px;display:flex;align-items:center;justify-content:center;text-align:center}
+  .zhead span{
+    color:#fff;font-size:30px;font-weight:700;line-height:1.10;
+    letter-spacing:.6px;padding:0 46px 0 16px;
+  }
+  .zbody{padding:20px 13px 0 13px;height:346px;box-sizing:border-box}
+
+  /* numbered badge straddling the top-left corner */
+  .badge{
+    position:absolute;width:50px;height:50px;border-radius:50%;
+    background:#fff;border:3px solid;z-index:4;
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;font-weight:700;
+    box-shadow:0 2px 5px rgba(20,34,58,.20);
+  }
+
+  /* ---------- bullets ---------- */
+  ul.b{margin:0;padding:0;list-style:none}
+  ul.b li{
+    position:relative;padding-left:22px;font-size:24px;line-height:1.22;
+    margin-bottom:34px;color:#1D2530;font-weight:600;
+  }
+  ul.b li:last-child{margin-bottom:0}
+  ul.b li::before{
+    content:"";position:absolute;left:2px;top:12px;width:10px;height:10px;border-radius:50%;
+  }
+  .sub{display:block;font-size:19px;font-weight:400;color:#4A5567;line-height:1.2;margin-top:2px}
+  .sub b{font-weight:700}
+
+  /* ---------- physics model chips ---------- */
+  .chip{
+    height:72px;border-radius:9px;background:#fff;border:1.5px solid #E8CFAE;
+    border-left:6px solid #C2610A;margin-bottom:12px;padding:8px 10px 0 12px;
+    box-sizing:border-box;
+  }
+  .chip:last-child{margin-bottom:0}
+  .chip .n{font-size:25px;font-weight:700;color:#8F4506;line-height:1.18}
+  .chip .d{font-size:20px;color:#4A5567;line-height:1.2;margin-top:2px}
+
+  /* ---------- well glyph caption ---------- */
+  .wellcap{position:absolute;left:8px;top:366px;width:202px;text-align:center;z-index:3}
+  .wellcap .t{font-size:21px;font-weight:700;color:#1D2530;line-height:1.18}
+  .wellcap .s{font-size:18px;color:#4A5567;line-height:1.18;margin-top:2px}
+
+  /* ---------- feedback label ---------- */
+  .loopWrap{position:absolute;left:0;width:1835px;text-align:center;z-index:4}
+  .loopLbl{
+    display:inline-block;background:#fff;border:2.5px solid #C2610A;border-radius:22px;
+    padding:8px 24px;font-size:25px;font-weight:700;color:#8F4506;white-space:nowrap;
+    box-shadow:0 2px 5px rgba(20,34,58,.10);
+  }
+  .loopLbl em{font-style:normal;color:#3A4553;font-weight:600}
+
+  /* ---------- roadmap strip ---------- */
+  .roadmap{
+    position:absolute;left:214px;top:586px;width:1734px;height:52px;box-sizing:border-box;
+    border:2px dashed #9AA5B5;border-radius:10px;background:#FAFBFC;z-index:3;
+    display:flex;align-items:center;padding:0 18px;
+  }
+  .roadmap .tag{
+    font-size:20px;font-weight:700;color:#5C6879;letter-spacing:1.4px;
+    border-right:2px solid #C7CEDA;padding-right:16px;margin-right:16px;white-space:nowrap;
+  }
+  .roadmap .txt{font-size:23px;color:#3A4553;white-space:nowrap}
+  .roadmap .txt b{color:#1D2530;font-weight:700}
+
+  /* ---------- tech stack strip ---------- */
+  .stack{
+    position:absolute;left:0;top:662px;width:1980px;height:78px;
+    background:#F4F6F9;border-top:2px solid #DDE3EC;z-index:3;
+    display:flex;align-items:center;padding:0 24px;box-sizing:border-box;
+  }
+  .stack .lab{
+    font-size:21px;font-weight:700;color:#5C6879;letter-spacing:1.6px;
+    margin-right:20px;white-space:nowrap;
+  }
+  .tchip{
+    font-family:Consolas,"Courier New",monospace;font-size:22px;color:#22303F;
+    background:#fff;border:1.5px solid #C7CEDA;border-radius:7px;
+    padding:8px 14px;margin-right:11px;white-space:nowrap;
+  }
+</style>
+
+<div id="canvas">
+
+  <!-- ============ wires ============ -->
+  <svg id="wires" viewBox="0 0 1980 780">
+    <defs>
+      <marker id="ah" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="13"
+              refX="14" refY="6.5" orient="auto">
+        <path d="M0,0 L14,6.5 L0,13 z" fill="#2C3542"/>
+      </marker>
+      <marker id="ahO" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="13"
+              refX="14" refY="6.5" orient="auto">
+        <path d="M0,0 L14,6.5 L0,13 z" fill="#C2610A"/>
+      </marker>
+      <marker id="ahG" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12"
+              refX="13" refY="6" orient="auto">
+        <path d="M0,0 L13,6 L0,12 z" fill="#7C879A"/>
+      </marker>
+    </defs>
+
+    <!-- main left-to-right flow -->
+    <g stroke="#2C3542" stroke-width="3" fill="none" marker-end="url(#ah)">
+      <path d="M186,276 H210"/>
+      <path d="M614,276 H656"/>
+      <path d="M1060,276 H1102"/>
+      <path d="M1506,276 H1548"/>
+    </g>
+
+    <!-- closed-loop feedback: console -> down -> left -> up into the well -->
+    <path d="M1750,488 V534 Q1750,550 1734,550 H101 Q85,550 85,534 V434"
+          stroke="#C2610A" stroke-width="3.5" fill="none"
+          stroke-linecap="round" marker-end="url(#ahO)"/>
+
+    <!-- roadmap connector -->
+    <path d="M1868,488 V580" stroke="#7C879A" stroke-width="2.5" fill="none"
+          stroke-dasharray="8 6" marker-end="url(#ahG)"/>
+
+    <!-- ============ well / pumpjack glyph ============ -->
+    <g transform="translate(8,150)">
+      <!-- ground -->
+      <line x1="4" y1="120" x2="176" y2="120" stroke="#8A94A6" stroke-width="3"/>
+      <!-- concrete pad -->
+      <rect x="24" y="112" width="112" height="9" rx="2" fill="#C7CEDA"/>
+      <!-- wellbore -->
+      <line x1="150" y1="120" x2="150" y2="192" stroke="#8A94A6" stroke-width="3"
+            stroke-dasharray="7 6"/>
+      <!-- pay zone -->
+      <rect x="104" y="188" width="72" height="20" rx="4" fill="#F6DCC0"
+            stroke="#C2610A" stroke-width="2"/>
+      <text x="140" y="203" text-anchor="middle" font-family="Segoe UI,Arial"
+            font-size="17" font-weight="700" fill="#8F4506">heavy oil</text>
+      <!-- A-frame -->
+      <polygon points="60,120 84,50 108,120" fill="none" stroke="#2C3542" stroke-width="4"/>
+      <line x1="70" y1="92" x2="98" y2="92" stroke="#2C3542" stroke-width="3"/>
+      <!-- walking beam -->
+      <g transform="rotate(-9 84 46)">
+        <rect x="22" y="40" width="134" height="12" rx="6" fill="#2C3542"/>
+      </g>
+      <!-- pivot -->
+      <circle cx="84" cy="46" r="8" fill="#5A6577" stroke="#2C3542" stroke-width="2.5"/>
+      <!-- counterweight -->
+      <circle cx="30" cy="61" r="16" fill="#C2610A" stroke="#2C3542" stroke-width="3"/>
+      <!-- horsehead -->
+      <path d="M143,28 q18,8 18,26 q0,17 -14,23 l-9,-46 z" fill="#2C3542"/>
+      <!-- polished rod -->
+      <line x1="152" y1="74" x2="152" y2="120" stroke="#2C3542" stroke-width="4"/>
+      <!-- prime mover -->
+      <rect x="12" y="88" width="36" height="26" rx="4" fill="#4A5567"/>
+      <!-- steam injection arrow -->
+      <path d="M120,134 V182" stroke="#C2610A" stroke-width="3" fill="none"
+            marker-end="url(#ahO)"/>
+      <text x="112" y="158" text-anchor="end" font-family="Segoe UI,Arial"
+            font-size="19" fill="#8F4506" font-weight="700">steam</text>
+    </g>
+  </svg>
+
+  <div class="wellcap">
+    <div class="t">BGW-8 · Baghewala</div>
+    <div class="s">CSS + rod pump</div>
+  </div>
+
+  <!-- ============ 1. DATA ============ -->
+  <div class="zone" style="left:214px;border-color:#1B5FAA">
+    <div class="zhead" style="background:#1B5FAA"><span>DATA</span></div>
+    <div class="zbody" style="background:#EEF4FB">
+      <ul class="b" style="--d:#1B5FAA">
+        <li>OIL field record
+          <span class="sub">1,150 m · 15.5° API · 11,500 cP</span></li>
+        <li>Latin-hypercube design
+          <span class="sub">seed 42 · 4 control knobs</span></li>
+        <li>3,000 synthetic cycles
+          <span class="sub">one full physics run each</span></li>
+        <li>Labels: SOR + float risk
+          <span class="sub">+ oil, energy, cycle days</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="badge" style="left:191px;top:41px;border-color:#1B5FAA;color:#1B5FAA">1</div>
+
+  <!-- ============ 2. PHYSICS ENGINE ============ -->
+  <div class="zone" style="left:660px;border-color:#C2610A">
+    <div class="zhead" style="background:#C2610A"><span>PHYSICS ENGINE</span></div>
+    <div class="zbody" style="background:#FDF3E8">
+      <div class="chip"><div class="n">Marx–Langenheim</div>
+        <div class="d">steam heat-zone growth</div></div>
+      <div class="chip"><div class="n">Andrade μ(T)</div>
+        <div class="d">11,500 → ~100 cP when hot</div></div>
+      <div class="chip"><div class="n">Vogel IPR</div>
+        <div class="d">inflow vs. drawdown</div></div>
+      <div class="chip"><div class="n">SRP rod dynamics</div>
+        <div class="d">rod load · fillage · floating</div></div>
+    </div>
+  </div>
+  <div class="badge" style="left:637px;top:41px;border-color:#C2610A;color:#C2610A">2</div>
+
+  <!-- ============ 3. ML + OPTIMIZATION ============ -->
+  <div class="zone" style="left:1106px;border-color:#1F7A4D">
+    <div class="zhead" style="background:#1F7A4D"><span>ML + OPTIMIZATION</span></div>
+    <div class="zbody" style="background:#EBF6F0">
+      <ul class="b" style="--d:#1F7A4D">
+        <li>XGBoost SOR predictor
+          <span class="sub"><b style="color:#186040">R² = 0.72</b> held-out · MAE 0.31</span></li>
+        <li>Floating-risk classifier
+          <span class="sub"><b style="color:#186040">AUC = 0.99</b> held-out</span></li>
+        <li>Bayesian optimizer
+          <span class="sub">steam · soak · cutoff · SPM</span></li>
+        <li>Gate: <span style="color:#186040">P(float) &lt; 0.30</span>
+          <span class="sub">no unsafe set-point returned</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="badge" style="left:1083px;top:41px;border-color:#1F7A4D;color:#1F7A4D">3</div>
+
+  <!-- ============ 4. DIGITAL TWIN CONSOLE ============ -->
+  <div class="zone" style="left:1552px;border-color:#5B3F9E">
+    <div class="zhead" style="background:#5B3F9E"><span>DIGITAL TWIN<br>CONSOLE</span></div>
+    <div class="zbody" style="background:#F1ECFA">
+      <ul class="b" style="--d:#5B3F9E">
+        <li>FastAPI service
+          <span class="sub">/simulate /optimize /params</span></li>
+        <li>Live run &amp; cycle replay
+          <span class="sub">Plotly time-series charts</span></li>
+        <li>Rod-floating alerts
+          <span class="sub">threshold on floating index</span></li>
+        <li>Recommended set-points
+          <span class="sub">advisory: operator approves</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="badge" style="left:1529px;top:41px;border-color:#5B3F9E;color:#5B3F9E">4</div>
+
+  <!-- ============ feedback label ============ -->
+  <div class="loopWrap" style="top:526px">
+    <span class="loopLbl">CLOSED LOOP &nbsp;<em>recommended set-points → VFD speed /
+      steam schedule</em></span>
+  </div>
+
+  <!-- ============ roadmap ============ -->
+  <div class="roadmap">
+    <div class="tag">ROADMAP</div>
+    <div class="txt">Recalibrate physics + ML on <b>OIL historical cycle data</b>
+      &nbsp;·&nbsp; live <b>SCADA / OPC-UA</b> tie-in to the field control system</div>
+  </div>
+
+  <!-- ============ tech stack ============ -->
+  <div class="stack">
+    <div class="lab">STACK</div>
+    <div class="tchip">Python 3.13</div>
+    <div class="tchip">NumPy / SciPy</div>
+    <div class="tchip">pandas</div>
+    <div class="tchip">scikit-learn</div>
+    <div class="tchip">XGBoost</div>
+    <div class="tchip">scikit-optimize</div>
+    <div class="tchip">FastAPI + Uvicorn</div>
+    <div class="tchip">Plotly.js</div>
+    <div class="tchip">pytest (24 tests)</div>
+  </div>
+
+</div>
+<script>
+  // paint each bullet dot in its zone colour
+  document.querySelectorAll('ul.b').forEach(function (ul) {
+    var c = ul.style.getPropertyValue('--d');
+    var id = 'z' + Math.random().toString(36).slice(2, 8);
+    ul.classList.add(id);
+    var st = document.createElement('style');
+    st.textContent = '.' + id + ' li::before{background:' + c + '}';
+    document.head.appendChild(st);
+  });
+  // overflow guard -> logs to console so the render script can be checked by eye
+  var bad = [];
+  ['.zbody', '.chip', '.zhead', '.roadmap', '.loopLbl', '.wellcap', '.stack'].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      if (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) {
+        bad.push(sel + ' :: ' + el.textContent.replace(/\s+/g, ' ').trim().slice(0, 44));
+      }
+    });
+  });
+  document.body.setAttribute('data-overflow', bad.length ? bad.join(' | ') : 'NONE');
+</script>

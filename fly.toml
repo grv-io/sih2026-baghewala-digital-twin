@@ -1,0 +1,28 @@
+app = "baghewala-digital-twin"
+primary_region = "bom"
+
+[build]
+
+[env]
+  DATABASE_URL = "sqlite:///./data/twin.db"
+  CORS_ORIGINS = "*"
+  ENV = "production"
+  PORT = "8000"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "15s"
+  method = "GET"
+  path = "/api/health"
+
+[mounts]
+  source = "twin_data"
+  destination = "/app/data"

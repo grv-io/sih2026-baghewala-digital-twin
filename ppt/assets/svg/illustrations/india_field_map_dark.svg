@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000" width="900" height="1000" role="img" aria-label="Stylized map of India showing Rajasthan, Baghewala field and MNIT Jaipur, dark theme">
+<title>Rajasthan &amp; Baghewala Field — India (schematic)</title>
+
+<text x="450" y="50" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#e6edf3">Rajasthan &amp; Baghewala Field — India</text>
+
+<path d="M320,120 C420,95 520,100 580,140 C620,160 660,190 650,240 C660,280 630,310 600,340 C640,380 620,430 580,480 C560,540 540,600 500,660 C478,690 463,718 450,735 C437,718 420,690 400,655 C380,600 365,540 380,480 C350,440 300,420 280,380 C260,340 270,300 250,270 C230,230 260,190 280,160 C290,140 305,128 320,120 Z"
+  fill="#1c2430" stroke="#e6edf3" stroke-width="2.5" stroke-linejoin="round"/>
+
+<ellipse cx="355" cy="255" rx="75" ry="100" fill="#f59e0b" fill-opacity="0.28" stroke="#f59e0b" stroke-width="2"/>
+<text x="350" y="148" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#f59e0b">Rajasthan</text>
+
+<line x1="300" y1="220" x2="370" y2="320" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="8 6"/>
+<rect x="395" y="260" width="140" height="26" rx="4" fill="#0d1117" fill-opacity="0.85"/>
+<text x="465" y="278" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#f59e0b">~550–600 km</text>
+
+<circle cx="300" cy="220" r="8" fill="#f59e0b" stroke="#e6edf3" stroke-width="2"/>
+<text x="205" y="216" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#e6edf3">Baghewala (Bikaner)</text>
+
+<polygon points="370,311 379,320 370,329 361,320" fill="#f59e0b" stroke="#e6edf3" stroke-width="2"/>
+<text x="385" y="335" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#e6edf3">MNIT Jaipur</text>
+
+<g>
+  <rect x="60" y="820" width="320" height="140" rx="10" fill="#141a22" fill-opacity="0.6" stroke="#334155" stroke-width="1.5"/>
+  <circle cx="80" cy="852" r="7" fill="#f59e0b" stroke="#e6edf3" stroke-width="1.5"/>
+  <text x="98" y="858" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#e6edf3">Field site — Baghewala</text>
+  <polygon points="80,876 89,885 80,894 71,885" fill="#f59e0b" stroke="#e6edf3" stroke-width="1.5"/>
+  <text x="98" y="890" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#e6edf3">Institute — MNIT Jaipur</text>
+  <ellipse cx="80" cy="916" rx="12" ry="8" fill="#f59e0b" fill-opacity="0.3" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="98" y="922" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#e6edf3">Rajasthan (highlighted)</text>
+  <line x1="68" y1="948" x2="92" y2="948" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6 5"/>
+  <text x="98" y="954" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#e6edf3">Approx. distance</text>
+</g>
+
+<text x="680" y="955" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#94a3b8" opacity="0.85">Schematic — not to scale</text>
+</svg>

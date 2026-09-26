@@ -1,0 +1,175 @@
+{
+  "generated_from": "CalGEM (formerly DOGGR) WellSTAR monthly injection data, 2018-2021, mirrored by InsideClimateNews from official CalGEM SQL Server backups; field-level annual figures from the CalGEM 2021 Supervisor Annual Report.",
+  "fields": {
+    "Coalinga": {
+      "csv_file": "cycles_coalinga.csv",
+      "n_sc_wells_with_injection_data": 386,
+      "n_cycles_detected": 684,
+      "steam_tonnes_per_cycle": {
+        "p10": 143.18,
+        "p50": 785.78,
+        "p90": 1545.67,
+        "mean": 754.13,
+        "n": 684
+      },
+      "inject_days_per_cycle": {
+        "p10": 2.0,
+        "p50": 6.0,
+        "p90": 12.0,
+        "mean": 7.13,
+        "n": 684
+      },
+      "produce_phase_gap_days_proxy_noncensored": {
+        "p10": 61.0,
+        "p50": 153.0,
+        "p90": 427.0,
+        "mean": 214.07,
+        "n": 298
+      },
+      "cycles_by_year": {
+        "2018": 130,
+        "2019": 254,
+        "2020": 222,
+        "2021": 78
+      },
+      "field_level_annual_sor_2021_total_steam_over_oil": 8.239,
+      "field_level_annual_ratio_2021_cyclicsteam_over_oil": 2.925
+    },
+    "Kern River": {
+      "csv_file": "cycles_kern_river.csv",
+      "n_sc_wells_with_injection_data": 2687,
+      "n_cycles_detected": 4987,
+      "steam_tonnes_per_cycle": {
+        "p10": 15.58,
+        "p50": 38.32,
+        "p90": 208.61,
+        "mean": 149.62,
+        "n": 4987
+      },
+      "inject_days_per_cycle": {
+        "p10": 1.0,
+        "p50": 2.0,
+        "p90": 4.0,
+        "mean": 2.85,
+        "n": 4987
+      },
+      "produce_phase_gap_days_proxy_noncensored": {
+        "p10": 61.0,
+        "p50": 122.0,
+        "p90": 424.0,
+        "mean": 186.79,
+        "n": 2300
+      },
+      "cycles_by_year": {
+        "2018": 1220,
+        "2019": 2423,
+        "2020": 1227,
+        "2021": 117
+      },
+      "field_level_annual_sor_2021_total_steam_over_oil": 3.465,
+      "field_level_annual_ratio_2021_cyclicsteam_over_oil": 0.438
+    },
+    "Midway-Sunset": {
+      "csv_file": "cycles_midway_sunset.csv",
+      "n_sc_wells_with_injection_data": 2698,
+      "n_cycles_detected": 4021,
+      "steam_tonnes_per_cycle": {
+        "p10": 366.5,
+        "p50": 1204.11,
+        "p90": 9334.25,
+        "mean": 3927.41,
+        "n": 4021
+      },
+      "inject_days_per_cycle": {
+        "p10": 4.0,
+        "p50": 13.0,
+        "p90": 75.0,
+        "mean": 29.63,
+        "n": 4021
+      },
+      "produce_phase_gap_days_proxy_noncensored": {
+        "p10": 61.0,
+        "p50": 122.0,
+        "p90": 397.0,
+        "mean": 186.53,
+        "n": 1323
+      },
+      "cycles_by_year": {
+        "2018": 1352,
+        "2019": 676,
+        "2020": 861,
+        "2021": 1132
+      },
+      "field_level_annual_sor_2021_total_steam_over_oil": 7.603,
+      "field_level_annual_ratio_2021_cyclicsteam_over_oil": 4.573
+    }
+  },
+  "field_level_annual_2021_official": {
+    "Kern River": {
+      "oil_bbl": 14948895,
+      "gas_mcf": 721948,
+      "water_produced_bbl": 240894036,
+      "cyclic_steam_bbl": 6545587,
+      "steamflood_bbl": 45250803,
+      "water_disposal_bbl": 10079928,
+      "waterflood_bbl": 0
+    },
+    "Midway-Sunset": {
+      "oil_bbl": 18881678,
+      "gas_mcf": 3223557,
+      "water_produced_bbl": 174878131,
+      "cyclic_steam_bbl": 86348234,
+      "steamflood_bbl": 57210676,
+      "water_disposal_bbl": 81584672,
+      "waterflood_bbl": 0
+    },
+    "Coalinga": {
+      "oil_bbl": 4925637,
+      "gas_mcf": 493645,
+      "water_produced_bbl": 61107630,
+      "cyclic_steam_bbl": 14407683,
+      "steamflood_bbl": 26172623,
+      "water_disposal_bbl": 2937408,
+      "waterflood_bbl": 10643517
+    }
+  },
+  "oil_production_trend_mmbbl_2017_2021_official": {
+    "Kern River": {
+      "2017": 21.9,
+      "2018": 17.2,
+      "2019": 17.8,
+      "2020": 16.3,
+      "2021": 15.0
+    },
+    "Midway-Sunset": {
+      "2017": 22.3,
+      "2018": 22.1,
+      "2019": 21.4,
+      "2020": 20.2,
+      "2021": 18.9
+    },
+    "Coalinga": {
+      "2017": 6.6,
+      "2018": 6.3,
+      "2019": 5.8,
+      "2020": 5.5,
+      "2021": 4.9
+    }
+  },
+  "baghewala_model_reference_cycle": {
+    "steam_tonnes_per_cycle": [
+      1300,
+      1500
+    ],
+    "sor_t_per_m3": 4.1,
+    "peak_rate_bbl_d": 16,
+    "produce_phase_months": 6,
+    "uplift_x": 5.7
+  },
+  "limitations": [
+    "Monthly OIL PRODUCTION by well (form OG110) was not obtainable from any reachable source; only monthly STEAM/WATER INJECTION (form OG110B) was available. Per-cycle oil volume, SOR, peak rate, pre-steam baseline, and uplift could NOT be computed from well-level data as a result.",
+    "The \"produce phase\" length reported per cycle is a PROXY: the calendar gap between the end of one injection episode and the start of the next on the same well. It is not confirmed to be an actual producing period (could include shut-in/idle time).",
+    "Field-level annual SOR uses the official 2021 CalGEM Supervisor Annual Report figures (oil production and cyclic-steam+steamflood injection), the last annual report found to include the field-by-field appendix (2022/2023 reports omit it).",
+    "CalGEM injection reports flagged \"Estimated\" (vs \"Reported\") lack a DaysInjecting value in ~100% of cases; inject_days for cycles containing estimated months is understated."
+  ]
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 500" width="1400" height="500" role="img" aria-label="Cyclic Steam Stimulation cycle phases, dark theme">
+<title>Cyclic Steam Stimulation (CSS) — One Cycle</title>
+<text x="700" y="40" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" fill="#e6edf3">Cyclic Steam Stimulation (CSS) — One Cycle</text>
+
+<g stroke="#334155" stroke-width="1.5" fill="#1c2430" fill-opacity="0.55">
+  <rect x="20" y="60" width="420" height="410" rx="14"/>
+  <rect x="480" y="60" width="420" height="410" rx="14"/>
+  <rect x="940" y="60" width="420" height="410" rx="14"/>
+</g>
+
+<g font-family="Segoe UI, Arial, sans-serif" font-size="26" fill="#e6edf3" text-anchor="middle">
+  <text x="230" y="110">INJECT</text>
+  <text x="690" y="110">SOAK</text>
+  <text x="1150" y="110">PRODUCE</text>
+</g>
+
+<!-- ground + well stubs -->
+<g stroke="#e6edf3" stroke-width="2.5">
+  <line x1="90" y1="310" x2="370" y2="310"/>
+  <line x1="230" y1="310" x2="230" y2="380"/>
+  <line x1="550" y1="310" x2="830" y2="310"/>
+  <line x1="690" y1="310" x2="690" y2="380"/>
+  <line x1="1010" y1="310" x2="1290" y2="310"/>
+  <line x1="1150" y1="310" x2="1150" y2="380"/>
+</g>
+
+<!-- INJECT arrows -->
+<g stroke="#f59e0b" stroke-width="2.5" fill="#f59e0b">
+  <line x1="180" y1="160" x2="180" y2="286"/>
+  <polygon points="180,300 172,282 188,282"/>
+  <line x1="230" y1="150" x2="230" y2="286"/>
+  <polygon points="230,300 222,282 238,282"/>
+  <line x1="280" y1="160" x2="280" y2="286"/>
+  <polygon points="280,300 272,282 288,282"/>
+</g>
+<text x="230" y="440" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#f59e0b">Steam · 280–305 °C</text>
+
+<!-- SOAK halo -->
+<g fill="none" stroke="#f59e0b" stroke-width="2.5">
+  <circle cx="690" cy="345" r="30" opacity="0.9"/>
+  <circle cx="690" cy="345" r="55" opacity="0.6"/>
+  <circle cx="690" cy="345" r="80" opacity="0.35"/>
+  <circle cx="690" cy="345" r="105" opacity="0.18"/>
+</g>
+<text x="690" y="430" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#f59e0b">Viscosity drop</text>
+<text x="690" y="456" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#f59e0b">11,500 → ~100 cP</text>
+
+<!-- PRODUCE arrow + droplet -->
+<g stroke="#f59e0b" stroke-width="2.5" fill="#f59e0b">
+  <line x1="1150" y1="290" x2="1150" y2="174"/>
+  <polygon points="1150,160 1142,178 1158,178"/>
+  <path d="M1150,118 C1136,140 1132,158 1150,166 C1168,158 1164,140 1150,118 Z"/>
+</g>
+<text x="1150" y="440" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#f59e0b">Oil to surface</text>
+
+<text x="700" y="491" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#94a3b8">Cycle repeats (~20–30 days) → next injection</text>
+</svg>

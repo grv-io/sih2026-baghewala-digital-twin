@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: baghewala-digital-twin
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./data/twin.db
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: ENV
+        value: production
+      - key: PORT
+        value: 8000
+    disk:
+      name: twin-data
+      mountPath: /app/data
+      sizeGB: 1

@@ -1,0 +1,161 @@
+<main class="wrap">
+
+  <div class="pagehead">
+    <div>
+      <h1 class="bi" data-en="Set-point optimisation — BGW-07" data-hi="निर्धारित-मान अनुकूलन — BGW-07">Set-point optimisation &mdash; BGW-07</h1>
+      <div class="ph-sub" data-en="Finds the steam, cutoff and pump speed that maximise margin per cycle-day, while keeping rods safe. Soak is held at 10 d field practice — the model has no interior soak optimum." data-hi="रॉड सुरक्षित रखते हुए प्रति चक्र-दिन मार्जिन अधिकतम करने वाली भाप, कटऑफ़ और पंप गति खोजता है। सोक 10 दिन क्षेत्र प्रचलन पर स्थिर — मॉडल में सोक का कोई आंतरिक इष्टतम नहीं है।">Finds the steam, cutoff and pump speed that maximise margin per cycle-day, while keeping rods safe. Soak is held at 10 d field practice — the model has no interior soak optimum.</div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" id="btnOptimize" type="button">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="21" cy="27" r="15"/><circle cx="21" cy="27" r="4"/><line x1="43" y1="5" x2="26" y2="22"/>
+        </svg>
+        <span data-en="Run optimiser" data-hi="अनुकूलक चलाएँ">Run optimiser</span>
+      </button>
+      <a class="btn" href="console.html" data-xlink="console.html" data-en="Twin console" data-hi="कूप अनुकरण">Twin console</a>
+      <a class="btn" href="index.html" data-xlink="index.html" data-en="Overview" data-hi="अवलोकन">Overview</a>
+    </div>
+  </div>
+
+  <!-- idle state -->
+  <div class="note" id="optIdle">
+    <b lang="en" data-en="Optimiser not yet run" data-hi="अनुकूलक अभी नहीं चला">Optimiser not yet run</b><br>
+    <span id="optIdleBody"></span>
+  </div>
+
+  <div id="optResult" hidden>
+
+    <!-- ============ RECOMMENDATION ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="bi" data-en="Recommendation" data-hi="अनुशंसा">Recommendation</h2>
+        <span class="sh-meta" id="recMeta"></span>
+      </div>
+      <section class="reccard" id="recCard" aria-label="Recommendation"></section>
+      <div class="note" id="baselinePolicyToggle" style="margin:0 0 var(--s3)">
+        <label for="bpToggleSelect" class="bi" data-en="Compare against a baseline that…" data-hi="ऐसी आधार रेखा से तुलना करें जो…">Compare against a baseline that&hellip;</label>
+        <select id="bpToggleSelect">
+          <option value="vfd_hold" data-en="slows (VFD-hold) — the fair comparison" data-hi="धीमा करती है (VFD-hold) — उचित तुलना">slows (VFD-hold) — the fair comparison</option>
+          <option value="pull" data-en="pulls at the first alarm" data-hi="पहले अलार्म पर कूप खींचती है">pulls at the first alarm</option>
+          <option value="none" data-en="does nothing about float" data-hi="फ्लोट के बारे में कुछ नहीं करती">does nothing about float</option>
+        </select>
+      </div>
+      <p class="note" style="margin:0 0 var(--s3)">
+        <a id="yourPricesLink" href="index.html#yourPrices" data-en="Set your prices → (Overview)" data-hi="अपनी कीमतें तय करें → (अवलोकन)">Set your prices &rarr; (Overview)</a>
+      </p>
+      <div class="table-wrap">
+        <table class="dt" id="recTable">
+          <thead>
+            <tr>
+              <th style="width:22%" data-en="Parameter" data-hi="प्राचल">Parameter</th>
+              <th style="width:9%"  data-en="Unit" data-hi="इकाई">Unit</th>
+              <th style="width:14%"><span data-en="Current" data-hi="वर्तमान">Current</span><span class="u">on the books</span></th>
+              <th style="width:15%" class="col-continuous"><span data-en="Recommended" data-hi="अनुशंसित">Recommended</span><span class="u">continuous optimum</span></th>
+              <th style="width:17%"><span data-en="Recommended" data-hi="अनुशंसित">Recommended</span><span class="u">as applied</span></th>
+              <th style="width:19%"><span data-en="Change" data-hi="परिवर्तन">Change</span><span class="u">applied vs current</span></th>
+            </tr>
+          </thead>
+          <tbody id="recBody"></tbody>
+        </table>
+      </div>
+      <details id="modelDetails">
+        <summary data-en="Model details (for specialists) ▸" data-hi="मॉडल विवरण (विशेषज्ञों हेतु) ▸">Model details (for specialists) ▸</summary>
+        <p class="note" id="quantNote"></p>
+      </details>
+    </section>
+
+    <div class="cols cols-2e">
+
+      <!-- ============ CONSTRAINTS ============ -->
+      <section class="section">
+        <div class="section-head">
+          <h2 class="bi" data-en="Constraint report" data-hi="प्रतिबंध रिपोर्ट">Constraint report</h2>
+          <span class="sh-meta">bounds from params/field_params.json rev 13</span>
+        </div>
+        <div class="table-wrap">
+          <table class="dt">
+            <thead>
+              <tr>
+                <th style="width:36%" data-en="Constraint" data-hi="प्रतिबंध">Constraint</th>
+                <th style="width:22%" data-en="Limit" data-hi="सीमा">Limit</th>
+                <th style="width:22%" data-en="At recommendation" data-hi="अनुशंसा पर">At recommendation</th>
+                <th style="width:20%" data-en="Status" data-hi="स्थिति">Status</th>
+              </tr>
+            </thead>
+            <tbody id="conBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ UNCERTAINTY ============ -->
+      <section class="section">
+        <div class="section-head">
+          <h2 class="bi" data-en="Uncertainty and model quality" data-hi="अनिश्चितता एवं मॉडल गुणवत्ता">Uncertainty and model quality</h2>
+          <span class="sh-meta">hold-out metrics, synthetic data</span>
+        </div>
+        <details>
+          <summary data-en="Model details (for specialists) ▸" data-hi="मॉडल विवरण (विशेषज्ञों हेतु) ▸">Model details (for specialists) ▸</summary>
+          <div class="table-wrap">
+            <table class="dt dt-sm"><tbody id="uncBody"></tbody></table>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <!-- ============ APPLY ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="bi" data-en="Check in simulator" data-hi="सिम्युलेटर में जाँचें">Check in simulator</h2>
+        <span class="sh-meta">two-stage, audited &middot; BGW-07</span>
+      </div>
+      <div class="panel">
+        <div class="p-body">
+          <div class="btnbar">
+            <button class="btn btn-primary" id="btnStage" type="button">
+              <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="24" y1="6" x2="24" y2="28"/><path d="M15 20 L24 29 L33 20"/><path d="M8 33 V40 H40 V33"/>
+              </svg>
+              <span data-en="Stage set-points" data-hi="निर्धारित मान तैयार करें">Stage set-points</span>
+            </button>
+            <span class="spacer"></span>
+            <span id="applyState" class="audit"></span>
+          </div>
+
+          <div class="note warn" id="confirmStrip" hidden style="margin-top:12px">
+            <div id="confirmText"></div>
+            <div class="btnbar" style="margin-top:10px">
+              <button class="btn btn-primary btn-sm" id="btnConfirm" type="button" data-en="Confirm" data-hi="पुष्टि करें">Confirm</button>
+              <button class="btn btn-sm" id="btnCancel" type="button" data-en="Cancel" data-hi="रद्द करें">Cancel</button>
+              <span style="font-size:11px;color:var(--text-faint)" data-en="requires operator authorisation" data-hi="संचालक प्राधिकरण आवश्यक">requires operator authorisation</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-foot" id="applyFoot"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ HISTORY (always visible) ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2 class="bi" data-en="Optimisation history" data-hi="अनुकूलन इतिहास">Optimisation history</h2>
+      <span class="sh-meta">this browser &middot; <button class="btn-link" id="btnClearHist" type="button">clear</button></span>
+    </div>
+    <div class="table-wrap">
+      <table class="dt">
+        <thead>
+          <tr>
+            <th style="width:17%" data-en="Recommendation" data-hi="अनुशंसा">Recommendation</th>
+            <th style="width:15%" data-en="Timestamp (IST)" data-hi="समय (IST)">Timestamp (IST)</th>
+            <th style="width:14%"><span data-en="Baseline margin" data-hi="आधार मार्जिन">Baseline margin</span><span class="u" data-en="Incremental ₹/cycle-day" data-hi="वृद्धिशील ₹/चक्र-दिन">Incremental ₹/cycle-day</span></th>
+            <th style="width:14%"><span data-en="Recommended" data-hi="अनुशंसित">Recommended</span><span class="u" data-en="Incremental ₹/cycle-day" data-hi="वृद्धिशील ₹/चक्र-दिन">Incremental ₹/cycle-day</span></th>
+            <th style="width:12%"><span data-en="vs published-practice" data-hi="प्रकाशित-प्रचलन की तुलना में">vs published-practice</span><span class="u">%</span></th>
+            <th style="width:10%">p(float)<span class="u">%</span></th>
+            <th style="width:9%" data-en="Status" data-hi="स्थिति">Status</th>
+          </tr>
+        </thead>
+        <tbody id="histBody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Baghewala diagram QC preview</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; }
+  section { padding: 40px 32px; }
+  section.dark { background: #0d1117; }
+  section.light { background: #ffffff; border-top: 4px solid #0d1117; }
+  h1 { font-size: 20px; margin: 0 0 24px; }
+  section.dark h1 { color: #e6edf3; }
+  section.light h1 { color: #0f2540; }
+  .grid { display: flex; flex-direction: column; gap: 36px; }
+  figure { margin: 0; }
+  figcaption {
+    font-size: 13px;
+    margin-top: 8px;
+    font-family: Consolas, monospace;
+  }
+  section.dark figcaption { color: #8b949e; }
+  section.light figcaption { color: #51687e; }
+  .frame {
+    display: inline-block;
+    max-width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+
+<section class="dark">
+  <h1>DARK variants (#0d1117 background)</h1>
+  <div class="grid">
+    <figure><div class="frame"><img src="system_flow_dark.svg" width="1600" height="700"></div>
+      <figcaption>system_flow_dark.svg</figcaption></figure>
+    <figure><div class="frame"><img src="closed_loop_dark.svg" width="700" height="700"></div>
+      <figcaption>closed_loop_dark.svg</figcaption></figure>
+    <figure><div class="frame"><img src="sor_waterfall_dark.svg" width="1200" height="600"></div>
+      <figcaption>sor_waterfall_dark.svg</figcaption></figure>
+    <figure><div class="frame"><img src="data_journey_dark.svg" width="1600" height="500"></div>
+      <figcaption>data_journey_dark.svg</figcaption></figure>
+    <figure><div class="frame"><img src="stack_layers_dark.svg" width="650" height="650"></div>
+      <figcaption>stack_layers_dark.svg</figcaption></figure>
+  </div>
+</section>
+
+<section class="light">
+  <h1>LIGHT variants (white background)</h1>
+  <div class="grid">
+    <figure><div class="frame"><img src="system_flow_light.svg" width="1600" height="700"></div>
+      <figcaption>system_flow_light.svg</figcaption></figure>
+    <figure><div class="frame"><img src="closed_loop_light.svg" width="700" height="700"></div>
+      <figcaption>closed_loop_light.svg</figcaption></figure>
+    <figure><div class="frame"><img src="sor_waterfall_light.svg" width="1200" height="600"></div>
+      <figcaption>sor_waterfall_light.svg</figcaption></figure>
+    <figure><div class="frame"><img src="data_journey_light.svg" width="1600" height="500"></div>
+      <figcaption>data_journey_light.svg</figcaption></figure>
+    <figure><div class="frame"><img src="stack_layers_light.svg" width="650" height="650"></div>
+      <figcaption>stack_layers_light.svg</figcaption></figure>
+  </div>
+</section>
+
+</body>
+</html>

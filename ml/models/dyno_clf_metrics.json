@@ -1,0 +1,82 @@
+{
+  "trained_at_utc": "2026-09-26T12:01:21+00:00",
+  "seed": 42,
+  "n_samples_requested": 3200,
+  "generation": {
+    "n_attempted": 3200,
+    "n_failed": 0,
+    "n_rows": 3200,
+    "class_counts": {
+      "fluid_pound": 1510,
+      "full_pump": 509,
+      "gas_interference": 505,
+      "heavy_oil_viscous": 187,
+      "rod_float": 489
+    }
+  },
+  "n_train": 2560,
+  "n_test": 640,
+  "classes": [
+    "fluid_pound",
+    "full_pump",
+    "gas_interference",
+    "heavy_oil_viscous",
+    "rod_float"
+  ],
+  "accuracy": 0.9609375,
+  "per_class_f1": {
+    "fluid_pound": 0.96,
+    "full_pump": 0.9523809523809523,
+    "gas_interference": 0.9353233830845771,
+    "heavy_oil_viscous": 0.958904109589041,
+    "rod_float": 1.0
+  },
+  "confusion_matrix": [
+    [
+      288,
+      8,
+      5,
+      1,
+      0
+    ],
+    [
+      2,
+      100,
+      0,
+      0,
+      0
+    ],
+    [
+      7,
+      0,
+      94,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      1,
+      35,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      98
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "fluid_pound",
+    "full_pump",
+    "gas_interference",
+    "heavy_oil_viscous",
+    "rod_float"
+  ],
+  "n_features": 143,
+  "model": "RandomForestClassifier(n_estimators=400, class_weight='balanced_subsample')",
+  "feature_note": "128 resampled up/down-stroke shape points + 7 scale-free ratios/slope + 8 Fourier magnitudes -- see ml/dyno_classifier.py module docstring and FEATURE_NAMES.",
+  "domain_shift_caveat": "Classified by a model trained on SYNTHETIC cards computed from twin.dyno.compute_cards() (a [TYPICAL] 1\" x 7/8\" rod string over 1,150 m -- docs/model-improvement/DYNO_CARD_MODEL.md), never on a real measured card. Treat this as a first read to confirm with a pump specialist, not a diagnosis -- re-fit ml/dyno_classifier.py against the first real cards Oil India shares."
+}

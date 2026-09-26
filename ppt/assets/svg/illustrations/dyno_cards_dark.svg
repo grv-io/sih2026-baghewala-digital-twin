@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-label="Dynamometer cards, normal operation vs rod floating, dark theme">
+<title>Dynamometer Cards — Normal vs Rod Floating</title>
+<text x="600" y="35" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#e6edf3">Dynamometer Cards</text>
+
+<g stroke="#334155" stroke-width="1.5" fill="#1c2430" fill-opacity="0.5">
+  <rect x="40" y="70" width="520" height="380" rx="14"/>
+  <rect x="640" y="70" width="520" height="380" rx="14"/>
+</g>
+
+<text x="300" y="105" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#e6edf3">Normal operation</text>
+<text x="900" y="105" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#e6edf3">Rod floating</text>
+
+<!-- left axes -->
+<g stroke="#e6edf3" stroke-width="2.5">
+  <line x1="140" y1="410" x2="140" y2="140"/>
+  <line x1="140" y1="410" x2="480" y2="410"/>
+  <line x1="140" y1="404" x2="140" y2="416"/>
+  <line x1="480" y1="404" x2="480" y2="416"/>
+  <line x1="134" y1="410" x2="146" y2="410"/>
+  <line x1="134" y1="140" x2="146" y2="140"/>
+</g>
+<g font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#94a3b8">
+  <text x="140" y="434" text-anchor="middle">0</text>
+  <text x="480" y="434" text-anchor="middle">2.0 m</text>
+  <text x="126" y="415" text-anchor="end">0</text>
+  <text x="126" y="145" text-anchor="end">80 kN</text>
+  <text x="300" y="440" text-anchor="middle">Stroke position (m)</text>
+  <text x="95" y="275" text-anchor="middle" transform="rotate(-90,95,275)">Rod load (kN)</text>
+</g>
+
+<!-- right axes -->
+<g stroke="#e6edf3" stroke-width="2.5">
+  <line x1="740" y1="410" x2="740" y2="140"/>
+  <line x1="740" y1="410" x2="1080" y2="410"/>
+  <line x1="740" y1="404" x2="740" y2="416"/>
+  <line x1="1080" y1="404" x2="1080" y2="416"/>
+  <line x1="734" y1="410" x2="746" y2="410"/>
+  <line x1="734" y1="140" x2="746" y2="140"/>
+</g>
+<g font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#94a3b8">
+  <text x="740" y="434" text-anchor="middle">0</text>
+  <text x="1080" y="434" text-anchor="middle">2.0 m</text>
+  <text x="726" y="415" text-anchor="end">0</text>
+  <text x="726" y="145" text-anchor="end">80 kN</text>
+  <text x="900" y="440" text-anchor="middle">Stroke position (m)</text>
+  <text x="695" y="275" text-anchor="middle" transform="rotate(-90,695,275)">Rod load (kN)</text>
+</g>
+
+<!-- normal card -->
+<path d="M165.5,308.75 C150,260 152,215 165.5,190.6 C175,172 190,165 208,163.6 C270,160 360,159 412,160.25 C435,161 452,162 463,163.6 C468,185 470,260 471.5,298.6 C468,318 450,330 429,332.4 C360,336 270,337 208,335.75 C185,335 170,325 165.5,308.75 Z"
+  fill="#f59e0b" fill-opacity="0.16" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/>
+
+<!-- rod floating card -->
+<path d="M765.5,342.5 C750,290 752,235 765.5,207.5 C775,192 790,183 808,180.5 C870,177 950,178 1012,187.25 C1030,196 1048,225 1054.5,258.1 C1059,300 1062,350 1063,383 L995,386.4 L910,386.4 L884.5,389.75 L876,224.4 L867.5,383 L808,386.4 C790,387 770,365 765.5,342.5 Z"
+  fill="#f59e0b" fill-opacity="0.16" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/>
+
+<!-- impact spike callout -->
+<circle cx="876" cy="224.4" r="4.5" fill="#f59e0b"/>
+<line x1="884" y1="215" x2="935" y2="185" stroke="#e6edf3" stroke-width="2"/>
+<text x="940" y="182" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#f59e0b">Impact spike</text>
+
+<text x="300" y="475" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#94a3b8">Full, open loop — healthy pump</text>
+<text x="900" y="475" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#94a3b8">Flattened bottom + impact spike (fluid pound)</text>
+</svg>

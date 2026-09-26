@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-label="Waterfall chart showing SOR falling from a baseline of 1.50 tonnes per cubic metre to an optimized 0.88 through steam scheduling and pump pacing gains, a 41.3 percent reduction on synthetic data">
+  <rect x="0" y="0" width="1200" height="600" fill="#0d1117"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+<text x="60.0" y="50.0" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#e6edf3" text-anchor="start">SOR Reduction — Synthetic Optimization Result</text>
+<line x1="130.0" y1="500" x2="1070.0" y2="500" stroke="#30363d" stroke-width="2"/>
+<text x="26.0" y="300.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#8b949e" transform="rotate(-90 26 300)" text-anchor="middle">SOR (t/m³)</text>
+<rect x="160.0" y="125.0" width="160" height="375.0" rx="8" fill="#1c2530" stroke="#30363d" stroke-width="2"/>
+<text x="240.0" y="109.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#e6edf3" text-anchor="middle">1.50 t/m³</text>
+<text x="240.0" y="534.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="middle">Baseline</text>
+<rect x="400.0" y="125.0" width="160" height="95.0" fill="#f59e0b" opacity="0.55" stroke="#f59e0b" stroke-width="2"/>
+<text x="480.0" y="178.5" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#e6edf3" text-anchor="middle">−0.38</text>
+<text x="480.0" y="534.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="middle">Steam</text>
+<text x="480.0" y="554.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="middle">scheduling</text>
+<rect x="640.0" y="220.0" width="160" height="60.0" fill="#f59e0b" opacity="0.30" stroke="#f59e0b" stroke-width="2"/>
+<text x="720.0" y="256.0" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#e6edf3" text-anchor="middle">−0.24</text>
+<text x="720.0" y="534.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="middle">Pump</text>
+<text x="720.0" y="554.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="middle">pacing</text>
+<rect x="880.0" y="280.0" width="160" height="220.0" rx="8" fill="#f59e0b" stroke="#f59e0b" stroke-width="2"/>
+<text x="960.0" y="264.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#f59e0b" text-anchor="middle">0.88 t/m³</text>
+<text x="960.0" y="534.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#e6edf3" text-anchor="middle">Optimized</text>
+<line x1="320.0" y1="125.0" x2="400.0" y2="125.0" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 5"/>
+<line x1="560.0" y1="220.0" x2="640.0" y2="220.0" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 5"/>
+<line x1="800.0" y1="280.0" x2="880.0" y2="280.0" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="1080.0" y="130.0" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="800" fill="#f59e0b" text-anchor="middle">−41.3%</text>
+<text x="1080.0" y="160.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#8b949e" text-anchor="middle">SOR improvement</text>
+<text x="600.0" y="580.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#8b949e" text-anchor="middle" font-style="italic">synthetic-data result — to be validated on OIL field data</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img" aria-label="Closed control loop for the Baghewala digital twin: monitor, predict, optimize and act around the well, running continuously">
+  <rect x="0" y="0" width="1000" height="1000" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#51687e"/>
+    </marker>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#0f2540" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+<text x="500.0" y="55.0" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#0f2540" text-anchor="middle">Closed-Loop Optimization</text>
+<text x="500.0" y="82.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle">continuous monitor → predict → optimize → act cycle</text>
+<path d="M 622.0 245.9 A 300 300 0 0 1 774.1 398.0" fill="none" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 774.1 642.0 A 300 300 0 0 1 622.0 794.1" fill="none" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 378.0 794.1 A 300 300 0 0 1 225.9 642.0" fill="none" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 225.9 398.0 A 300 300 0 0 1 378.0 245.9" fill="none" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="500" y1="450.0" x2="500" y2="590.0" stroke="#f59e0b" stroke-width="3"/><polygon points="465.0,569.0 535.0,569.0 500,450.0" fill="none" stroke="#f59e0b" stroke-width="2.5"/><rect x="475.5" y="573.2" width="49.0" height="16.8" fill="#f59e0b" opacity="0.85"/>
+<text x="500.0" y="624.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#51687e" text-anchor="middle"><tspan x="500.0" dy="0.0">Baghewala well</tspan><tspan x="500.0" dy="21.0">1,150 m MD</tspan></text>
+<rect x="380.0" y="141.0" width="240.0" height="158.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="412.0" cy="173.0" r="18" fill="#f59e0b"/>
+<text x="412.0" y="179.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">01</text>
+<text x="500.0" y="211.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#0f2540" text-anchor="middle">MONITOR</text>
+<text x="500.0" y="243.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle"><tspan x="500.0" dy="0.0">SCADA + sensor</tspan><tspan x="500.0" dy="22.0">telemetry ingested</tspan></text>
+<rect x="680.0" y="441.0" width="240.0" height="158.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="712.0" cy="473.0" r="18" fill="#f59e0b"/>
+<text x="712.0" y="479.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">02</text>
+<text x="800.0" y="511.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#0f2540" text-anchor="middle">PREDICT</text>
+<text x="800.0" y="543.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle"><tspan x="800.0" dy="0.0">SOR &amp; floating-risk</tspan><tspan x="800.0" dy="22.0">ML models</tspan></text>
+<rect x="380.0" y="741.0" width="240.0" height="158.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="412.0" cy="773.0" r="18" fill="#f59e0b"/>
+<text x="412.0" y="779.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">03</text>
+<text x="500.0" y="811.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#0f2540" text-anchor="middle">OPTIMIZE</text>
+<text x="500.0" y="843.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle"><tspan x="500.0" dy="0.0">Bayesian search under</tspan><tspan x="500.0" dy="22.0">constraints</tspan></text>
+<rect x="80.0" y="441.0" width="240.0" height="158.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<circle cx="112.0" cy="473.0" r="18" fill="#f59e0b"/>
+<text x="112.0" y="479.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">04</text>
+<text x="200.0" y="511.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#0f2540" text-anchor="middle">ACT</text>
+<text x="200.0" y="543.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle"><tspan x="200.0" dy="0.0">Set-points pushed to</tspan><tspan x="200.0" dy="22.0">VFD &amp; steam</tspan></text>
+</svg>

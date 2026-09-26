@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Baghewala SVG illustrations — QC preview</title>
+<style>
+  body { margin:0; padding:24px; font-family: "Segoe UI", Arial, sans-serif; background:#f0f2f5; color:#111; }
+  h1 { font-size:22px; }
+  h2 { font-size:18px; margin:28px 0 8px; }
+  .asset { margin-bottom: 40px; border:1px solid #ccc; border-radius:8px; overflow:hidden; }
+  .row { display:flex; flex-wrap:wrap; }
+  .strip { padding:16px; box-sizing:border-box; }
+  .dark-bg { background:#0d1117; }
+  .light-bg { background:#ffffff; }
+  .strip img { max-width:100%; display:block; }
+  .label { font-size:13px; color:#666; padding:4px 16px; background:#e8e8e8; }
+  .full { width:100%; }
+  .half { width:50%; }
+</style>
+</head>
+<body>
+<h1>Baghewala SIH 2026 — SVG illustration QC preview</h1>
+
+<div class="asset">
+  <h2 style="margin-left:8px">1. pumpjack_scene (1600x600)</h2>
+  <div class="label">dark variant on dark strip</div>
+  <div class="strip dark-bg full"><img src="pumpjack_scene_dark.svg"></div>
+  <div class="label">light variant on light strip</div>
+  <div class="strip light-bg full"><img src="pumpjack_scene_light.svg"></div>
+</div>
+
+<div class="asset">
+  <h2 style="margin-left:8px">2. well_cutaway (800x1200)</h2>
+  <div class="row">
+    <div style="width:50%">
+      <div class="label">dark variant on dark strip</div>
+      <div class="strip dark-bg"><img src="well_cutaway_dark.svg"></div>
+    </div>
+    <div style="width:50%">
+      <div class="label">light variant on light strip</div>
+      <div class="strip light-bg"><img src="well_cutaway_light.svg"></div>
+    </div>
+  </div>
+</div>
+
+<div class="asset">
+  <h2 style="margin-left:8px">3. css_cycle_phases (1400x500)</h2>
+  <div class="label">dark variant on dark strip</div>
+  <div class="strip dark-bg full"><img src="css_cycle_phases_dark.svg"></div>
+  <div class="label">light variant on light strip</div>
+  <div class="strip light-bg full"><img src="css_cycle_phases_light.svg"></div>
+</div>
+
+<div class="asset">
+  <h2 style="margin-left:8px">4. dyno_cards (1200x500)</h2>
+  <div class="label">dark variant on dark strip</div>
+  <div class="strip dark-bg full"><img src="dyno_cards_dark.svg"></div>
+  <div class="label">light variant on light strip</div>
+  <div class="strip light-bg full"><img src="dyno_cards_light.svg"></div>
+</div>
+
+<div class="asset">
+  <h2 style="margin-left:8px">5. india_field_map (900x1000)</h2>
+  <div class="row">
+    <div style="width:50%">
+      <div class="label">dark variant on dark strip</div>
+      <div class="strip dark-bg"><img src="india_field_map_dark.svg"></div>
+    </div>
+    <div style="width:50%">
+      <div class="label">light variant on light strip</div>
+      <div class="strip light-bg"><img src="india_field_map_light.svg"></div>
+    </div>
+  </div>
+</div>
+
+<h1>Cross-check: wrong-background sanity pass</h1>
+<p style="max-width:700px">Below, each variant is placed on the background it was <em>not</em> designed for, only to confirm there is no stray opaque background rect and no fully-invisible (same-color-as-bg) content.</p>
+
+<div class="asset">
+  <div class="row">
+    <div style="width:50%">
+      <div class="label">pumpjack_scene_dark on LIGHT strip (expect: looks odd, but must not be blank/broken)</div>
+      <div class="strip light-bg"><img src="pumpjack_scene_dark.svg"></div>
+    </div>
+    <div style="width:50%">
+      <div class="label">pumpjack_scene_light on DARK strip</div>
+      <div class="strip dark-bg"><img src="pumpjack_scene_light.svg"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div style="width:50%">
+      <div class="label">well_cutaway_dark on LIGHT strip</div>
+      <div class="strip light-bg"><img src="well_cutaway_dark.svg" style="max-height:400px;width:auto"></div>
+    </div>
+    <div style="width:50%">
+      <div class="label">well_cutaway_light on DARK strip</div>
+      <div class="strip dark-bg"><img src="well_cutaway_light.svg" style="max-height:400px;width:auto"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div style="width:50%">
+      <div class="label">dyno_cards_dark on LIGHT strip</div>
+      <div class="strip light-bg"><img src="dyno_cards_dark.svg"></div>
+    </div>
+    <div style="width:50%">
+      <div class="label">dyno_cards_light on DARK strip</div>
+      <div class="strip dark-bg"><img src="dyno_cards_light.svg"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div style="width:50%">
+      <div class="label">india_field_map_dark on LIGHT strip</div>
+      <div class="strip light-bg"><img src="india_field_map_dark.svg" style="max-height:400px;width:auto"></div>
+    </div>
+    <div style="width:50%">
+      <div class="label">india_field_map_light on DARK strip</div>
+      <div class="strip dark-bg"><img src="india_field_map_light.svg" style="max-height:400px;width:auto"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

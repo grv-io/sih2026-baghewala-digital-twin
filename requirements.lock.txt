@@ -1,0 +1,63 @@
+# Exact versions this project was built/tested against, generated from the
+# shared dev venv (`.venv\Scripts\python.exe -m pip freeze`) on 27 Sep 2026,
+# Python 3.13.3, Windows. Filtered to the packages listed in requirements.txt
+# plus their resolved runtime dependency closure -- unrelated packages present
+# in that venv (e.g. python-pptx/xlsxwriter/pypdf/pillow/lxml, used only by
+# ppt/build_deck.py) are deliberately left out.
+#
+# requirements.txt stays unpinned by design (floats with upstream fixes); use
+# this file instead when you want the exact tested set:
+#   pip install -r requirements.lock.txt
+#
+# uvicorn is pinned WITHOUT its [standard] extra here because this venv has
+# only the base install (click/h11) -- if you need the extra (httptools,
+# watchfiles, websockets, uvloop on non-Windows), install
+# `uvicorn[standard]==0.52.4` yourself; the rest of this file still applies.
+
+# --- direct (requirements.txt) ---
+numpy==2.5.3
+scipy==1.18.1
+pandas==3.0.5
+scikit-learn==1.9.1
+xgboost==3.4.1
+scikit-optimize==0.10.2
+fastapi==0.141.1
+uvicorn==0.52.4
+python-multipart==0.0.32
+pydantic-settings==2.15.0
+sqlmodel==0.0.47
+aiosqlite==0.22.1
+httpx==0.28.1
+pytest==9.1.1
+pytest-asyncio==1.4.0
+
+# --- resolved runtime dependencies ---
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.15.1
+certifi==2026.7.22
+click==8.5.0
+cloudpickle==3.1.2
+colorama==0.4.6
+greenlet==3.5.6
+h11==0.16.0
+httpcore==1.0.9
+idna==3.19
+iniconfig==2.3.0
+joblib==1.6.0
+narwhals==2.26.0
+packaging==26.3
+pyaml==26.7.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+Pygments==2.21.0
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.3
+PyYAML==6.0.3
+six==1.17.0
+SQLAlchemy==2.0.54
+starlette==1.6.0
+threadpoolctl==3.6.0
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.4

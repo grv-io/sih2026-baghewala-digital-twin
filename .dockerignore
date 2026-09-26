@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+.github/
+
+# Judge/build material -- not needed to run the service, and keeps the
+# image small (ppt/visual carries rendered slide images).
+ppt/
+docs/study/
+
+data/twin.db
+data/twin.db-*
+.env
+*.log

@@ -1,0 +1,41 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:///./data/twin.db
+      CORS_ORIGINS: "*"
+      ENV: production
+      PORT: 8000
+    volumes:
+      - twin-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+  # Optional: `docker compose --profile postgres up` runs against Postgres
+  # instead of SQLite -- switch DATABASE_URL on `app` to the commented value
+  # below when using this profile (see docs/DEPLOY.md "switching to Postgres").
+  postgres:
+    profiles: ["postgres"]
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: twin
+      POSTGRES_PASSWORD: twin
+      POSTGRES_DB: twin
+    ports:
+      - "5432:5432"
+    volumes:
+      - twin-postgres:/var/lib/postgresql/data
+
+# app:
+#   environment:
+#     DATABASE_URL: postgresql+psycopg://twin:twin@postgres:5432/twin
+
+volumes:
+  twin-data:
+  twin-postgres:

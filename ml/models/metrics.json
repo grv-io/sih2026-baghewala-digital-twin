@@ -1,0 +1,84 @@
+{
+  "physics_rev": 13,
+  "trained_on": "data/synthetic_cycles.csv",
+  "trained_at_utc": "2026-09-26T14:41:52+00:00",
+  "n_rows": 3000,
+  "seed": 42,
+  "note": "Single 80/20 holdout, seed 42. No cross-validation was run.",
+  "envelope_steam_t_range": [
+    1000.0,
+    2000.0
+  ],
+  "oil_regressor": {
+    "target": "log(oil_total_m3), inverse-transformed to m3 on predict()",
+    "overall": {
+      "r2": 0.9946266252133598,
+      "mae": 8.182281544407484,
+      "n": 600
+    },
+    "envelope_1000_2000t": {
+      "r2": 0.9832744981255377,
+      "mae": 8.170806176076592,
+      "n": 247
+    }
+  },
+  "sor_derived_check": {
+    "note": "SOR = steam_t / oil_model.predict(X); not a separately trained model.",
+    "overall": {
+      "r2": 0.37391478412180845,
+      "mae": 0.30437821390112474,
+      "n": 600
+    }
+  },
+  "margin_regressor": {
+    "target": "margin_inr_per_cycle_day",
+    "note": "Gross margin (no opex, no cold baseline). Kept for continuity/reporting; NOT the optimizer objective as of rev 9.",
+    "overall": {
+      "r2": 0.9412537140175457,
+      "mae": 1521.9917765134344,
+      "n": 600
+    },
+    "envelope_1000_2000t": {
+      "r2": 0.9349460315362009,
+      "mae": 1282.9560136680395,
+      "n": 247
+    }
+  },
+  "margin_incremental_regressor": {
+    "target": "margin_incremental_inr_per_cycle_day",
+    "note": "Economics v2 (rev 8/9): incremental over the cold, unstimulated well for the same window; with-opex. Optimizer objective rev 9-12; kept for continuity/reporting, NOT the objective as of rev 13.",
+    "overall": {
+      "r2": 0.9371596513176219,
+      "mae": 1524.433100116743,
+      "n": 600
+    },
+    "envelope_1000_2000t": {
+      "r2": 0.9527441965616095,
+      "mae": 1204.5027191571767,
+      "n": 247
+    }
+  },
+  "margin_net_cash_regressor": {
+    "target": "margin_with_opex_inr_per_cycle_day",
+    "note": "rev 13 (wave 5): net cash per cycle-day, counterfactual-free (with opex, no cold-baseline subtraction). This IS ml/optimize.py's objective as of rev 13 -- comparing it across float policies never books the cold-well counterfactual switch (css.cold_counterfactual 'policy': shut in under the three float policies, pumped floating under 'none') as if it were part of the recommendation's own gain (TIER1_PROGRESS_LOG.md section 12.1/12.6).",
+    "overall": {
+      "r2": 0.9371596513176219,
+      "mae": 1524.433100116743,
+      "n": 600
+    },
+    "envelope_1000_2000t": {
+      "r2": 0.9527441965616095,
+      "mae": 1204.5027191571767,
+      "n": 247
+    }
+  },
+  "float_classifier": {
+    "label_definition": "float_premature_pull (twin/generate_data.py: float_forced_pull AND end_rate_over_cutoff >= FLOAT_PREMATURE_RATIO 1.5)",
+    "label_note": "rev 13 (TIER1_PROGRESS_LOG.md section 12.12): 'the rods, not the economics, ended a still-productive cycle' -- the float-onset pull happened (float_forced_pull) AND the oil rate was still >= 1.5x the row's own economic cutoff when it did. Supersedes the rev-12 label (max_floating_index > 0.6) OR (alarm_days > 0), whose ~95% positive share was too unbalanced to be informative and which, once the float response became an operating policy, amounted to penalising the pull rule itself (re-score N7: 'under every policy the pull IS the float response').",
+    "positive_class_share_train": 0.415,
+    "positive_class_share_test": 0.41333333333333333,
+    "auc": 0.9993585043988269,
+    "accuracy": 0.9816666666666667,
+    "n": 600
+  }
+}

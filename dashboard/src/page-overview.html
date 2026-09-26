@@ -1,0 +1,177 @@
+<main class="wrap">
+
+  <div class="pagehead">
+    <div>
+      <h1 class="bi" data-en="Cycle result — BGW-07" data-hi="चक्र परिणाम — BGW-07">Cycle result &mdash; BGW-07</h1>
+      <div class="ph-sub">
+        Baghewala field, Bikaner, Rajasthan &middot; cyclic steam stimulation &middot; TD 1,150&nbsp;m
+        &middot; 15.5&deg; API, 11,500&nbsp;cP @ 50&nbsp;&deg;C &middot; P<sub>res</sub> 11.4&nbsp;MPa
+        &middot; steam 290&nbsp;&deg;C, quality 0.65 @ 74&nbsp;t/d
+      </div>
+      <div class="tricolor-rule" aria-hidden="true"></div>
+    </div>
+    <div class="ph-actions">
+      <a class="btn btn-primary" href="console.html" data-xlink="console.html"
+         data-en="Open in twin console" data-hi="कूप अनुकरण में खोलें">Open in twin console</a>
+      <a class="btn" href="optimizer.html" data-xlink="optimizer.html"
+         data-en="Review recommendation" data-hi="अनुशंसा देखें">Review recommendation</a>
+      <button class="btn" type="button" id="btnPrint" data-en="Print" data-hi="प्रिंट करें">Print</button>
+    </div>
+  </div>
+
+  <!-- ============ THE RECOMMENDATION — the answer, before the evidence ============ -->
+  <section class="reccard" id="recCard" aria-label="Recommendation"></section>
+
+  <!-- ============ "YOUR PRICES" — collapsed re-pricing panel ============ -->
+  <details id="yourPrices" style="margin-bottom:var(--s5)">
+    <summary><span class="bi" data-en="Your prices" data-hi="आपकी कीमतें">Your prices</span></summary>
+    <div>
+      <p class="note" style="margin:0 0 var(--s3)" data-en="Recomputes margin below from these three prices. Steam, oil recovered, CO₂ and cycle length are physics — they do not change." data-hi="नीचे दी गई इन तीन कीमतों से मार्जिन की पुनर्गणना करता है। भाप, प्राप्त तेल, CO₂ और चक्र अवधि भौतिकी हैं — ये नहीं बदलतीं।">Recomputes margin below from these three prices. Steam, oil recovered, CO&#8322; and cycle length are physics — they do not change.</p>
+      <div class="pricesgrid">
+        <div class="field">
+          <label for="pxDiesel"><span data-en="Diesel price ₹/L" data-hi="डीज़ल कीमत ₹/लीटर">Diesel price &#8377;/L</span></label>
+          <input type="number" id="pxDiesel" step="0.01" min="0">
+        </div>
+        <div class="field">
+          <label for="pxDiscount"><span data-en="Bulk discount %" data-hi="थोक छूट %">Bulk discount %</span></label>
+          <input type="number" id="pxDiscount" step="1" min="0" max="100">
+        </div>
+        <div class="field">
+          <label for="pxOilBbl"><span data-en="Oil realisation ₹/bbl" data-hi="तेल प्राप्ति ₹/बैरल">Oil realisation &#8377;/bbl</span></label>
+          <input type="number" id="pxOilBbl" step="1" min="0">
+        </div>
+      </div>
+      <div class="btnbar" style="margin-top:var(--s4);flex-wrap:wrap">
+        <button class="btn btn-sm" id="pxPresetFy25" type="button" data-en="OIL FY25 realisation ($78.09)" data-hi="OIL FY25 वास्तविक प्राप्ति ($78.09)">OIL FY25 realisation ($78.09)</button>
+        <button class="btn btn-sm" id="pxPresetFy26Floor" type="button" data-en="FY26 planning floor ($65)" data-hi="FY26 योजना-न्यूनतम ($65)">FY26 planning floor ($65)</button>
+        <button class="btn btn-sm" id="pxPresetLevies" type="button" data-en="Net of royalty + cess (~₹3,600)" data-hi="रॉयल्टी + उपकर के बाद (~₹3,600)">Net of royalty + cess (~&#8377;3,600)</button>
+        <button class="btn btn-sm" id="pxPresetDiscount30" type="button" data-en="Bulk diesel discount (0.30)" data-hi="थोक डीज़ल छूट (0.30)">Bulk diesel discount (0.30)</button>
+        <button class="btn btn-sm" id="pxReset" type="button" data-en="Reset to base case" data-hi="आधार स्थिति पर रीसेट">Reset to base case</button>
+        <span class="spacer"></span>
+        <span class="tag" id="pxTag"></span>
+      </div>
+      <p class="note" id="pxNote" style="margin-top:var(--s3)"></p>
+    </div>
+  </details>
+
+  <!-- ============ THE ANSWER, IN FOUR CELLS ============ -->
+  <section class="resultstrip" aria-label="Headline result">
+    <div class="rs-cell">
+      <div class="rs-label bi" data-en="Steam/oil ratio" data-hi="भाप-तेल अनुपात">Steam/oil ratio</div>
+      <div class="rs-fig">
+        <span class="from num" id="rsFrom">3.29</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <span class="num" id="rsSor">2.83</span>
+        <span class="u">t/m&sup3;</span>
+      </div>
+      <div class="rs-sub" id="rsSorSub"></div>
+    </div>
+
+    <div class="rs-cell">
+      <div class="rs-label bi" data-en="Margin vs baseline, per cycle-day" data-hi="आधार रेखा से मार्जिन, प्रति चक्र-दिन">Margin vs baseline, per cycle-day</div>
+      <div class="rs-fig num" id="rsMarginDelta">+&#8377;3,332</div>
+      <div class="rs-sub" id="rsMarginSub"></div>
+    </div>
+
+    <div class="rs-cell">
+      <div class="rs-label" data-en="Steam saved per m³ oil" data-hi="प्रति m³ तेल भाप बचत">Steam saved per m³ oil</div>
+      <div class="rs-fig num" id="rsDelta">&minus;26.7%</div>
+      <div class="rs-sub" id="rsDeltaSub"></div>
+    </div>
+
+    <div class="rs-cell">
+      <div class="rs-label bi" data-en="Diesel per m³ oil" data-hi="प्रति m³ तेल डीज़ल">Diesel per m³ oil</div>
+      <div class="rs-fig">
+        <span class="from num" id="rsDieselFrom"></span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <span class="num" id="rsDieselTo"></span>
+        <span class="u">L/m&sup3;</span>
+      </div>
+      <div class="rs-sub" id="rsMoneySub"></div>
+    </div>
+
+    <div class="rs-cell">
+      <div class="rs-label bi" data-en="CO₂ per m³ oil" data-hi="प्रति m³ तेल CO₂">CO&#8322; per m³ oil</div>
+      <div class="rs-fig">
+        <span class="from num" id="rsCo2From"></span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <span class="num" id="rsCo2To"></span>
+        <span class="u">kg/m&sup3;</span>
+      </div>
+      <div class="rs-sub" id="rsCo2Sub"></div>
+    </div>
+
+    <p class="rs-prov" data-en="Physics rev 13 — wave 5 (operating policy as a control, fair same-policy baseline, injectivity gate, levies deck) + Economics v2, FY25 price deck; calibrated to published Baghewala benchmarks (SOR 3.0–4.6, 5–6× uplift, 15–40 bbl/d) under the pull policy; synthetic data, not field-validated." data-hi="भौतिकी rev 13 — वेव 5 (नियंत्रण के रूप में संचालन नीति, उचित समान-नीति आधार रेखा, इंजेक्शन-योग्यता गेट, उपकर डेक) + अर्थशास्त्र v2, FY25 मूल्य आधार; pull नीति के तहत प्रकाशित बाघेवाला बेंचमार्क (SOR 3.0–4.6, 5–6× उत्थान, 15–40 bbl/d) के अनुरूप अंशांकित; संश्लेषित डेटा, क्षेत्र-सत्यापित नहीं।">Physics rev 13 — wave 5 (operating policy as a control, fair same-policy baseline, injectivity gate, levies deck) + Economics v2, FY25 price deck; calibrated to published Baghewala benchmarks (SOR 3.0–4.6, 5–6× uplift, 15–40 bbl/d) under the pull policy; synthetic data, not field-validated.</p>
+  </section>
+
+  <div class="cols cols-2">
+
+    <!-- ============ LEFT: the numbers ============ -->
+    <div>
+      <section class="section">
+        <div class="section-head">
+          <h2 class="bi" data-en="Cycle comparison" data-hi="चक्र तुलना">Cycle comparison</h2>
+          <span class="sh-meta">both columns are twin runs at the stated set-points &middot; no interpolation</span>
+        </div>
+        <div class="table-wrap">
+          <table class="dt" id="cmpTable">
+            <thead>
+              <tr>
+                <th style="width:34%" data-en="Metric" data-hi="मापक">Metric</th>
+                <th style="width:10%" data-en="Unit" data-hi="इकाई">Unit</th>
+                <th style="width:19%"><span id="cmpHeadA" data-en="Current cycle" data-hi="वर्तमान चक्र">Current cycle</span><span class="u num" id="cmpSetA"></span></th>
+                <th style="width:19%"><span id="cmpHeadB" data-en="Physics-grid optimum" data-hi="भौतिकी-ग्रिड इष्टतम">Physics-grid optimum</span><span class="u num" id="cmpSetB"></span></th>
+                <th style="width:18%" data-en="Change" data-hi="परिवर्तन">Change</th>
+              </tr>
+            </thead>
+            <tbody id="cmpBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2 class="bi" data-en="Fuel, cost and carbon" data-hi="ईंधन, लागत एवं कार्बन">Fuel, cost and carbon</h2>
+          <span class="sh-meta">iso-oil counterfactual &middot; per cycle, then scaled</span>
+        </div>
+        <details>
+          <summary data-en="How these numbers are calculated ▸" data-hi="ये आँकड़े कैसे निकले ▸">How these numbers are calculated ▸</summary>
+          <div class="table-wrap">
+            <table class="dt dt-sm" id="valueTable"><tbody id="valueBody"></tbody></table>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <!-- ============ RIGHT: how the claim is built ============ -->
+    <div>
+      <section class="section">
+        <div class="section-head">
+          <h2 class="bi" data-en="Steam/oil ratio by scenario" data-hi="परिदृश्य अनुसार भाप-तेल अनुपात">Steam/oil ratio by scenario</h2>
+          <span class="sh-meta" id="sorChartMeta">lower is better</span>
+        </div>
+        <div class="panel">
+          <div class="p-body">
+            <div id="chartSor" class="chart" style="height:186px"></div>
+          </div>
+          <div class="p-foot" id="sorChartFoot"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2 class="bi" data-en="Run provenance" data-hi="संचालन उद्गम">Run provenance</h2>
+          <span class="sh-meta">what produced the figures</span>
+        </div>
+        <details>
+          <summary data-en="How these numbers are calculated ▸" data-hi="ये आँकड़े कैसे निकले ▸">How these numbers are calculated ▸</summary>
+          <div class="table-wrap">
+            <table class="dt dt-sm"><tbody id="provBody"></tbody></table>
+          </div>
+          <div class="note" id="claimNote" style="margin-top:var(--s3)"></div>
+        </details>
+      </section>
+    </div>
+
+  </div>
+</main>

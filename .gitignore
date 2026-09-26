@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+dashboard/qc.png
+.pytest_cache/
+ppt/visual/.edge-profile/
+
+# deploy kit -- local runtime state, never committed
+data/twin.db
+data/twin.db-*
+.env

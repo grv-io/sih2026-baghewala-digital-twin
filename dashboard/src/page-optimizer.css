@@ -1,0 +1,9 @@
+/* ---------- recommendation table — continuous-optimum column ------------- */
+/* Hidden by default (SPEC P0-6d): a controller only ever accepts the
+   as-applied, grid-snapped values, so the continuous search optimum is
+   surplus to the 8-second read. It reappears when "Model details" is open —
+   see the details' `toggle` listener in page-optimizer.js. */
+#recTable .col-continuous{display:none;}
+#recTable.show-continuous .col-continuous{display:table-cell;}
+
+#modelDetails{margin-top:12px;}

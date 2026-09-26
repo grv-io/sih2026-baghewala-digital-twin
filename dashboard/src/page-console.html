@@ -1,0 +1,362 @@
+<main class="wrap">
+
+  <div class="pagehead">
+    <div>
+      <h1 class="bi" data-en="Twin console — BGW-07" data-hi="कूप अनुकरण — BGW-07">Twin console &mdash; BGW-07</h1>
+      <div class="ph-sub" data-en="Try settings for the next CSS cycle and see temperature, oil rate and rod load day by day." data-hi="अगले CSS चक्र की सेटिंग आज़माएँ — दिन-प्रतिदिन तापमान, तेल दर और रॉड भार देखें।">Try settings for the next CSS cycle and see temperature, oil rate and rod load day by day.</div>
+    </div>
+    <div class="ph-actions">
+      <a class="btn" href="optimizer.html" data-xlink="optimizer.html"
+         data-en="Optimiser" data-hi="अनुकूलक">Optimiser</a>
+      <a class="btn" href="index.html" data-xlink="index.html"
+         data-en="Overview" data-hi="अवलोकन">Overview</a>
+    </div>
+  </div>
+
+  <!-- staged set-points handed over from the optimiser page -->
+  <div class="note warn stagedbar" id="stagedBar" hidden>
+    <span id="stagedText"></span>
+    <span class="btnbar" style="margin-left:auto">
+      <button class="btn btn-sm btn-primary" type="button" id="btnLoadStaged">Load into console</button>
+      <button class="btn btn-sm" type="button" id="btnDiscardStaged">Discard</button>
+    </span>
+  </div>
+
+  <!-- ============ SET-POINT TOOLBAR ============ -->
+  <section class="panel toolbar" id="toolbar">
+    <div class="p-head">
+      <span class="bi" data-en="Set-points" data-hi="निर्धारित मान">Set-points</span>
+      <span class="h-meta" id="toolbarMeta"></span>
+    </div>
+    <div class="p-body tb-body">
+      <div class="field">
+        <label for="in_steam_t"><span data-en="Steam volume" data-hi="भाप मात्रा">Steam volume</span><span class="u">t/cycle</span></label>
+        <div class="readout"><span class="num" id="out_steam_t">1,300</span></div>
+        <input type="range" id="in_steam_t" min="500" max="3000" step="50" value="1300">
+        <div class="range-scale"><span>500</span><span>3,000</span></div>
+      </div>
+      <div class="field">
+        <label for="in_soak_days"><span data-en="Soak period" data-hi="सोख अवधि">Soak period</span><span class="u">d</span></label>
+        <div class="readout"><span class="num" id="out_soak_days">10</span></div>
+        <input type="range" id="in_soak_days" min="3" max="15" step="1" value="10">
+        <div class="range-scale"><span>3</span><span>15</span></div>
+      </div>
+      <div class="field">
+        <label for="in_cutoff"><span data-en="Economic cutoff" data-hi="आर्थिक सीमा">Economic cutoff</span><span class="u">m&sup3;/d</span></label>
+        <div class="readout"><span class="num" id="out_cutoff">1.30</span></div>
+        <input type="range" id="in_cutoff" min="0.6" max="2.0" step="0.05" value="1.3">
+        <div class="range-scale"><span>0.60</span><span>2.00</span></div>
+      </div>
+      <div class="field">
+        <label for="in_spm"><span data-en="Pump speed" data-hi="पंप गति">Pump speed</span><span class="u">spm</span></label>
+        <div class="readout"><span class="num" id="out_spm">5.0</span></div>
+        <input type="range" id="in_spm" min="3" max="12" step="0.5" value="5">
+        <div class="range-scale"><span>3.0</span><span>12.0</span></div>
+      </div>
+      <div class="field">
+        <label for="in_pressure"><span data-en="Injection (wellhead) pressure" data-hi="इंजेक्शन (वेलहेड) दाब">Injection (wellhead) pressure</span><span class="u">kgf/cm&sup2;</span></label>
+        <div class="readout"><span class="num" id="out_pressure">91</span></div>
+        <input type="range" id="in_pressure" min="85" max="97" step="1" value="91">
+        <div class="range-scale"><span>85</span><span>97</span></div>
+      </div>
+      <div class="field">
+        <label for="in_stroke"><span data-en="Stroke length" data-hi="स्ट्रोक लंबाई">Stroke length</span><span class="u">in</span></label>
+        <select id="in_stroke" class="select-stroke">
+          <option value="64">64</option>
+          <option value="74">74</option>
+          <option value="86" selected>86</option>
+          <option value="100">100</option>
+          <option value="120">120</option>
+          <option value="144">144</option>
+        </select>
+      </div>
+      <div class="field" id="floatPolicyField">
+        <label for="in_floatPolicy" class="bi" data-en="Rod-float response" data-hi="रॉड-फ्लोट प्रतिक्रिया">Rod-float response</label>
+        <select id="in_floatPolicy">
+          <option value="pull" data-en="Pull after 3 alarm days" data-hi="3 अलार्म दिनों बाद कूप खींचें">Pull after 3 alarm days</option>
+          <option value="vfd_hold" selected data-en="Slow the pump to hold the limit (VFD-hold)" data-hi="सीमा बनाए रखने हेतु पंप धीमा करें (VFD-hold)">Slow the pump to hold the limit (VFD-hold)</option>
+          <option value="vfd_then_pull" data-en="Slow, then pull" data-hi="धीमा करें, फिर खींचें">Slow, then pull</option>
+          <option value="none" data-en="No float response (rods float)" data-hi="कोई फ्लोट प्रतिक्रिया नहीं (रॉड फ्लोट करते हैं)">No float response (rods float)</option>
+        </select>
+        <p class="note" id="floatPolicyDesc" style="margin-top:4px"></p>
+      </div>
+
+      <div class="tb-actions">
+        <button class="btn btn-primary" id="btnSimulate" type="button">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10 L38 24 L16 38 Z"/></svg>
+          <span data-en="Simulate cycle" data-hi="चक्र अनुकरण">Simulate cycle</span>
+        </button>
+        <button class="btn" id="btnReplay2" type="button">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10 L38 24 L16 38 Z"/></svg>
+          <span data-en="Play the cycle" data-hi="चक्र चलाकर देखें">Play the cycle</span>&nbsp;<span class="num" id="replayDurLabel">(14 s)</span>
+        </button>
+        <button class="btn" id="btnStress" type="button">
+          <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M26 4 L12 28 H22 L18 44 L38 18 H27 Z"/></svg>
+          <span data-en="Try high speed" data-hi="उच्च गति आज़माएँ">Try high speed</span>&nbsp;<span class="num">(12 SPM)</span>
+        </button>
+        <button class="btn" id="btnReset" type="button" data-en="Reset" data-hi="रीसेट">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TELEMETRY ============ -->
+  <div class="telemetry" id="telemetry">
+    <span class="tm-tag" data-en="Simulated readings" data-hi="अनुकरित रीडिंग">Simulated readings</span>
+    <span class="tm-slot" id="tmDay"><span class="tm-k" data-en="Day" data-hi="दिन">Day</span><b>D+&mdash;</b></span>
+    <span class="tm-slot" id="tmT"><span class="tm-k" data-en="Reservoir temp" data-hi="भंडार ताप">Reservoir temp</span><b>&mdash;</b></span>
+    <span class="tm-slot" id="tmMu"><span class="tm-k" data-en="Viscosity" data-hi="श्यानता">Viscosity</span><b>&mdash;</b></span>
+    <span class="tm-slot" id="tmQ"><span class="tm-k" data-en="Oil rate" data-hi="तेल दर">Oil rate</span><b>&mdash;</b></span>
+    <span class="tm-slot" id="tmRod"><span class="tm-k" data-en="Rod load" data-hi="रॉड भार">Rod load</span><b>&mdash;</b></span>
+    <span class="tm-slot" id="tmPump"><span class="tm-k" data-en="Pump" data-hi="पंप">Pump</span><b>&mdash;</b></span>
+    <span class="tm-slot" id="tmWaterCut"><span class="tm-k" data-en="Water cut" data-hi="जल अंश">Water cut</span><b>&mdash;</b></span>
+    <span class="tm-slot" id="tmFI"><span class="tm-k" data-en="Rod-float index" data-hi="रॉड-फ्लोट सूचकांक">Rod-float index</span><b>&mdash;</b></span>
+    <span class="tm-status" id="tmStatus">OK</span>
+  </div>
+
+  <!-- ============ INSTRUMENTS ============ -->
+  <div class="console-grid">
+
+    <div class="col-main">
+      <section class="panel" id="panelTimeseries">
+        <div class="p-head">
+          <span class="bi" data-en="Cycle time series" data-hi="चक्र समय-श्रेणी">Cycle time series</span>
+          <span class="h-meta" id="tsMeta">1 row per day</span>
+        </div>
+        <div class="p-body">
+          <div class="legend">
+            <span class="lg"><i id="lgT"></i><span data-en="Reservoir temperature" data-hi="भंडार तापमान">Reservoir temperature</span></span>
+            <span class="lg"><i id="lgMu"></i><span data-en="Viscosity (log scale)" data-hi="श्यानता (लॉग मापक)">Viscosity (log scale)</span></span>
+            <span class="lg"><i id="lgQ"></i><span data-en="Oil rate" data-hi="तेल दर">Oil rate</span></span>
+          </div>
+          <div class="chart-stage">
+            <div id="chartTimeseries" class="chart"></div>
+            <div id="dayCursor" aria-hidden="true">
+              <div class="cursor-line"></div>
+              <div class="cursor-grip" id="cursorGrip" aria-label="Drag to scrub through the cycle"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-foot replay-bar">
+          <button class="btn-replay" id="btnReplay" type="button" aria-label="Play digital-twin replay">
+            <svg class="icon" id="replayIcon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10 L38 24 L16 38 Z"/></svg>
+          </button>
+          <span class="hud-day num" id="replayDay">D+&mdash;</span>
+          <span class="phase-chip" id="replayPhase" data-en="Idle" data-hi="निष्क्रिय">Idle</span>
+          <span class="telem num" id="replayTelem">&mdash;</span>
+        </div>
+      </section>
+
+      <section class="panel" id="panelDyno">
+        <div class="p-head">
+          <span class="bi" data-en="Dynamometer card (computed)" data-hi="डायनामोमीटर कार्ड (गणित)">Dynamometer card (computed)</span>
+          <span class="h-meta" data-en="Surface card from the Gibbs wave equation · pump card from valve mechanics · typical rod string, not Baghewala's" data-hi="सतह कार्ड Gibbs तरंग समीकरण से · पंप कार्ड वाल्व यांत्रिकी से · सामान्य छड़ श्रृंखला, Baghewala की नहीं">Surface card from the Gibbs wave equation · pump card from valve mechanics · typical rod string, not Baghewala's</span>
+        </div>
+        <div class="p-body">
+          <div class="legend">
+            <span class="lg"><i id="lgSurf"></i><span data-en="At surface" data-hi="सतह पर">At surface</span></span>
+            <span class="lg"><i id="lgPump"></i><span data-en="At pump" data-hi="पंप पर">At pump</span></span>
+            <span class="dyno-daylabel num" id="dynoDayLabel"></span>
+          </div>
+          <div id="chartDyno" class="chart"></div>
+          <div class="dyno-badge-row" id="dynoBadgeRow">
+            <span class="tag" id="dynoTypeBadge">&mdash;</span>
+            <span class="tag warn" id="dynoApproxNote" data-en="card from nearest baked case" data-hi="निकटतम बेक्ड स्थिति से कार्ड" hidden>card from nearest baked case</span>
+          </div>
+          <p class="rm-sentence" id="dynoMeaning"></p>
+        </div>
+        <div class="p-foot">
+          <div class="statrow">
+            <span><span data-en="Peak PRL" data-hi="शिखर PRL">Peak PRL</span> <b id="dynoPeak">&mdash;</b> <span class="u">kN</span></span>
+            <span><span data-en="Min PRL" data-hi="न्यून PRL">Min PRL</span> <b id="dynoMin">&mdash;</b> <span class="u">kN</span></span>
+            <span><span data-en="Stroke length" data-hi="स्ट्रोक लंबाई">Stroke length</span> <b id="dynoStroke">&mdash;</b> <span class="u">m</span></span>
+            <span><span data-en="Plunger" data-hi="प्लंजर">Plunger</span> <b>44.5</b> <span class="u">mm</span></span>
+            <span><span data-en="Rod string" data-hi="छड़ श्रृंखला">Rod string</span> <b>1,150</b> <span class="u">m &middot; 3.8 kg/m</span></span>
+          </div>
+          <details id="dynoDetails">
+            <summary data-en="Model details (for specialists) ▸" data-hi="मॉडल विवरण (विशेषज्ञों हेतु) ▸">Model details (for specialists) ▸</summary>
+            <p class="note" id="dynoDetailsNote"></p>
+          </details>
+          <details id="dynoClfDetails">
+            <summary data-en="Check a measured card ▸" data-hi="मापा गया कार्ड जाँचें ▸">Check a measured card ▸</summary>
+            <div>
+              <p class="note" data-en="Upload a CSV (position_m/in, load_kN/klbf) or paste a two-column table from a measured SURFACE dynamometer card." data-hi="एक CSV अपलोड करें (position_m/in, load_kN/klbf) या मापे गए सतह डायनामोमीटर कार्ड की दो-स्तंभ तालिका चिपकाएँ।">Upload a CSV (position_m/in, load_kN/klbf) or paste a two-column table from a measured SURFACE dynamometer card.</p>
+              <div class="btnbar" style="flex-wrap:wrap">
+                <input type="file" id="dynoClfFile" accept=".csv,text/csv">
+                <a class="btn btn-sm" id="dynoClfTemplateLink" href="../data/templates/dyno_card_template.csv" target="_blank" rel="noopener" data-en="Download template" data-hi="टेम्पलेट डाउनलोड करें">Download template</a>
+              </div>
+              <textarea id="dynoClfPaste" rows="4" style="width:100%;margin-top:var(--s2);font:12.5px/1.4 var(--mono, monospace)" data-en-placeholder="or paste rows here: position,load" data-hi-placeholder="या यहाँ पंक्तियाँ चिपकाएँ: position,load" placeholder="or paste rows here: position,load"></textarea>
+              <div class="btnbar" style="margin-top:var(--s2)">
+                <button class="btn btn-primary btn-sm" id="btnDynoClassify" type="button" data-en="Classify card" data-hi="कार्ड वर्गीकृत करें">Classify card</button>
+                <span class="spacer"></span>
+              </div>
+              <div class="note" id="dynoClfStatus" style="margin-top:10px"></div>
+              <div id="dynoClfResult" hidden style="margin-top:var(--s3)">
+                <div class="dyno-badge-row">
+                  <span class="tag" id="dynoClfBadge">&mdash;</span>
+                  <span class="tag info" id="dynoClfApproxTag" data-en="approximate, offline" data-hi="अनुमानित, ऑफ़लाइन" hidden>approximate, offline</span>
+                </div>
+                <p class="rm-sentence" id="dynoClfSentence"></p>
+                <div class="statrow">
+                  <span><span data-en="Fillage (est.)" data-hi="भराव (अनुमानित)">Fillage (est.)</span> <b id="dynoClfFillage">&mdash;</b> <span class="u">%</span></span>
+                  <span><span data-en="Peak PRL" data-hi="शिखर PRL">Peak PRL</span> <b id="dynoClfPeak">&mdash;</b> <span class="u">kN</span></span>
+                  <span><span data-en="Min PRL" data-hi="न्यून PRL">Min PRL</span> <b id="dynoClfMin">&mdash;</b> <span class="u">kN</span></span>
+                </div>
+                <div class="dyno-clf-probs" id="dynoClfProbs"></div>
+                <p class="note warn" id="dynoClfCaveat" data-en="Classified by a model trained on physics-generated cards — confirm with your pump specialist." data-hi="भौतिकी-जनित कार्डों पर प्रशिक्षित मॉडल द्वारा वर्गीकृत — अपने पंप विशेषज्ञ से पुष्टि करें।">Classified by a model trained on physics-generated cards — confirm with your pump specialist.</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-side">
+      <section class="panel" id="panelXsec">
+        <div class="p-head">
+          <span class="bi" data-en="Well cross-section" data-hi="कूप अनुप्रस्थ काट">Well cross-section</span>
+          <span class="h-meta" id="xsecMeta">cycle end-state</span>
+        </div>
+        <div class="p-body">
+          <div class="xsec-hud">
+            <span class="hud-day num" id="xsDay">D+&mdash;</span>
+            <span class="phase-chip" id="xsPhase">&mdash;</span>
+            <span id="xsTemp" class="num">T &mdash; &deg;C &middot; &mu; &mdash; cP</span>
+          </div>
+          <div class="xsec-wrap">
+            <svg id="xsec" viewBox="0 0 340 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" class="phase-inject" role="img" aria-label="Cutaway of well BGW-07 from pumpjack to the steam-heated pay zone at 1,150 metres">
+              <defs>
+                <radialGradient id="haloGrad">
+                  <stop offset="0%"   stop-color="var(--halo-0)"/>
+                  <stop offset="45%"  stop-color="var(--halo-1)"/>
+                  <stop offset="100%" stop-color="var(--halo-2)"/>
+                </radialGradient>
+              </defs>
+
+              <rect x="0" y="110" width="340" height="490" fill="var(--hw-ground)"/>
+              <line x1="0" y1="110" x2="340" y2="110" stroke="var(--hairline)" stroke-width="1.5"/>
+              <line x1="0" y1="215" x2="340" y2="215" stroke="var(--hw-strata)" stroke-width="1" stroke-dasharray="3 9"/>
+              <line x1="0" y1="330" x2="340" y2="330" stroke="var(--hw-strata)" stroke-width="1" stroke-dasharray="3 9"/>
+              <line x1="0" y1="440" x2="340" y2="440" stroke="var(--hw-strata)" stroke-width="1" stroke-dasharray="3 9"/>
+
+              <rect x="6" y="506" width="328" height="66" fill="var(--pay-fill)" stroke="var(--hw-steel)" stroke-width="1" stroke-dasharray="5 4"/>
+              <text class="xs-zone-label" x="10" y="583"
+                    data-en="BAGHEWALA PAY ZONE · JODHPUR SANDSTONE"
+                    data-hi="बाघेवाला उत्पादक संस्तर · जोधपुर बलुआ पत्थर">BAGHEWALA PAY ZONE · JODHPUR SANDSTONE</text>
+              <text class="xs-zone-label" x="10" y="594"
+                    data-en="BIKANER–NAGAUR BASIN · 15.5° API HEAVY CRUDE"
+                    data-hi="बीकानेर–नागौर बेसिन · 15.5° API भारी कच्चा तेल">BIKANER–NAGAUR BASIN · 15.5° API HEAVY CRUDE</text>
+
+              <g id="xsHalo" transform="translate(170 524) scale(0.18) translate(-170 -524)">
+                <circle class="xs-halo-core" cx="170" cy="524" r="86" fill="url(#haloGrad)"/>
+              </g>
+
+              <rect x="14" y="82" width="58" height="28" fill="var(--bg-sunken)" stroke="var(--hw-steel)" stroke-width="1"/>
+              <text class="xs-depth-label" x="43" y="94" text-anchor="middle">STEAM GEN</text>
+              <text class="xs-depth-label" x="43" y="105" text-anchor="middle" fill="var(--amber)">290 °C · q 0.65</text>
+              <line x1="72" y1="97" x2="161" y2="97" stroke="var(--hw-steel)" stroke-width="3"/>
+              <line class="xs-steamline" x1="72" y1="97" x2="161" y2="97" stroke="var(--amber)" stroke-width="1.6" stroke-dasharray="6 6"/>
+
+              <g transform="translate(149,0.5) scale(1.5)">
+                <rect x="20" y="68" width="56" height="5" fill="var(--hw-dark)"/>
+                <polygon points="50,68 58,68 55,22 53,22" fill="var(--hw-dark)"/>
+                <circle cx="54" cy="22" r="3" fill="var(--hw-steel)"/>
+                <g class="pj-beam">
+                  <rect x="20" y="20" width="74" height="4" fill="var(--hw-steel)"/>
+                  <path d="M6 26 C6 18 14 14 24 15 L24 25 C16 24 8 27 6 26 Z" fill="var(--hw-steel)"/>
+                  <rect x="86" y="14" width="13" height="18" fill="var(--hw-dark)"/>
+                </g>
+                <g class="pj-rod"><line x1="14" y1="30" x2="14" y2="62" stroke="var(--amber)" stroke-width="2"/></g>
+              </g>
+
+              <rect x="161" y="106" width="18" height="18" fill="var(--hw-dark)" stroke="var(--hw-steel)" stroke-width="1"/>
+
+              <line x1="157" y1="124" x2="157" y2="506" stroke="var(--hw-dark)" stroke-width="3"/>
+              <line x1="183" y1="124" x2="183" y2="506" stroke="var(--hw-dark)" stroke-width="3"/>
+              <line x1="164.5" y1="124" x2="164.5" y2="500" stroke="var(--hw-steel)" stroke-width="1.5"/>
+              <line x1="175.5" y1="124" x2="175.5" y2="500" stroke="var(--hw-steel)" stroke-width="1.5"/>
+
+              <line x1="149" y1="514" x2="157" y2="514" stroke="var(--hw-steel)" stroke-width="2"/>
+              <line x1="149" y1="524" x2="157" y2="524" stroke="var(--hw-steel)" stroke-width="2"/>
+              <line x1="183" y1="514" x2="191" y2="514" stroke="var(--hw-steel)" stroke-width="2"/>
+              <line x1="183" y1="524" x2="191" y2="524" stroke="var(--hw-steel)" stroke-width="2"/>
+
+              <rect x="162" y="490" width="16" height="22" fill="var(--bg-sunken)" stroke="var(--hw-steel)" stroke-width="1.2"/>
+              <g class="xs-rodstring">
+                <line x1="170" y1="126" x2="170" y2="494" stroke="var(--hw-steel)" stroke-width="1.7"/>
+                <rect x="168.6" y="220" width="2.8" height="6" fill="var(--hw-steel)"/>
+                <rect x="168.6" y="330" width="2.8" height="6" fill="var(--hw-steel)"/>
+                <rect x="168.6" y="430" width="2.8" height="6" fill="var(--hw-steel)"/>
+                <rect x="165.5" y="494" width="9" height="10" fill="var(--hw-steel)"/>
+              </g>
+
+              <g class="xs-steam" transform="translate(0,126)">
+                <circle cx="166" cy="0" r="2"/><circle cx="174" cy="0" r="1.8"/><circle cx="170" cy="0" r="2.1"/>
+                <circle cx="167" cy="0" r="1.7"/><circle cx="173" cy="0" r="2"/><circle cx="169" cy="0" r="1.8"/>
+              </g>
+              <g class="xs-oil" transform="translate(0,494)">
+                <circle cx="167" cy="0" r="2.2"/><circle cx="173" cy="0" r="1.9"/><circle cx="170" cy="0" r="2.3"/>
+                <circle cx="166" cy="0" r="1.8"/><circle cx="174" cy="0" r="2.1"/><circle cx="169" cy="0" r="1.9"/>
+              </g>
+
+              <line x1="288" y1="110" x2="288" y2="497" stroke="var(--hw-steel)" stroke-width="1"/>
+              <g stroke="var(--hw-steel)" stroke-width="1">
+                <line x1="284" y1="110" x2="292" y2="110"/><line x1="284" y1="194" x2="292" y2="194"/>
+                <line x1="284" y1="278" x2="292" y2="278"/><line x1="284" y1="362" x2="292" y2="362"/>
+                <line x1="284" y1="446" x2="292" y2="446"/><line x1="284" y1="497" x2="292" y2="497"/>
+              </g>
+              <text class="xs-depth-label" x="295" y="114">0 m</text>
+              <text class="xs-depth-label" x="295" y="198">250 m</text>
+              <text class="xs-depth-label" x="295" y="282">500 m</text>
+              <text class="xs-depth-label" x="295" y="366">750 m</text>
+              <text class="xs-depth-label" x="291" y="450">1,000 m</text>
+              <text class="xs-depth-label" x="291" y="494">1,150 m</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panelRisk">
+        <div class="p-head">
+          <span class="bi" data-en="Rod floating risk" data-hi="रॉड फ्लोटिंग जोखिम">Rod floating risk</span>
+          <span class="h-meta">ISA-101 &middot; ALM-02</span>
+        </div>
+        <div class="p-body">
+          <div class="riskmeter">
+            <div class="rm-head">
+              <span class="rm-value num" id="rmValue">&mdash;</span>
+              <span class="rm-state" id="rmState" data-en="Within limits" data-hi="सीमा के भीतर">Within limits</span>
+            </div>
+            <div class="rm-sentence" id="rmSentence"></div>
+            <div class="rm-track">
+              <span class="rm-zone z1"></span><span class="rm-zone z2"></span><span class="rm-zone z3"></span>
+              <span class="rm-thresh"></span>
+              <span class="rm-marker" id="rmMarker" style="left:0%"></span>
+            </div>
+            <div class="rm-scale"><span>0.00</span><span>0.60 &mdash; <span data-en="failure threshold" data-hi="विफलता सीमा">failure threshold</span></span><span>1.00</span></div>
+          </div>
+          <table class="dt dt-sm" style="margin-top:14px">
+            <tbody>
+              <tr><td class="k"><span data-en="Floating index (max)" data-hi="फ्लोटिंग सूचकांक (अधिकतम)">Floating index (max)</span></td><td class="muted">&mdash;</td><td class="v num" id="riskFI">&mdash;</td></tr>
+              <tr><td class="k"><span data-en="Expected rod failures" data-hi="अपेक्षित छड़ विफलताएँ">Expected rod failures</span></td><td class="muted">count</td><td class="v num" id="riskFailures">&mdash;</td></tr>
+              <tr><td class="k"><span data-en="Model float probability" data-hi="मॉडल फ्लोटिंग प्रायिकता">Model float probability</span></td><td class="muted">%</td><td class="v num" id="riskProb">&mdash;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ALARM — fixed overlay, so nothing on the page reflows when it fires -->
+<div class="alert-banner" id="alertBanner" role="alert" hidden>
+  <span class="alm-icon" aria-hidden="true">
+    <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M24 6 L44 40 L4 40 Z"/><line x1="24" y1="18" x2="24" y2="28"/>
+      <circle cx="24" cy="34" r="1.8" fill="currentColor" stroke="none"/>
+    </svg>
+  </span>
+  <span class="alm-tag" id="alertTag">ALM-02</span>
+  <span class="alm-text" id="alertText">Rod floating risk &mdash; reduce SPM</span>
+  <span class="alm-detail num" id="alertDetail">FI 0.00 &gt; 0.60</span>
+  <button class="btn btn-sm alm-ack" id="btnAck" type="button">ACK</button>
+</div>

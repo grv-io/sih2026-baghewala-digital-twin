@@ -1,0 +1,213 @@
+{
+  "reservoir": {
+    "T_initial_C": 50.0,
+    "P_initial_kPa": 11400,
+    "depth_m": 1150,
+    "thickness_m": 12.0,
+    "porosity": 0.09,
+    "k_thermal_W_mK": 2.5,
+    "rock_heat_capacity_Jm3K": 2300000.0,
+    "drainage_radius_m": 100.0,
+    "well_radius_m": 0.1,
+    "P_current_kPa": 9400.0,
+    "P_current_kPa_note": "rev 11 [ASSUMPTION - derived from the injectivity requirement; UNKNOWN, top data ask]. Pre-cycle near-well reservoir pressure the IPR sees (null = virgin P_initial_kPa). Injection at the CONFIRMED 85-97 kgf/cm2 wellhead needs P_sandface > P_res; the wet-steam column (thermal.steam_state, IF97, homogeneous density) puts the sandface at 9.45-10.78 MPa, so the virgin 11.4 MPa would make injection impossible at every published pressure. 9,400 kPa is the largest value that admits injection over the whole range (P_sf at 85 kgf/cm2, rounded down), i.e. the OPTIMISTIC (highest-rate) edge; it also reads the BGW-08 85 -> 97 kgf/cm2 wellhead record as the near-well pressure charging by ~1.3 MPa over a 1,040-1,560 t job, consistent with pressure_boost_kPa_per_t = 1.0. ml/uq.py samples U[7,400, 9,400]. A static BHP survey on one BGW well replaces it.",
+    "pressure_boost_kPa_per_t": 1.0,
+    "pressure_boost_kPa_per_t_note": "rev 10 [CALIBRATED / ASSUMPTION, no field data; range 0.5-2.0, UQ U[0.5, 2.0]]. Near-well pressure charge per tonne injected (moved from twin/cycle.py PRESSURE_BOOST_PER_T_KPA, which stays as the fallback). Tuned 2.0 -> 1.0 in rev 5 to land the BGW-8 uplift band; physically unsupported at the params' own P-T state (thermal.steam_state_check)."
+  },
+  "fluid": {
+    "api_gravity": 15.5,
+    "mu_ref_cP": 11500.0,
+    "T_ref_C": 50.0,
+    "andrade_A": null,
+    "andrade_B_K": null,
+    "walther_A": null,
+    "walther_B": null,
+    "mu_floor_cP": 1.0,
+    "water_cut": 0.85,
+    "water_cut_note": "rev 11: used only when water_cut_model = 'constant' (the rev <= 10 behaviour: one constant produced-stream cut). The default 'state' model computes it daily.",
+    "water_cut_model": "state",
+    "water_cut_model_note": "rev 11 (T2-A). 'state': produced water = condensate flowback (mixing-cell tank, twin/cycle.py) + formation water at formation_water_cut; the day's cut drives pump liquid, emulsion drag/float, Boberg-Lantz produced heat and power. 'constant': rev 9/10 (fluid.water_cut every day, cold well included).",
+    "condensate_recovery_frac": 0.7,
+    "condensate_recovery_frac_note": "rev 11 [ASSUMPTION; range 0.5-0.9, UQ U[0.5, 0.9]]. Fraction of the injected steam mass produced back as condensate within the cycle (Prats, SPE Monograph 7; Butler 1991 ch. 7: most injected water returns in the cycle). Mid-range value, no Baghewala datum.",
+    "formation_water_cut": 0.45,
+    "formation_water_cut_note": "rev 11 [ASSUMPTION; range 0.3-0.6, UQ U[0.3, 0.6]]. Native water cut of the reservoir liquid (cold well, and the non-condensate part of the stimulated stream). No Baghewala figure found (baghewala_facts.md; OIL_DATA_REQUEST.md item 2). Mid-range value.",
+    "bubble_point_kPa": 3000,
+    "mu_anchor_T_C": 150.0,
+    "mu_anchor_cP": 50.0,
+    "mu_anchor_note": "rev 10 [ASSUMPTION - SPEC placeholder; range mu(150 C) 30-80 cP, UQ U[30, 80]]. High-temperature Walther anchor (moved from twin/viscosity.py ANCHOR_T_C/ANCHOR_MU_CP, which stay as the fallback). A two-point lab viscosity at 100/200 C replaces it.",
+    "tubing_viscosity_model": "emulsion",
+    "emulsion_inversion_wc": 0.7,
+    "emulsion_note": "rev 10 [ASSUMPTION; inversion range 0.60-0.75, UQ U[0.60, 0.75]]. Rods are dragged by the produced stream, not reservoir oil: the continuous phase's viscosity times a relative viscosity, W/O below the inversion water cut, O/W (water-continuous, Brinkman on water) above it (twin/srp.py rod_drag_viscosity_cP). 'oil' restores the rev-9 rule (tubing fluid = reservoir oil viscosity). rev 12: the W/O branch law is emulsion_law.",
+    "emulsion_law": "pal_rhodes",
+    "emulsion_law_note": "rev 12 [SOURCED law, ASSUMPTION constants]. W/O relative viscosity mu_r = [1 + (phi/phi*)/(1.187 - phi/phi*)]^2.49 (Pal & Rhodes 1989, J. Rheol. 33:1021), phi = water cut, phi* = water fraction at mu_r = 100; = Brinkman on an effective fraction phi/(1.187 phi*), so phi* = 0.842 IS Brinkman. 'brinkman' = rev 10/11 (mu_c (1-phi)^-2.5, no cap).",
+    "emulsion_phi_star": 0.84,
+    "emulsion_phi_star_note": "rev 12 [ASSUMPTION; UQ U[0.65, 1.0]]. Calibrated to the geometric centre (4.5x at 45 % water) of the published heavy-oil W/O band ~2-10x at 40-50 % water; Pal & Rhodes' fitted emulsions sit ~0.6-0.85 (recalled, not re-retrieved). 0.65 -> 8.9x, 1.0 -> 3.3x at 45 % water. No Baghewala emulsion rheology; a lab W/O viscosity at 30/45/60 % water replaces it.",
+    "emulsion_mu_r_max": 10.0,
+    "emulsion_mu_r_max_note": "rev 12 [ASSUMPTION]: cap on the W/O relative viscosity = the top of the published 2-10x heavy-oil band. Binds only near inversion (>~60 % water), where the zero-shear crowding divergence is extrapolated and real crude W/O emulsions are strongly shear-thinning at rod-annulus shear rates. null = no cap. rev 13: sampled in UQ U[5, 20].",
+    "emulsion_inversion_band_wc": 0.075,
+    "emulsion_inversion_band_wc_note": "rev 13 [ASSUMPTION; range 0.05-0.10, UQ U[0.05, 0.10]]. Width (water-cut units) of the W/O <-> O/W transition band centred on emulsion_inversion_wc: inside it ln(mu_drag) is blended linearly between the two branches (twin/srp.py). Crude-emulsion inversion is hysteretic and gradual (multiple W/O/W emulsions over a range of cuts; Salager et al. 2001, Pal 1993 -- recalled). Replaces the rev 10-12 binary switch that jumped the drag viscosity ~3,400x in one day. null/0 = the sharp switch.",
+    "flowback_mobility_ratio": 1.0,
+    "flowback_mobility_ratio_note": "rev 13 [ASSUMPTION - structural; UQ discrete {1, 3, 10}]. Condensate share of the mixing cell's liquid c = M*W/(M*W + V_p) (twin/cycle.py). 1 = the rev 11/12 volume-weighted cell (kept as base: no Baghewala water-cut log to choose); M > 1 = hot condensate more mobile than the cell's oil-bearing pore fluid (fractional-flow proxy), which drains the condensate faster and brings the late-cycle W/O stream forward."
+  },
+  "steam": {
+    "quality": 0.65,
+    "state_model": "saturated_P",
+    "state_model_note": "rev 11. 'saturated_P': the injected state is set by the wellhead PRESSURE -- T_wh = T_sat(P_wh), sandface P = P_wh + homogeneous two-phase column head, T_sandface = T_sat(P_sf), heat delivered = x_sf*h_fg(P_sf) + h_f(P_sf) - h_f(T_R) (IAPWS-IF97, twin/thermal.py steam_state). 'legacy_T': rev 10 (T_injection_C and latent_heat_Jkg).",
+    "P_wellhead_kgf_cm2": 91.0,
+    "P_wellhead_kgf_cm2_note": "rev 11 CONTROL [CONFIRMED range 85-97 kgf/cm2 g, OIL deck BGW-08]. Default = mid-range (baseline (b)); the optimiser searches 85/89/93/97. The steam generator sets the pressure: no separate compression cost; fuel per tonne scales with the wellhead enthalpy (thermal.steam_state fuel_factor, +/-0.2 % over the range).",
+    "min_injection_margin_kPa": 400.0,
+    "min_injection_margin_kPa_note": "rev 13 [ASSUMPTION; range 300-500 kPa]. Minimum sandface-over-reservoir pressure margin for a set-point to count as injectable: the IF97 homogeneous column head (thermal.steam_state) neglects two-phase tubing friction (~0.1-0.2 MPa at 74 t/d in 2-7/8-3-1/2 in tubing) and a control margin is needed on top. summary() reports injection_margin_kPa / injection_ok; ml/recommend_physics.py rejects set-points below it. At P_current 9.4 MPa, 85 kgf/cm2 gives 53 kPa and fails.",
+    "P_wellhead_range_kgf_cm2": [
+      85,
+      97
+    ],
+    "T_injection_C": 290.0,
+    "latent_heat_Jkg": 1400000.0,
+    "injection_rate_tpd": 74.0,
+    "wellhead_pressure_kgf_cm2_g": [
+      85,
+      97
+    ],
+    "wellhead_pressure_note": "rev 10 [CONFIRMED - OIL deck, BGW-08 first cycle: 85-97 kgf/cm2 wellhead]. Read only by twin/thermal.py steam_state_check (warns, never fails): T_sat at 85-97 kgf/cm2 g is ~299-308 C, and p_sat(290 C) = 7.44 MPa < P_res 11.4 MPa, so the sandface fluid cannot be saturated steam at the params' own P and T.",
+    "T_injection_C_note": "rev 11: DERIVED/REPORTING only under state_model 'saturated_P' (the zone temperature is T_sat at the sandface pressure, ~306-317 C over 85-97 kgf/cm2; T_wh = T_sat(P_wh) = 299-308 C against the deck's 280-305 C). Read only by 'legacy_T'.",
+    "latent_heat_Jkg_note": "rev 11: read only by state_model 'legacy_T' (saturated_P uses h_fg(P_sf) from IF97)."
+  },
+  "wellbore": {
+    "insulation": "VIT",
+    "heat_loss_frac_per_1000m": 0.18,
+    "quality_at_sandface_frac_of_wellhead": 0.55
+  },
+  "srp": {
+    "stroke_m": 2.1844,
+    "stroke_m_note": "rev 11 CONTROL: 86 in (2.1844 m; was 2.18) = baseline (b). Discrete API sizes in stroke_in_options; the optimiser searches all six.",
+    "stroke_in_options": [
+      64,
+      74,
+      86,
+      100,
+      120,
+      144
+    ],
+    "max_prl_kN": 113.9,
+    "max_prl_kN_note": "rev 11 [TYPICAL - API Spec 11E unit rating]: 25,600 lb peak polished-rod load = the structure rating of a C-320D-256-120 unit (a C-456D-305-144 is 30,500 lb = 135.7 kN; the assumed 86-in C-228D-213-86 is 21,300 lb = 94.7 kN). Cap on the Mills dynamic PRL (srp.peak_prl_kN) in the optimiser. Strokes above 86 in need a larger unit than the assumed C-228 (capex not costed).",
+    "spm_range": [
+      4,
+      12
+    ],
+    "spm_practice_band": [
+      3,
+      6
+    ],
+    "spm_floor": 2.0,
+    "rod_length_m": 1150,
+    "plunger_d_m": 0.0445,
+    "rod_mass_kgm": 3.8,
+    "rod_taper_d_in": [
+      1.0,
+      0.875
+    ],
+    "rod_taper_frac": [
+      0.485,
+      0.515
+    ],
+    "rod_taper_mass_kgm": [
+      4.322,
+      3.31
+    ],
+    "rod_E_Pa": 207000000000.0,
+    "gibbs_damping_nu": 0.1,
+    "crank_pitman_ratio": 0.25,
+    "tubing_head_pressure_kPa": 300.0,
+    "plunger_friction_kN": 0.9,
+    "surface_efficiency": 0.6,
+    "k_visc": 10.0,
+    "k_visc_note": "rev 10 [ASSUMPTION - tuned in T1-E, not derived; range 5-15 (+/-50 %), UQ U[5, 15]]. Lumped rod-drag coefficient F = k_visc * mu * v * L (moved from twin/srp.py K_VISC, which stays as the fallback). Couette 2*pi/ln(Dt/Dr) ~ 6-7 for 2-7/8 in tubing x 7/8-1 in rods."
+  },
+  "ipr": {
+    "s_cold": 5.0,
+    "s_cold_note": "rev 10 [ASSUMPTION - magnitude unsourced; range 0-8, UQ U[0, 8]]. Cold-well asphaltene/wax damage skin, removed linearly with heated-zone temperature (twin/ipr.py; module S_COLD stays as the fallback). Decides ~40 % of the modelled uplift (S = 0 -> uplift ~3.3x). Optional free parameter in twin/calibrate.py ('s_cold'). A pre-CSS build-up test measures it.",
+    "aof_ref_m3d": 0.56,
+    "aof_ref_m3d_note": "rev 12 [CALIBRATED; was the module constant 0.46 through rev 11]. Cold-well absolute open flow (m3/d) at 11.4 MPa / 11,500 cP (twin/ipr.py AOF_REF_M3D, same value). Re-tuned ONLY to put the reference first-cycle peak inside the 15-40 bbl/d field envelope (15.1 bbl/d); uplift is AOF-invariant (5.41x). Reference SOR 4.50 (re-specified band 3.0-4.6). Calibration free parameter 'aof_ref_m3d' in twin/calibrate.py."
+  },
+  "css": {
+    "steam_volume_t_range": [
+      500,
+      3000
+    ],
+    "soak_days_range": [
+      3,
+      15
+    ],
+    "cutoff_rate_m3d_range": [
+      0.6,
+      2.0
+    ],
+    "produce_end_rule": "either",
+    "produce_end_rule_note": "rev 12 OPERATING POLICY. 'either' (default): the produce phase ends when the oil rate (past its peak) falls below the cutoff OR when floating_index > fi_alarm on fi_alarm_days consecutive produce days (the operator pulls / re-steams rather than run floating rods). 'rate_cutoff' = rev <= 11; 'float_onset' = the float rule only.",
+    "fi_alarm": 0.6,
+    "fi_alarm_note": "rev 12: float-alarm line for the produce-end rule = the SPEC's 0.6 floating-risk threshold (cycle.FLOATING_RISK_THRESHOLD).",
+    "fi_alarm_days": 3,
+    "fi_alarm_days_note": "rev 12 [ASSUMPTION - an operator would pull / re-steam rather than run floating rods; 3 d = one dyno-card confirmation plus a rig call-out; no Baghewala SOP found]. Consecutive produce days above fi_alarm before the float-onset rule ends the cycle.",
+    "float_policy": "pull",
+    "float_policy_note": "rev 13 OPERATING POLICY (optimiser dimension). The operator's response to rod float: 'pull' (DEFAULT) = rev 12 (SPM schedule at the physical keep-up limit, pull after fi_alarm_days alarm days) -- kept as the default because it is the operating assumption the reference/benchmark calibration was made under (under vfd_hold the reference SOR would be 3.46, 0.0005 below the CalGEM floor 3.465, and a 500-t slug 2.65, below the 3-8 literature band: TIER1 12); 'vfd_hold' (the rev-13 RECOMMENDED policy) = the VFD slows the unit to hold FI at vfd_hold_fi down to vfd_spm_floor, pull only after fi_alarm_days alarm days at the floor (the operator model TIER1 11.3 already describes: 'he first slows the unit'); 'vfd_then_pull' = as vfd_hold but the VFD turns down only to vfd_turndown_frac x the start SPM; 'none' = no float response (rods float until the rate cutoff, rev <= 11). The SAME policy is applied to the cold counterfactual (cold_counterfactual). Absent key = derived from produce_end_rule (rev 12).",
+    "vfd_hold_fi": 0.6,
+    "vfd_hold_fi_note": "rev 13: the float index the VFD policies hold (= the SPEC alarm line fi_alarm).",
+    "vfd_spm_floor": 2.0,
+    "vfd_spm_floor_note": "rev 13: lowest SPM the VFD policies slow to = the published heavy-oil keep-moving floor (srp.spm_floor, 2 spm).",
+    "vfd_turndown_frac": 0.5,
+    "vfd_turndown_frac_note": "rev 13 [ASSUMPTION] vfd_then_pull only: the VFD slows to at most this fraction of the start SPM (never below vfd_spm_floor) before the operator pulls -- a self-cooled NEMA-D beam-pump motor is commonly limited to ~50 % of base speed at full torque without forced cooling. No Baghewala VFD spec.",
+    "cold_counterfactual": "policy",
+    "cold_counterfactual_note": "rev 13. The unstimulated counterfactual the incremental economics compare with. 'policy' (DEFAULT) = the cold well obeys the same float policy on the params' own unit at the policy floor; if its FI there exceeds fi_alarm it is SHUT IN (cash 0) -- at the base 45 % formation cut it is (FI 1.0 at 2 spm x 86 in), so every absolute incremental Rs is an UPPER bound. 'pumpable' = the field fact that these wells were produced cold (~2-3 bbl/d): slowed below the keep-moving floor (down to cold_pumpable_min_spm) until FI <= vfd_hold_fi, producing min(IPR, capacity) -- at base 0.53 spm, full 0.445 m3/d, ~Rs 3.1k/d more cold cash than the rev-12 cold well. 'shut_in'; 'legacy' = rev 12 (2 spm, full rate, FI 1.0, 433 kWh/d). UQ samples policy/pumpable 50/50. The paired gain of one set-point over another does NOT depend on this choice (cold cash per day cancels).",
+    "cold_pumpable_min_spm": 0.25,
+    "cold_pumpable_min_spm_note": "rev 13 [ASSUMPTION]: slowest VFD speed credited to the 'pumpable' cold counterfactual (a 2-min stroke is slow but routine for VFD beam units in heavy oil; below 0.25 spm the counterfactual is shut in)."
+  },
+  "economics": {
+    "diesel_kg_per_t_steam": 71.0,
+    "diesel_density_kg_per_l": 0.83,
+    "diesel_price_inr_per_l": 97.8,
+    "diesel_bulk_discount_frac": 0.15,
+    "diesel_bulk_discount_frac_note": "rev 13 [CALIBRATED, UNSOURCED]: base moved 0.30 -> 0.15, the MID of the U[0, 0.30] UQ range (steam Rs 7,111/t at the Rs 97.80/L Rajasthan retail price; 0.30 = Rs 5,856/t, 0.0 = Rs 8,366/t). The external review flagged 0.30 as the best edge of an unsourced range. Presets in diesel_discount_presets.",
+    "diesel_discount_presets": {
+      "mid_0.15": 0.15,
+      "bulk_0.30": 0.3,
+      "retail_0": 0.0
+    },
+    "diesel_co2_kg_per_GJ": 74.1,
+    "gas_co2_kg_per_GJ": 56.1,
+    "steam_energy_GJ_per_t": 3.02,
+    "crude_realization_usd_per_bbl": 78.09,
+    "crude_realization_usd_per_bbl_source": "CONFIRMED: OIL India Annual Report 2024-25, FY25 average crude oil realisation (US$78.09/bbl).",
+    "heavy_oil_discount_usd_per_bbl": 10.0,
+    "heavy_oil_discount_usd_per_bbl_note": "[ASSUMPTION] Baghewala heavy/high-viscosity crude vs OIL's blended FY25 realisation; no well- or grade-specific discount was found.",
+    "inr_per_usd": 88.0,
+    "oil_price_inr_per_bbl": 5992.0,
+    "oil_price_inr_per_bbl_source": "rev 9: (crude_realization_usd_per_bbl - heavy_oil_discount_usd_per_bbl) x inr_per_usd = (78.09 - 10) x 88 = 5,991.92 ~ 5,992/bbl. Base-case deck.",
+    "oil_price_presets": {
+      "fy25_realisation": {
+        "usd_per_bbl_gross": 78.09,
+        "usd_per_bbl_net": 68.09,
+        "inr_per_bbl": 5992.0,
+        "label": "OIL FY25 realisation ($78.09/bbl)",
+        "source": "CONFIRMED OIL India Annual Report 2024-25 minus the $10/bbl heavy-oil discount [ASSUMPTION]. Base case deck as of rev 9."
+      },
+      "fy26_floor_65": {
+        "usd_per_bbl_gross": 65.0,
+        "usd_per_bbl_net": 55.0,
+        "inr_per_bbl": 4840.0,
+        "label": "OIL FY26 planning floor ($65/bbl)",
+        "source": "Prior placeholder deck (rev 4-8 base case), kept as a named sensitivity preset: the CMD's FY26 planning floor, minus the same $10/bbl heavy-oil discount."
+      },
+      "fy25_net_of_levies": {
+        "usd_per_bbl_gross": 78.09,
+        "inr_per_bbl": 3600.0,
+        "label": "OIL FY25 realisation net of royalty + OID cess (~Rs 3,600/bbl)",
+        "source": "rev 13 [ASSUMPTION on the rates; basis CONFIRMED]. FY25 base deck Rs 5,992/bbl x (1 - 0.20 royalty - 0.20 OID cess) = Rs 3,595 ~ 3,600/bbl (onshore crude royalty 20 % of wellhead value, OID cess 20 % ad valorem, nominal statutory rates, applied to the net-of-heavy-discount price). Cross-check from OIL Annual Report 2024-25 (contribution to exchequer): royalty Rs 2,986.84 cr (crude AND gas) + cess Rs 2,567.04 cr against crude-oil sales of Rs 15,710 cr = 35 % if all royalty were on crude, i.e. Rs 3,890/bbl; 3,600 is the conservative end. NOT netted: the 2018 ER/IR policy's 50 % cess waiver on enhanced-recovery production (~Rs 4,200/bbl if CSS output qualifies). This is OIL's company-basis price, not the national-value basis of the other two decks. Third deck: reported, not in the minimax."
+      }
+    },
+    "fixed_cost_inr_per_cycle": 1500000.0,
+    "fixed_cost_inr_per_cycle_note": "[ASSUMPTION - rig / pump pull per CSS job; range +/-50 % (Rs 7.5-22.5 L), UQ U[7.5e5, 2.25e6] since rev 10]. Inside the $15-50k workover band; no OIL figure found.",
+    "electricity_inr_per_kWh": 8.0,
+    "opex_inr_per_day": 5000.0,
+    "bbl_per_m3": 6.28981
+  }
+}

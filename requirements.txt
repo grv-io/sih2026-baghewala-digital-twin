@@ -1,0 +1,18 @@
+# Intentionally unpinned (float with upstream fixes during the hackathon build).
+# For the exact versions this project was built/tested against, see
+# requirements.lock.txt (`pip install -r requirements.lock.txt`).
+numpy
+scipy
+pandas
+scikit-learn
+xgboost
+scikit-optimize
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic-settings
+sqlmodel
+aiosqlite
+httpx
+pytest
+pytest-asyncio

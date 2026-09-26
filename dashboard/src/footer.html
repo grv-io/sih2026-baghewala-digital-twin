@@ -1,0 +1,38 @@
+<footer class="colophon">
+  <div class="cf-in">
+    <div class="col">
+      <h3 data-en="Model basis" data-hi="मॉडल आधार">Model basis</h3>
+      <p>Walther/ASTM&nbsp;D341 viscosity&ndash;temperature (Andrade superseded 26 Sep)<br>
+         Marx&ndash;Langenheim (1959) heated-zone growth, sensible&nbsp;+&nbsp;latent heat<br>
+         Boberg&ndash;Lantz cooldown &middot; composite-radial inflow (supersedes Vogel)<br>
+         Lumped API&nbsp;RP&nbsp;11L rod-load approximation<br>
+         <a href="methodology.html" data-xlink="methodology.html">Equations, assumptions and sources &rarr;</a></p>
+    </div>
+    <div class="col">
+      <h3 data-en="Data lineage" data-hi="डेटा वंशक्रम">Data lineage</h3>
+      <p><span id="footParamsRev">params/field_params.json rev&nbsp;13</span> &rarr; 12,936-plan physics grid (~3&nbsp;min) &rarr; ML emulator (XGBoost) for what-if / uncertainty only<br>
+         Simulated output of twin.cycle.simulate_css_cycle &middot; 263/265 physics &amp; benchmark tests (2 declared gaps: soak; steam optimum at the mid-range diesel price, marked xfail) &middot; no live SCADA link<br>
+         Sources: OIL internal presentation &middot; SPE-23APOG-535203 &middot; GEOHORIZONS 2015<br>
+         Run <span id="footRunId">&mdash;</span></p>
+    </div>
+    <div class="col">
+      <h3 data-en="Fuel and carbon basis" data-hi="ईंधन एवं कार्बन आधार">Fuel and carbon basis</h3>
+      <p>Diesel-fired steam: 71&nbsp;kg HSD per tonne of steam<br>
+         (OIL operations deck, BGW-08, 12&nbsp;Jul&nbsp;2025)<br>
+         &#8377;5,900&ndash;8,400/t steam &middot; 223.8&nbsp;kgCO&#8322;/t steam<br>
+         Stated per optimised cycle; programme figures are an explicit &times;19 CSS jobs (FY2025-26)</p>
+    </div>
+    <div class="col">
+      <h3 data-en="Issued by" data-hi="जारीकर्ता">Issued by</h3>
+      <p>Team SIH26120 &middot; MNIT Jaipur<br>
+         for Oil India Limited<br>
+         Rev&nbsp;2.4 (v4, physics <span id="footPhysicsRev">rev&nbsp;13</span>) &middot; <span id="footBuildDate">26 Sep 2026</span></p>
+    </div>
+    <div class="statutory">
+      <span class="st-hi" lang="hi">केवल प्रदर्शन हेतु — परिचालन उपयोग हेतु नहीं</span>
+      Demonstration only &mdash; not for operational use. Every figure on these pages is the output of a
+      physics simulator running real Baghewala field parameters; none of it is measured production data.
+      API gravity is carried as 15.5&deg; per SPE-23APOG-535203; problem statement SIH26120 states 17&ndash;19&deg;.
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" role="img" aria-label="Pumpjack silhouette on Rajasthan dunes at night, Baghewala field">
+<title>Baghewala Field — Night Operations</title>
+<defs>
+  <linearGradient id="pjSkyDark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0d1117"/>
+    <stop offset="55%" stop-color="#10151d"/>
+    <stop offset="100%" stop-color="#1a1310"/>
+  </linearGradient>
+  <radialGradient id="pjGlowDark" cx="50%" cy="100%" r="65%">
+    <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.32"/>
+    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="pjBlurDark" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="7"/>
+  </filter>
+</defs>
+
+<rect width="1600" height="600" fill="url(#pjSkyDark)"/>
+
+<g fill="#e6edf3" opacity="0.55">
+  <circle cx="120" cy="75" r="1.6"/>
+  <circle cx="240" cy="130" r="1.2"/>
+  <circle cx="360" cy="60" r="1.4"/>
+  <circle cx="520" cy="110" r="1.1"/>
+  <circle cx="700" cy="55" r="1.5"/>
+  <circle cx="980" cy="90" r="1.2"/>
+  <circle cx="1150" cy="60" r="1.4"/>
+  <circle cx="1320" cy="120" r="1.1"/>
+  <circle cx="1460" cy="70" r="1.5"/>
+  <circle cx="90" cy="200" r="1.1"/>
+  <circle cx="1520" cy="180" r="1.2"/>
+</g>
+
+<ellipse cx="800" cy="440" rx="440" ry="170" fill="url(#pjGlowDark)"/>
+
+<path d="M0,460 C200,420 400,442 600,410 C850,372 1050,432 1250,404 C1400,388 1500,410 1600,398 L1600,600 L0,600 Z" fill="#1c2430" opacity="0.85"/>
+<path d="M0,502 C250,468 500,502 750,470 C950,446 1150,482 1350,460 C1470,446 1550,466 1600,458 L1600,600 L0,600 Z" fill="#141a22"/>
+
+<!-- pumpjack silhouette -->
+<g stroke="#f59e0b" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="925" y="197" width="52" height="34" rx="4" fill="#141a22"/>
+  <line x1="650" y1="255" x2="950" y2="207"/>
+  <path d="M650,255 C608,249 585,268 590,297 C592,313 610,321 629,317 L650,300"/>
+  <line x1="629" y1="317" x2="629" y2="410"/>
+  <line x1="770" y1="472" x2="800" y2="230"/>
+  <line x1="830" y1="472" x2="800" y2="230"/>
+  <line x1="784" y1="358" x2="816" y2="358"/>
+  <line x1="742" y1="248" x2="860" y2="430"/>
+  <circle cx="860" cy="430" r="34"/>
+  <rect x="792" y="446" width="70" height="26" rx="3" fill="#141a22"/>
+  <rect x="758" y="472" width="144" height="14" rx="2" fill="#141a22"/>
+</g>
+
+<g fill="#f59e0b">
+  <circle cx="800" cy="230" r="4"/>
+  <circle cx="629" cy="410" r="3.5"/>
+  <circle cx="860" cy="430" r="3.2"/>
+</g>
+<g fill="#f59e0b" opacity="0.55" filter="url(#pjBlurDark)">
+  <circle cx="800" cy="230" r="11"/>
+  <circle cx="629" cy="410" r="11"/>
+</g>
+
+<g stroke="#e6edf3" stroke-width="2.5" fill="none">
+  <rect x="613" y="404" width="32" height="14" rx="2" fill="#0d1117"/>
+  <line x1="600" y1="440" x2="629" y2="440"/>
+  <line x1="629" y1="418" x2="629" y2="486"/>
+</g>
+
+<g filter="url(#pjBlurDark)" fill="#e6edf3" opacity="0.32">
+  <ellipse cx="601" cy="378" rx="17" ry="25"/>
+  <ellipse cx="591" cy="344" rx="21" ry="29"/>
+  <ellipse cx="600" cy="304" rx="25" ry="33"/>
+</g>
+
+<text x="70" y="72" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#e6edf3" opacity="0.9">Baghewala Field — Night Operations</text>
+<text x="70" y="106" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#94a3b8">Sucker-rod pumpjack · Bikaner, Rajasthan</text>
+</svg>

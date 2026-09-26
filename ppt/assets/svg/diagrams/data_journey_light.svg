@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" width="1600" height="500" role="img" aria-label="Data journey timeline from problem-statement release through physics prototype, synthetic training, internal round, OIL historical data at the finale, recalibrated twin, to pilot well">
+  <rect x="0" y="0" width="1600" height="500" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#51687e"/>
+    </marker>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#0f2540" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+<text x="80.0" y="52.0" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#0f2540" text-anchor="start">Data Journey — From Prototype to Pilot</text>
+<line x1="110" y1="250" x2="1490" y2="250" stroke="#c9d6e3" stroke-width="3"/>
+<circle cx="110.0" cy="250" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="110.0" y1="237" x2="110.0" y2="204" stroke="#51687e" stroke-width="1.5"/>
+<text x="110.0" y="154.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2540" text-anchor="middle">PS Release</text>
+<text x="110.0" y="179.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="110.0" dy="0.0">SIH problem statement</tspan><tspan x="110.0" dy="20.0">published</tspan></text>
+<circle cx="340.0" cy="250" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="340.0" y1="263" x2="340.0" y2="296" stroke="#51687e" stroke-width="1.5"/>
+<text x="340.0" y="338.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2540" text-anchor="middle">Physics Prototype</text>
+<text x="340.0" y="363.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="340.0" dy="0.0">Marx–Langenheim + Vogel</tspan><tspan x="340.0" dy="20.0">IPR core built</tspan></text>
+<circle cx="570.0" cy="250" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="570.0" y1="237" x2="570.0" y2="204" stroke="#51687e" stroke-width="1.5"/>
+<text x="570.0" y="154.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2540" text-anchor="middle">Synthetic Training</text>
+<text x="570.0" y="179.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="570.0" dy="0.0">3,000 simulation</tspan><tspan x="570.0" dy="20.0">cycles generated</tspan></text>
+<circle cx="800.0" cy="250" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="800.0" y1="263" x2="800.0" y2="296" stroke="#51687e" stroke-width="1.5"/>
+<text x="800.0" y="338.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2540" text-anchor="middle">Internal Round</text>
+<text x="800.0" y="363.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="800.0" dy="0.0">College / internal</tspan><tspan x="800.0" dy="20.0">SIH evaluation</tspan></text>
+<circle cx="1030.0" cy="250" r="29" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 4"/>
+<circle cx="1030.0" cy="250" r="20" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="1030.0" y1="230" x2="1030.0" y2="204" stroke="#51687e" stroke-width="1.5"/>
+<text x="1030.0" y="154.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#f59e0b" text-anchor="middle">OIL Historical Data</text>
+<text x="1030.0" y="179.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="1030.0" dy="0.0">Field dataset</tspan><tspan x="1030.0" dy="20.0">integrated at finale</tspan></text>
+<text x="1030.0" y="128.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#f59e0b" text-anchor="middle" letter-spacing="1.5">FINALE</text>
+<circle cx="1260.0" cy="250" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="1260.0" y1="263" x2="1260.0" y2="296" stroke="#51687e" stroke-width="1.5"/>
+<text x="1260.0" y="338.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2540" text-anchor="middle">Recalibrated Twin</text>
+<text x="1260.0" y="363.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="1260.0" dy="0.0">Model retrained on</tspan><tspan x="1260.0" dy="20.0">real field data</tspan></text>
+<circle cx="1490.0" cy="250" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+<line x1="1490.0" y1="237" x2="1490.0" y2="204" stroke="#51687e" stroke-width="1.5"/>
+<text x="1490.0" y="154.0" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f2540" text-anchor="middle">Pilot Well</text>
+<text x="1490.0" y="179.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" fill="#51687e" text-anchor="middle"><tspan x="1490.0" dy="0.0">Deployed on</tspan><tspan x="1490.0" dy="20.0">candidate well</tspan></text>
+</svg>

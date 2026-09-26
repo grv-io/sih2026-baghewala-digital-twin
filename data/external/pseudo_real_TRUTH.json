@@ -1,0 +1,6 @@
+{
+  "bl_delta_factor": 0.5,
+  "formation_water_cut": 0.38,
+  "thickness_m": 15.0,
+  "aof_ref_m3d": 0.65
+}

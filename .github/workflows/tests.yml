@@ -1,0 +1,68 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Data size sanity -- no data/external CSV over 5 MB
+        run: |
+          oversized=$(find data/external -name "*.csv" -size +5M 2>/dev/null)
+          if [ -n "$oversized" ]; then
+            echo "The following data/external CSV files exceed 5 MB and should not be committed:"
+            echo "$oversized"
+            exit 1
+          fi
+          echo "All data/external CSV files are 5 MB or smaller."
+
+      - name: Run tests
+        run: python -m pytest -q
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image (no push)
+        run: docker build -t baghewala-digital-twin:ci .
+
+      - name: Run container
+        run: docker run -d --name twin -p 8000:8000 baghewala-digital-twin:ci
+
+      - name: Wait for /api/health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/api/health; then
+              echo; echo "healthy"; exit 0
+            fi
+            sleep 2
+          done
+          echo "container never became healthy" >&2
+          docker logs twin
+          exit 1
+
+      - name: Container logs (always, for debugging)
+        if: always()
+        run: docker logs twin || true
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f twin || true

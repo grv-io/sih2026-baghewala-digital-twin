@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" width="1600" height="700" role="img" aria-label="Baghewala digital twin system flow: field and synthetic data feed a physics engine, which feeds an ML layer, which feeds the digital twin dashboard, with set-points fed back to steam and pump control">
+  <rect x="0" y="0" width="1600" height="700" fill="#0d1117"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+<text x="70.0" y="52.0" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#e6edf3" text-anchor="start">Baghewala Digital Twin — System Flow</text>
+<rect x="70.0" y="110.0" width="320.0" height="410.0" rx="20" fill="#161b22" stroke="#30363d" stroke-width="2" filter="url(#shadow)"/>
+<ellipse cx="230.0" cy="155.0" rx="35.0" ry="8.0" fill="none" stroke="#f59e0b" stroke-width="2.5"/><path d="M 195.0 155.0 L 195.0 189.0 A 35.0 8.0 0 0 0 265.0 189.0 L 265.0 155.0" fill="none" stroke="#f59e0b" stroke-width="2.5"/><ellipse cx="230.0" cy="189.0" rx="35.0" ry="8.0" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+<text x="230.0" y="238.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#e6edf3" text-anchor="middle">Field / Synthetic Data</text>
+<text x="230.0" y="368.0" font-family="Segoe UI, Arial, sans-serif" font-size="16.5" font-weight="500" fill="#8b949e" text-anchor="middle"><tspan x="230.0" dy="0.0">Well logs &amp; SCADA</tspan><tspan x="230.0" dy="30.0">3,000 synthetic cycles</tspan></text>
+<rect x="450.0" y="110.0" width="320.0" height="410.0" rx="20" fill="#161b22" stroke="#30363d" stroke-width="2" filter="url(#shadow)"/>
+<ellipse cx="610.0" cy="172" rx="34" ry="14" fill="none" stroke="#f59e0b" stroke-width="2.5" transform="rotate(0 610.0 172)"/><ellipse cx="610.0" cy="172" rx="34" ry="14" fill="none" stroke="#f59e0b" stroke-width="2.5" transform="rotate(60 610.0 172)"/><ellipse cx="610.0" cy="172" rx="34" ry="14" fill="none" stroke="#f59e0b" stroke-width="2.5" transform="rotate(120 610.0 172)"/><circle cx="610.0" cy="172" r="5" fill="#f59e0b"/>
+<text x="610.0" y="238.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#e6edf3" text-anchor="middle">Physics Engine</text>
+<g><rect x="474.0" y="266.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="492.0" cy="288.0" r="4" fill="#f59e0b"/><text x="616.0" y="293.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">Marx–Langenheim</text></g>
+<g><rect x="474.0" y="326.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="492.0" cy="348.0" r="4" fill="#f59e0b"/><text x="616.0" y="353.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">Andrade μ(T)</text></g>
+<g><rect x="474.0" y="386.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="492.0" cy="408.0" r="4" fill="#f59e0b"/><text x="616.0" y="413.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">Vogel IPR</text></g>
+<g><rect x="474.0" y="446.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="492.0" cy="468.0" r="4" fill="#f59e0b"/><text x="616.0" y="473.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">SRP dynamics</text></g>
+<rect x="830.0" y="110.0" width="320.0" height="410.0" rx="20" fill="#161b22" stroke="#30363d" stroke-width="2" filter="url(#shadow)"/>
+<line x1="958.0" y1="150.0" x2="1022.0" y2="150.0" stroke="#f59e0b" stroke-width="1.5" opacity="0.55"/><line x1="958.0" y1="150.0" x2="1022.0" y2="172" stroke="#f59e0b" stroke-width="1.5" opacity="0.55"/><line x1="958.0" y1="150.0" x2="1022.0" y2="194.0" stroke="#f59e0b" stroke-width="1.5" opacity="0.55"/><line x1="958.0" y1="194.0" x2="1022.0" y2="150.0" stroke="#f59e0b" stroke-width="1.5" opacity="0.55"/><line x1="958.0" y1="194.0" x2="1022.0" y2="172" stroke="#f59e0b" stroke-width="1.5" opacity="0.55"/><line x1="958.0" y1="194.0" x2="1022.0" y2="194.0" stroke="#f59e0b" stroke-width="1.5" opacity="0.55"/><circle cx="958.0" cy="150.0" r="6" fill="#f59e0b"/><circle cx="958.0" cy="194.0" r="6" fill="#f59e0b"/><circle cx="1022.0" cy="150.0" r="6" fill="#f59e0b"/><circle cx="1022.0" cy="172" r="6" fill="#f59e0b"/><circle cx="1022.0" cy="194.0" r="6" fill="#f59e0b"/>
+<text x="990.0" y="238.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#e6edf3" text-anchor="middle">ML Layer</text>
+<g><rect x="854.0" y="296.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="872.0" cy="318.0" r="4" fill="#f59e0b"/><text x="996.0" y="323.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">SOR predictor</text></g>
+<g><rect x="854.0" y="356.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="872.0" cy="378.0" r="4" fill="#f59e0b"/><text x="996.0" y="383.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">floating classifier</text></g>
+<g><rect x="854.0" y="416.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="872.0" cy="438.0" r="4" fill="#f59e0b"/><text x="996.0" y="443.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">Bayesian optimizer</text></g>
+<rect x="1210.0" y="110.0" width="320.0" height="410.0" rx="20" fill="#161b22" stroke="#30363d" stroke-width="2" filter="url(#shadow)"/>
+<rect x="1337.0" y="146.0" width="66.0" height="35.4" rx="6" fill="none" stroke="#f59e0b" stroke-width="2.5"/><line x1="1370.0" y1="181.4" x2="1370.0" y2="189.7" stroke="#f59e0b" stroke-width="2.5"/><line x1="1355.5" y1="189.7" x2="1384.5" y2="189.7" stroke="#f59e0b" stroke-width="2.5"/><polyline points="1345.0,167.9 1356.8,156.6 1370.0,169.0 1383.2,152.4 1395.0,163.0" fill="none" stroke="#f59e0b" stroke-width="2"/>
+<text x="1370.0" y="238.0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#e6edf3" text-anchor="middle">Digital Twin Dashboard</text>
+<g><rect x="1234.0" y="296.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="1252.0" cy="318.0" r="4" fill="#f59e0b"/><text x="1376.0" y="323.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">replay</text></g>
+<g><rect x="1234.0" y="356.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="1252.0" cy="378.0" r="4" fill="#f59e0b"/><text x="1376.0" y="383.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">alerts</text></g>
+<g><rect x="1234.0" y="416.0" width="272.0" height="44.0" rx="22.0" fill="#1c2530" stroke="#30363d" stroke-width="1.5"/><circle cx="1252.0" cy="438.0" r="4" fill="#f59e0b"/><text x="1376.0" y="443.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#e6edf3" text-anchor="middle">recommendations</text></g>
+<line x1="394.0" y1="315.0" x2="444.0" y2="315.0" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="774.0" y1="315.0" x2="824.0" y2="315.0" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="1154.0" y1="315.0" x2="1204.0" y2="315.0" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 1370.0 520.0 C 1370.0 610.0, 610.0 610.0, 610.0 520.0" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<text x="990.0" y="640.0" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600" fill="#f59e0b" text-anchor="middle" font-style="italic">set-points → VFD / steam control</text>
+</svg>

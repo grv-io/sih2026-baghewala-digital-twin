@@ -1,0 +1,1084 @@
+<main class="wrap">
+
+  <div class="pagehead">
+    <div>
+      <h1 class="bi" data-en="Model basis and validation" data-hi="मॉडल आधार एवं सत्यापन">Model basis and validation</h1>
+      <div class="ph-sub">
+        What is being computed, from which parameters, with which assumptions, and what has and has not been checked.
+        Reference document &middot; PS SIH26120, revision 2.1 &middot; 26 Sep 2026
+      </div>
+      <div class="ph-sub" data-en="Physics rev 13 — wave 5 (operating policy as a control, fair same-policy baseline, injectivity gate, levies deck) + Economics v2, FY25 price deck; calibrated to published Baghewala benchmarks (SOR 3.0–4.6, 5–6× uplift, 15–40 bbl/d) under the pull policy; synthetic data, not field-validated." data-hi="भौतिकी rev 13 — वेव 5 (नियंत्रण के रूप में संचालन नीति, उचित समान-नीति आधार रेखा, इंजेक्शन-योग्यता गेट, उपकर डेक) + अर्थशास्त्र v2, FY25 मूल्य आधार; pull नीति के तहत प्रकाशित बाघेवाला बेंचमार्क (SOR 3.0–4.6, 5–6× उत्थान, 15–40 bbl/d) के अनुरूप अंशांकित; संश्लेषित डेटा, क्षेत्र-सत्यापित नहीं।">Physics rev 13 — wave 5 (operating policy as a control, fair same-policy baseline, injectivity gate, levies deck) + Economics v2, FY25 price deck; calibrated to published Baghewala benchmarks (SOR 3.0–4.6, 5–6× uplift, 15–40 bbl/d) under the pull policy; synthetic data, not field-validated.</div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn" type="button" id="btnPrint" data-en="Print" data-hi="प्रिंट करें">Print</button>
+    </div>
+  </div>
+
+  <section class="note info" style="margin-bottom:var(--s5)" aria-label="In plain words">
+    <b data-en="In plain words" data-hi="सीधे शब्दों में">In plain words</b>
+    <ul style="margin:8px 0 0;padding-left:1.1em;line-height:1.7">
+      <li data-en="What is simulated: one CSS cycle at well BGW-07, day by day — inject, soak, produce."
+          data-hi="क्या अनुकरण किया गया है: कूप BGW-07 का एक CSS चक्र, दिन-प्रतिदिन — अंतःक्षेपण, सोख, उत्पादन।">What is simulated: one CSS cycle at well BGW-07, day by day — inject, soak, produce.</li>
+      <li data-en="Where the inputs come from: OIL's own field presentations and published SPE papers."
+          data-hi="इनपुट कहाँ से आए: OIL की अपनी क्षेत्रीय प्रस्तुतियाँ और प्रकाशित SPE शोधपत्र।">Where the inputs come from: OIL's own field presentations and published SPE papers.</li>
+      <li data-en="What the ML does: searches steam, cutoff and pump speed quickly to maximise margin per cycle-day, for a starting point an engineer can check — soak is held at 10 d field practice, not searched."
+          data-hi="ML क्या करता है: प्रति चक्र-दिन मार्जिन अधिकतम करने हेतु भाप, कटऑफ़ और पंप गति को तेज़ी से खोजता है — सोक 10 दिन क्षेत्र प्रचलन पर स्थिर, खोजा नहीं जाता।">What the ML does: searches steam, cutoff and pump speed quickly to maximise margin per cycle-day, for a starting point an engineer can check — soak is held at 10 d field practice, not searched.</li>
+      <li data-en="What is not validated: no match against Baghewala production history yet."
+          data-hi="क्या सत्यापित नहीं है: अभी तक बाघेवाला के उत्पादन इतिहास से कोई मिलान नहीं हुआ है।">What is not validated: no match against Baghewala production history yet.</li>
+      <li data-en="What would make it trustworthy: OIL production history to calibrate and check the physics against."
+          data-hi="विश्वसनीय बनाने हेतु क्या चाहिए: भौतिकी को अंशांकित एवं जाँचने हेतु OIL का उत्पादन इतिहास।">What would make it trustworthy: OIL production history to calibrate and check the physics against.</li>
+    </ul>
+  </section>
+
+  <div class="doc">
+    <nav class="doc-toc" aria-label="Contents">
+      <h3>Contents</h3>
+      <ol>
+        <li><a href="#scope">Scope</a></li>
+        <li><a href="#thermal">Heated-zone growth</a></li>
+        <li><a href="#viscosity">Viscosity&ndash;temperature</a></li>
+        <li><a href="#ipr">Inflow performance</a></li>
+        <li><a href="#srp">Rod-pump loads</a></li>
+        <li><a href="#coupling">Cycle coupling</a></li>
+        <li><a href="#params">Field parameters</a></li>
+        <li><a href="#econ">Fuel, cost and carbon</a></li>
+        <li><a href="#lineage">Data lineage</a></li>
+        <li><a href="#surrogate">Surrogate and search</a></li>
+        <li><a href="#uncertainty">Uncertainty</a></li>
+        <li><a href="#calib">Calibrate from field data</a></li>
+        <li><a href="#field">Field-level scheduling</a></li>
+        <li><a href="#coverage">Coverage of the problem statement</a></li>
+        <li><a href="#validation">Validation status</a></li>
+        <li><a href="#limits">What this cannot do</a></li>
+        <li><a href="#refs">Sources</a></li>
+      </ol>
+    </nav>
+
+    <div class="doc-body">
+
+      <section id="scope">
+        <h2>Scope</h2>
+        <p class="lead">
+          The twin simulates one cyclic-steam-stimulation (CSS) cycle on a single heavy-oil producer,
+          well BGW-07 in the Baghewala field, day by day, from the first tonne of steam injected to the day
+          the oil rate falls through the economic cutoff. It is a coupled four-model reduced-order simulator,
+          not a reservoir simulator: there is no grid, no saturation tracking, no multiphase flow and no
+          geomechanics.
+        </p>
+        <p>
+          Four physical models run in series each day. A thermal model gives the effective temperature of the
+          drainage volume; a viscosity correlation converts that temperature into an in-situ oil viscosity;
+          an inflow-performance relationship converts viscosity into a reservoir-deliverable oil rate; and a
+          lumped rod-pump model decides how much of that rate the pumpjack can actually lift, at what rod load,
+          at what energy cost, and at what risk of rod floating.
+        </p>
+        <p>
+          Everything downstream &mdash; the steam/oil ratio, the fuel and carbon figures, the machine-learning
+          surrogate and the optimiser recommendation &mdash; is a function of those four models and of
+          <code>params/field_params.json</code>. Nothing in this product is a measured production number.
+        </p>
+      </section>
+
+      <section id="thermal">
+        <h2>Heated-zone growth &mdash; Marx&ndash;Langenheim, with sensible + latent heat (physics v3, rev 7)</h2>
+        <p class="note" style="margin-bottom:12px">
+          <b>Physics rev 5 (26 Sep).</b> Retained heat now credits the sensible heat of the liquid fraction as well
+          as the latent heat of the steam quality fraction, and passes through a wellbore heat-loss and
+          sandface-quality multiplier before use (effective delivered-heat multiplier &asymp; 0.52 at the reference
+          set-points). The 8&nbsp;m fixed drainage-disc assumption below is <b>superseded 26 Sep</b>: the heated
+          radius this section computes now feeds a composite-radial inflow model (see Inflow performance) instead
+          of a fixed disc, and the 20-day cooldown constant is superseded by a Boberg&ndash;Lantz cooldown.
+        </p>
+        <p class="note" style="margin-bottom:12px">
+          <b>Physics v3 (rev 7, 27 Sep).</b> <code>BL_DELTA_FACTOR</code> = 0.5 is now <b>SOURCED, not a free
+          calibration knob</b>: it is the &frac12; in Boberg &amp; Lantz's own &delta; = (1/2<i>Q</i>)&int;<i>Q&#775;</i><sub>p</sub>&nbsp;dt
+          (SPE <i>Petroleum Engineering Handbook</i> Vol. V ch. 15, Eqs. 15.70/15.73, reproducing Boberg &amp; Lantz
+          1966) &mdash; and it is also the only value that conserves energy when there is no conduction
+          (&theta; = 1&nbsp;&minus;&nbsp;2&delta; must equal 1&nbsp;&minus;&nbsp;<i>Q</i><sub>p</sub>/<i>Q</i>). The
+          unsourced blended liquid heat capacity (<code>CP_LIQUID_JM3K</code>) is deleted: &delta;'s produced-heat
+          term now follows Eq. 15.74 stream by stream &mdash; oil heat capacity from API gravity plus Gambill's
+          <i>c</i><sub>o</sub>, water from the steam-table enthalpy difference <i>h</i><sub>f</sub>(<i>T&#772;</i>)&nbsp;&minus;&nbsp;<i>h</i><sub>f</sub>(<i>T</i><sub>R</sub>).
+          Steam and gas terms are zero, an explicit [ASSUMPTION]. Effect at the reference cycle: SOR &minus;1.5%
+          (4.089&nbsp;&rarr;&nbsp;4.027); every margin moved more, because the well is thin-margin (+1.5% oil &asymp;
+          +19% margin). At the time (rev 7) the remaining &delta; uncertainty lived entirely in the then-constant
+          <code>fluid.water_cut</code>. <b>rev 11/12 superseded that:</b> water cut is now a STATE (condensate
+          flowback blending toward a formation value as the tank drains), so the uncertainty now lives in
+          <code>fluid.formation_water_cut</code> and <code>fluid.condensate_recovery_frac</code> instead (UQ
+          drivers #3 and #2 respectively; #1 is now the cold well's own skin factor) &mdash; see
+          <code>docs/model-improvement/BL_DELTA_FACTOR_SOURCE.md</code> for the original derivation.
+        </p>
+        <p>
+          Steam injected into a reservoir bounded above and below by conductive layers grows an approximately
+          isothermal hot zone whose growth rate falls as more heat leaks into the over- and underburden.
+          Marx &amp; Langenheim (1959) give that behaviour through a dimensionless heat-loss function.
+        </p>
+        <div class="eq">
+          <span class="v">F</span>(<span class="v">t</span><span class="sub">D</span>)
+          <span class="op">=</span> e<span class="sup"><span class="v">t</span><span class="sub">D</span></span>
+          &middot; erfc(&radic;<span class="v">t</span><span class="sub">D</span>)
+          <span class="op">+</span> 2&radic;(<span class="v">t</span><span class="sub">D</span>/&pi;)
+          <span class="op">&minus;</span> 1<br>
+          <span class="v">E</span><span class="sub">h</span>(<span class="v">t</span><span class="sub">D</span>)
+          <span class="op">=</span> <span class="v">F</span>(<span class="v">t</span><span class="sub">D</span>)
+          / <span class="v">t</span><span class="sub">D</span>
+          <span class="op">,</span>
+          <span class="v">t</span><span class="sub">D</span>
+          <span class="op">=</span> 4&alpha;<span class="v">t</span> / <span class="v">h</span><span class="sup">2</span>
+          <span class="where">
+            <i>E</i><sub>h</sub> is the fraction of injected heat retained in the zone (&rarr;&nbsp;1 as
+            <i>t</i><sub>D</sub>&rarr;0, decaying as heat loss dominates); &alpha; = <i>k</i>/(&rho;<i>c</i><sub>p</sub>)
+            = 2.5&nbsp;/&nbsp;2.3&times;10<sup>6</sup> m&sup2;/s is the thermal diffusivity;
+            <i>h</i> = 12&nbsp;m is the reservoir thickness.
+          </span>
+        </div>
+        <p>Retained heat is converted to a heated volume, then to a heated radius, then to an effective temperature:</p>
+        <div class="eq">
+          <span class="v">Q</span><span class="sub">ret</span>
+          <span class="op">=</span> <span class="v">m&#775;</span><span class="v">t</span> &middot; <span class="v">x</span>
+          &middot; <span class="v">L</span> &middot; <span class="v">E</span><span class="sub">h</span>
+          <span class="op">,</span>
+          <span class="v">V</span><span class="sub">h</span>
+          <span class="op">=</span> <span class="v">Q</span><span class="sub">ret</span> /
+          (<span class="v">&rho;c</span><span class="sub">p</span> &Delta;<span class="v">T</span>)
+          <span class="op">,</span>
+          <span class="v">r</span><span class="sub">h</span>
+          <span class="op">=</span> &radic;(<span class="v">V</span><span class="sub">h</span> / &pi;<span class="v">h</span>)<br>
+          <span class="v">T</span><span class="sub">eff</span>
+          <span class="op">=</span> <span class="v">T</span><span class="sub">0</span>
+          <span class="op">+</span> (<span class="v">T</span><span class="sub">s</span>
+          <span class="op">&minus;</span> <span class="v">T</span><span class="sub">0</span>)
+          &middot; min(<span class="v">A</span><span class="sub">h</span>/<span class="v">A</span><span class="sub">d</span>, 1)
+          <span class="where">
+            <i>x</i> = 0.65 steam quality, <i>L</i> = 1.3&times;10<sup>6</sup> J/kg latent heat,
+            <i>T</i><sub>s</sub> = 290&nbsp;&deg;C, <i>T</i><sub>0</sub> = 50&nbsp;&deg;C,
+            <i>A</i><sub>d</sub> = &pi;(8&nbsp;m)&sup2; the assumed drainage disc.
+          </span>
+        </div>
+        <p>After injection stops, the zone temperature relaxes exponentially:</p>
+        <div class="eq">
+          <span class="v">T</span>(<span class="v">t</span>)
+          <span class="op">=</span> <span class="v">T</span><span class="sub">0</span>
+          <span class="op">+</span> (<span class="v">T</span><span class="sub">peak</span>
+          <span class="op">&minus;</span> <span class="v">T</span><span class="sub">0</span>)
+          &middot; e<span class="sup">&minus;(<span class="v">t</span>&minus;<span class="v">t</span><span class="sub">inj</span>)/&tau;</span>
+          <span class="op">,</span> &tau; = 20 d
+        </div>
+        <div class="assume">
+          <h4>Assumptions carried in code</h4>
+          <ul>
+            <li>Over/underburden diffusivity approximated by the reservoir rock's own &alpha; &mdash; no separate caprock properties exist in the parameter file.</li>
+            <li><b>Superseded 26 Sep.</b> <s>Only the latent heat of the quality fraction is credited; sensible heat of the liquid fraction and wellbore losses are neglected.</s> Rev 5 credits sensible heat and applies a wellbore heat-loss / sandface-quality multiplier (params <code>wellbore.heat_loss_frac_per_1000m</code> = 0.18, <code>quality_at_sandface_frac_of_wellhead</code> = 0.55, both typical, not Baghewala-measured).</li>
+            <li><b>Superseded 26 Sep.</b> <s>Drainage radius fixed at 8&nbsp;m.</s> Rev 5 uses a 100&nbsp;m composite-radial drainage radius (<code>reservoir.drainage_radius_m</code>) feeding the composite-radial inflow model instead of a fixed disc — see Inflow performance.</li>
+            <li>Produced fluid draws from a drainage-area-weighted blend of hot zone and cold reservoir rather than a sharp isothermal front.</li>
+            <li><b>Superseded 26 Sep, sourced 27 Sep.</b> <s>The 20-day cooldown constant is a lumped fit, not a Marx&ndash;Langenheim result.</s> Rev 5 replaces the fixed &tau; with a Boberg&ndash;Lantz cooldown; physics v3 (rev 7) then SOURCED <code>BL_DELTA_FACTOR</code> = 0.5 as the &frac12; in Boberg &amp; Lantz's own &delta; (PEH Eqs. 15.70/15.73) and the only energy-conserving value with no conduction &mdash; no longer a free/unverified constant (1.0 would double-count the produced heat).</li>
+          </ul>
+        </div>
+        <p class="srcline"><b>Implementation</b> <code>twin/thermal.py</code> &middot; <b>Source</b> [1]</p>
+      </section>
+
+      <section id="viscosity">
+        <h2>Viscosity&ndash;temperature &mdash; Walther / ASTM D341 (Andrade superseded 26 Sep)</h2>
+        <p class="note" style="margin-bottom:12px">
+          <b>Physics rev 5 (26 Sep).</b> The twin now uses the two-constant Walther / ASTM&nbsp;D341
+          kinematic-viscosity correlation (<code>walther_A</code>, <code>walther_B</code> in
+          <code>field_params.json</code>, fitted from two calibration points at run time and kept
+          <code>null</code> in the file for the same reason <code>andrade_A/B</code> are &mdash; writing rounded
+          values back breaks the reference-point-recovery test on float drift). The Andrade form below is
+          <b>superseded</b> as the default and is reachable only via explicit <code>andrade_A</code>/<code>andrade_B_K</code>
+          so benchmark A1 can compare the two laws directly.
+        </p>
+        <p>
+          Heavy-oil deliverability in CSS is almost entirely a viscosity story: at reservoir temperature this
+          crude is 11,500&nbsp;cP and effectively immobile; heated to 200&nbsp;&deg;C it is a few cP. The classical
+          two-parameter Andrade form (superseded) is shown here for reference:
+        </p>
+        <div class="eq">
+          &mu;(<span class="v">T</span>)
+          <span class="op">=</span> <span class="v">A</span> &middot;
+          e<span class="sup"><span class="v">B</span>/<span class="v">T</span><span class="sub">K</span></span>
+          <span class="where">
+            <i>A</i> and <i>B</i> are solved exactly through two (<i>T</i>,&nbsp;&mu;) points, since
+            ln&mu; is linear in 1/<i>T</i><sub>K</sub>:
+            <i>B</i> = ln(&mu;<sub>1</sub>/&mu;<sub>2</sub>) / (1/<i>T</i><sub>1</sub> &minus; 1/<i>T</i><sub>2</sub>),
+            <i>A</i> = &mu;<sub>1</sub>/e<sup><i>B</i>/<i>T</i><sub>1</sub></sup>.
+          </span>
+        </div>
+        <p>
+          The two calibration points are the field reference (11,500&nbsp;cP at 50&nbsp;&deg;C, from
+          <code>field_params.json</code>) and a high-temperature anchor of 50&nbsp;cP at 150&nbsp;&deg;C.
+          Because <i>B</i>&nbsp;&gt;&nbsp;0 for any pair where the hotter point is less viscous, monotonic
+          decrease with temperature holds analytically &mdash; which is what the corresponding physics test asserts.
+        </p>
+        <div class="assume">
+          <h4>Assumption</h4>
+          <ul>
+            <li>The 150&nbsp;&deg;C / 50&nbsp;cP anchor is a literature-typical value for a crude of this API gravity, not a Baghewala lab measurement. <code>andrade_A</code> and <code>andrade_B_K</code> are <code>null</code> in the parameter file; supplying lab-fit values makes this anchor unused.</li>
+          </ul>
+        </div>
+        <p class="srcline"><b>Implementation</b> <code>twin/viscosity.py</code> &middot; <b>Source</b> [13] (current, Walther/ASTM D341) &middot; [2] (superseded, Andrade)</p>
+      </section>
+
+      <section id="ipr">
+        <h2>Inflow performance &mdash; composite-radial inflow (Vogel + fixed AOF superseded 26 Sep)</h2>
+        <p class="note" style="margin-bottom:12px">
+          <b>Physics rev 5 (26 Sep).</b> The fixed AOF<sub>ref</sub>&nbsp;=&nbsp;0.7&nbsp;m&sup3;/d stand-in below is
+          <b>superseded</b>: <code>twin/ipr.py</code>'s composite-radial inflow now scales <i>q</i><sub>max</sub>
+          with a Vogel-style <i>q</i><sub>max</sub>&nbsp;=&nbsp;<i>J&middot;P</i><sub>r</sub>/1.8 that is itself
+          <b>live in reservoir pressure</b> (<i>P</i><sub>res</sub>/<i>P</i><sub>CAL</sub>), and multiplies it by a
+          composite-radial skin/uplift ratio built from the heated radius (<code>heated_radius_m</code>) against
+          the 100&nbsp;m drainage radius. Reservoir pressure itself is no longer held fixed at 11.4&nbsp;MPa: it
+          charges linearly during injection (+steam_t &times; a boost constant with no physical anchor, halved to
+          1.0 during calibration) and bleeds exponentially afterwards (<code>twin/cycle.py</code>'s
+          <code>_p_res_at(day)</code>), which is what makes the depletion sweep respond at all &mdash; before rev 5
+          it was inert. <code>ipr.composite_uplift</code> returns exactly 1.0 when the heated radius is absent
+          (cold-well reference case), and <code>MAX_UPLIFT</code>&nbsp;=&nbsp;10 only bounds a test case; it never
+          binds at field settings (observed max &asymp;4.5).
+        </p>
+        <p>Vogel's solution-gas-drive IPR gives the shape of the deliverability curve (still the base form, now composite-radial-scaled rather than a fixed AOF):</p>
+        <div class="eq">
+          <span class="v">q</span> / <span class="v">q</span><span class="sub">max</span>
+          <span class="op">=</span> 1
+          <span class="op">&minus;</span> 0.2 (<span class="v">p</span><span class="sub">wf</span>/<span class="v">p</span><span class="sub">r</span>)
+          <span class="op">&minus;</span> 0.8 (<span class="v">p</span><span class="sub">wf</span>/<span class="v">p</span><span class="sub">r</span>)<span class="sup">2</span><br>
+          <span class="v">q</span><span class="sub">max</span>
+          <span class="op">=</span> AOF<span class="sub">ref</span> &middot;
+          (&mu;<span class="sub">ref</span> / &mu;)
+          <span class="where">
+            AOF<sub>ref</sub> = 0.7 m&sup3;/d is the absolute open-flow potential at the cold reference viscosity;
+            the mobility ratio &mu;<sub>ref</sub>/&mu; is what couples the thermal state to the oil rate.
+          </span>
+        </div>
+        <p>
+          At reservoir temperature the well delivers well under 1&nbsp;m&sup3;/d &mdash; below every cutoff in the
+          design range. That is the physical premise of CSS for this crude: the well does not flow economically
+          until it is heated.
+        </p>
+        <div class="assume">
+          <h4>Assumptions</h4>
+          <ul>
+            <li><b>Superseded 26 Sep.</b> <s>No measured productivity index exists in the parameter file; AOF<sub>ref</sub> = 0.7&nbsp;m&sup3;/d is a calibrated stand-in.</s> Rev 5 still has no measured productivity index, but AOF is now derived from <i>q</i><sub>max</sub> = <i>J&middot;P</i><sub>r</sub>/1.8 times the composite-radial ratio rather than a single fixed number.</li>
+            <li>Mobility scales linearly as &mu;<sub>ref</sub>/&mu; with permeability held fixed.</li>
+            <li><b>Superseded 26 Sep.</b> <s>Reservoir pressure is held at its initial 11.4&nbsp;MPa; there is no material-balance depletion.</s> Rev 5 charges P<sub>res</sub> during injection and bleeds it exponentially after (T1-C); depletion now moves SOR (test-benchmarked, though the magnitude over-responds vs the Liaohe D3 analogue &mdash; see Validation status).</li>
+          </ul>
+        </div>
+        <p class="srcline"><b>Implementation</b> <code>twin/ipr.py</code> &middot; <b>Source</b> [3]</p>
+      </section>
+
+      <section id="srp">
+        <h2>Rod-pump loads and the floating index</h2>
+        <p class="note" style="margin-bottom:12px">
+          <b>Physics rev 5 (26 Sep).</b> Two additions since v1: (1) the pump now runs on a
+          <b>liquid basis</b> &mdash; produced rate is converted to total liquid via
+          <s><code>water_cut</code> = 0.85 (constant)</s> <b>superseded rev 11/12:</b> the day's ACTUAL produced-stream
+          water cut from the water-cut STATE model (condensate flowback blending toward
+          <code>fluid.formation_water_cut</code> = 0.45 as the tank drains, typically 0.87 &rarr; 0.55&ndash;0.63 over
+          a cycle) before it is compared against pump capacity and before its energy is charged against the cooling
+          heated zone (a higher water cut makes producing harder cool the well faster); (2) SPM is a
+          <b>declining schedule</b>, not a single number &mdash; the pump speed you set is a
+          ceiling, bounded day by day by the rods' drag-limited fall velocity
+          (<code>srp.max_spm_for_viscosity</code>), and never below a 2.0&nbsp;spm floor. Days on which the pump,
+          not the reservoir, sets the rate are counted separately (<code>pump_limited_days</code>).
+        </p>
+        <p>
+          A lumped single-point simplification of the API&nbsp;RP&nbsp;11L polished-rod load calculation, extended
+          with a viscous-drag term so the model can express the operating failure mode that matters in heavy oil:
+          rod floating.
+        </p>
+        <div class="eq">
+          <span class="v">W</span><span class="sub">b</span>
+          <span class="op">=</span> <span class="v">m</span><span class="sub">rod</span><span class="v">Lg</span>
+          (1 <span class="op">&minus;</span> &rho;<span class="sub">f</span>/&rho;<span class="sub">steel</span>)
+          <span class="op">,</span>
+          <span class="v">F</span><span class="sub">fluid</span>
+          <span class="op">=</span> &rho;<span class="sub">f</span><span class="v">gLA</span><span class="sub">p</span><br>
+          <span class="v">F</span><span class="sub">visc</span>
+          <span class="op">=</span> <span class="v">K</span> &middot; &mu; &middot;
+          <span class="v">v&#772;</span> &middot; <span class="v">L</span>
+          <span class="op">,</span>
+          <span class="v">v&#772;</span>
+          <span class="op">=</span> 2 &middot; stroke &middot; SPM / 60<br>
+          PRL<span class="sub">peak</span>
+          <span class="op">=</span> <span class="v">W</span><span class="sub">b</span>
+          <span class="op">+</span> <span class="v">F</span><span class="sub">fluid</span>
+          <span class="op">+</span> <span class="v">F</span><span class="sub">visc</span>
+          <span class="op">,</span>
+          FI
+          <span class="op">=</span> min(<span class="v">F</span><span class="sub">visc</span>/<span class="v">W</span><span class="sub">b</span>, 1)
+          <span class="where">
+            <i>L</i> = 1,150&nbsp;m rod length, <i>m</i><sub>rod</sub> = 3.8&nbsp;kg/m,
+            <i>A</i><sub>p</sub> from a 44.5&nbsp;mm plunger, &rho;<sub>f</sub> from 15.5&deg;&nbsp;API via
+            SG = 141.5/(131.5&nbsp;+&nbsp;API), <i>K</i> = 10 the lumped drag coefficient.
+          </span>
+        </div>
+        <p>
+          FI is the ratio of downstroke viscous drag to buoyant rod weight. Above roughly 0.6 the rods cannot fall
+          freely under gravity, lag the polished rod and slap down &mdash; compression, buckling, and eventually a
+          parted rod string. That threshold is what alarm ALM-02 on the twin console watches, and what the
+          optimiser's classifier constrains.
+        </p>
+        <div class="eq">
+          <span class="v">E</span><span class="sub">d</span>
+          <span class="op">=</span> PRL<span class="sub">peak</span> &middot; stroke &middot; SPM &middot; 1440 / 3.6&times;10<span class="sup">6</span>
+          <span class="op">,</span>
+          <span class="v">q</span><span class="sub">pump</span>
+          <span class="op">=</span> <span class="v">A</span><span class="sub">p</span> &middot; stroke &middot; SPM &middot; 1440 &middot; &eta;<span class="sub">v</span>
+          <span class="where">&eta;<sub>v</sub> = 0.85 volumetric efficiency; produced rate = min(<i>q</i><sub>IPR</sub>, <i>q</i><sub>pump</sub>).</span>
+        </div>
+        <div class="assume">
+          <h4>Assumptions</h4>
+          <ul>
+            <li>Static, one-number-per-day approximation. No rod elasticity, no wave propagation, no dynamic loading &mdash; this is not a design tool and the dynamometer card on the console is a shape, not a measurement.</li>
+            <li><i>K</i>&nbsp;=&nbsp;10 is a Couette-like lumped coefficient tuned so cold heavy oil at high SPM enters the &gt;0.6 floating band; no annular-gap geometry exists in the parameter file.</li>
+            <li>Pump setting depth approximated by rod length.</li>
+            <li>Energy uses the peak load for every stroke rather than the area under the load&ndash;displacement curve.</li>
+          </ul>
+        </div>
+        <p class="srcline"><b>Implementation</b> <code>twin/srp.py</code> &middot; <b>Source</b> [4]</p>
+      </section>
+
+      <section id="coupling">
+        <h2>How the four models make a cycle</h2>
+        <p>
+          <code>twin/cycle.py</code> steps one day at a time on a single clock that runs from the start of
+          injection. Each day: thermal &rarr; viscosity &rarr; IPR &rarr; rod pump.
+        </p>
+        <table class="dt">
+          <thead>
+            <tr><th style="width:14%">Phase</th><th style="width:24%">Duration</th><th style="width:34%">What runs</th><th style="width:28%">What is recorded</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="v">Inject</td><td class="k">steam_t &divide; 74 t/d</td><td class="k">Zone growth; steam accrues; well shut in</td><td class="k">T, &mu;, cumulative steam, generation energy</td></tr>
+            <tr><td class="v">Soak</td><td class="k">soak_days</td><td class="k">Exponential cooldown; well still shut in</td><td class="k">T, &mu;</td></tr>
+            <tr><td class="v">Produce</td><td class="k">until q &lt; cutoff</td><td class="k">Cooldown continues; Vogel rate; pump lifts min(IPR, capacity)</td><td class="k">q, rod load, FI, pumping energy</td></tr>
+          </tbody>
+        </table>
+        <p>Cycle summary quantities are then simple aggregations:</p>
+        <div class="eq">
+          SOR <span class="op">=</span> &Sigma;steam / &Sigma;oil
+          <span class="op">,</span>
+          <span class="v">e</span> <span class="op">=</span> &Sigma;energy / &Sigma;oil
+          <span class="op">,</span>
+          FI<span class="sub">max</span> <span class="op">=</span> max<span class="sub">days</span> FI<br>
+          margin <span class="op">=</span> revenue &minus; steam cost &minus; fixed cost per cycle
+          <span class="op">,</span>
+          margin/cycle-day <span class="op">=</span> margin / days_total
+          <span class="where">headline SOR stays GROSS; margin/cycle-day shown here is also gross &mdash; the
+          optimiser's actual objective since rev 9 is the INCREMENTAL margin/cycle-day (oil over the cold,
+          unstimulated well for the same window, net of daily opex), see Fuel/cost/carbon basis and Surrogate and
+          search.</span>
+        </div>
+        <p>
+          <b>Corrected 26 Sep.</b> Under rev 5/9 physics, SOR <b>rises monotonically</b> with steam volume
+          (<code>test_SOR_rises_monotonically_with_steam_volume</code>) &mdash; more steam always costs more per
+          barrel recovered, honestly, because the heated zone eventually saturates the drainage radius while steam
+          keeps being charged to the numerator. That means "minimise SOR" always pushes to the steam floor and is
+          not a useful objective. <b>Margin per cycle-day</b> is what has the interior optimum instead
+          (<code>test_margin_has_interior_optimum_over_steam_volume</code>): it amortises the fixed per-cycle cost
+          over the inject-and-soak days that earn nothing, so a modest, well-utilised cycle beats both a
+          too-small one (steam wasted heating rock that never gets tapped) and a too-large one (steam cost
+          outrunning the extra oil). That interior optimum in margin is what the ML optimiser now searches for.
+        </p>
+      </section>
+
+      <section id="params">
+        <h2>Field parameters</h2>
+        <p>
+          Every number below is read from <code>params/field_params.json</code> revision&nbsp;5 at run time. The
+          dashboard never hard-codes a field value; it displays what the parameter file contains.
+        </p>
+        <div class="table-wrap">
+          <table class="dt" id="paramTable">
+            <thead>
+              <tr>
+                <th style="width:34%">Parameter</th><th style="width:14%">Value</th>
+                <th style="width:12%">Unit</th><th style="width:40%">Provenance</th>
+              </tr>
+            </thead>
+            <tbody id="paramBody"></tbody>
+          </table>
+        </div>
+        <p class="srcline">
+          <b>Conflict on record.</b> API gravity is carried as 15.5&deg; per SPE-23APOG-535203 [5]; problem statement
+          SIH26120 states 17&ndash;19&deg;. The lower figure is the conservative one for viscosity and rod-load purposes,
+          so it is what the twin uses; the discrepancy is printed rather than resolved silently.
+        </p>
+      </section>
+
+      <section id="econ">
+        <h2>Fuel, cost and carbon basis</h2>
+        <p class="lead">
+          Baghewala's steam generators are <b>diesel-fired</b>. This is the single most consequential
+          economic fact about the field and it changes the answer by a factor of about six and a half.
+        </p>
+        <p>
+          Oil India's own operations deck for the BGW-08 first cycle (12&nbsp;July&nbsp;2025) records
+          approximately <b>220&nbsp;kg/hr of high-speed diesel against approximately 3,100&nbsp;kg/hr of steam</b>.
+          There is no gas supply to the field &mdash; it is a remote Thar Desert location with no pipeline out;
+          the crude itself leaves by road tanker. Everything below follows from that ratio.
+        </p>
+        <div class="eq">
+          HSD per tonne of steam <span class="op">=</span> 220 / 3.1 <span class="op">=</span> 71 kg
+          <span class="op">=</span> 85.5 L<br>
+          Fuel energy <span class="op">=</span> 71 &times; 42.6 MJ/kg <span class="op">=</span> 3.02 GJ / t steam<br>
+          CO<span class="sub">2</span> <span class="op">=</span> 3.02 GJ &times; 74.1 kgCO<span class="sub">2</span>/GJ
+          <span class="op">=</span> 223.8 kg / t steam
+          <span class="where">
+            3.02 GJ/t sits inside the published 2.6&ndash;4.0 GJ/t band for steam generation, and the CO<sub>2</sub>
+            figure cross-checks against 71&nbsp;kg&nbsp;&times;&nbsp;3.17&nbsp;kgCO<sub>2</sub>/kg&nbsp;diesel = 225&nbsp;kg
+            to within 1%.
+          </span>
+        </div>
+        <h3>The iso-oil counterfactual</h3>
+        <p>
+          rev 13: the recommendation still injects <em>less</em> steam in absolute terms than the baseline &mdash;
+          1,000&nbsp;t against 1,300&nbsp;t &mdash; as well as recovering more oil per tonne (a better SOR), so a plain
+          difference of the two fuel bills already understates the real efficiency gain. The honest, and larger,
+          comparison is still how much steam the current (worse-SOR) practice would have needed to make the
+          <em>recommended cycle's oil</em>:
+        </p>
+        <div class="eq">
+          steam<span class="sub">counterfactual</span>
+          <span class="op">=</span> oil<span class="sub">opt</span> &middot; SOR<span class="sub">base</span>
+          <span class="op">,</span>
+          steam<span class="sub">avoided</span>
+          <span class="op">=</span> steam<span class="sub">counterfactual</span>
+          <span class="op">&minus;</span> steam<span class="sub">opt</span>
+        </div>
+        <h3>Per cycle, never per year</h3>
+        <p>
+          The twin's <code>days_total</code> is the length of the <em>simulated producing cycle</em>, 167&ndash;203&nbsp;days
+          for the baseline and recommended set-points on this page (these cycles run months, not weeks &mdash;
+          <code>test_produce_phase_is_months_not_weeks</code>). It is not the interval between CSS jobs on a well.
+          Published CSS cycles are re-visited on a
+          6&ndash;18&nbsp;month rhythm; Baghewala banked 39 cycles in roughly 6.5 years across a 34-well field.
+          Dividing 365 by <code>days_total</code> manufactures about 6.8 cycles per well per year &mdash; a rate no
+          CSS operation on earth achieves &mdash; and any rupee figure resting on it is inflated by roughly the same
+          factor. <b>This product therefore quotes per optimised cycle only.</b> Field-scale figures are a separate,
+          explicitly labelled multiplication by the <b>19 CSS jobs Oil India ran in FY2025-26</b>, a number the audience
+          can check independently.
+        </p>
+        <div class="assume">
+          <h4>Labels on the economic constants</h4>
+          <ul>
+            <li><b>[CONFIRMED]</b> 220&nbsp;kg/hr HSD per 3,100&nbsp;kg/hr steam (OIL operations deck, BGW-08, 12&nbsp;Jul&nbsp;2025); &#8377;97.80/L Rajasthan retail diesel; IPCC 74.1&nbsp;kgCO<sub>2</sub>/GJ for diesel; 19 CSS jobs FY2025-26; OIL India's FY25 average crude realisation, US$78.09/bbl (Annual Report 2024-25).</li>
+            <li><b>[TYPICAL]</b> HSD density 0.83&nbsp;kg/L; lower heating value 42.6&nbsp;MJ/kg; surface efficiency 0.60 (prime mover to polished rod, Takacs 2015 ch. 4).</li>
+            <li><b>[ASSUMPTION]</b> The bulk-purchase discount (&minus;30% off pump price, giving &#8377;5,856/t &mdash; the base case &mdash; vs &#8377;8,366/t at full retail). Also fixed opex &#8377;5,000/day (excl. power; no per-well Indian onshore lifting-cost figure was found), the $10/bbl heavy-oil marketing discount off OIL's blended realisation, and the &#8377;15&nbsp;L rig/workover cost per cycle. <b>The diesel discount is load-bearing, not cosmetic:</b> at full retail pump price every sensible cycle is gross-margin-loss-making; the bulk discount is what keeps the gross base case margin-positive at all.</li>
+            <li><b>[REMOVED]</b> The previous <code>STEAM_INR_PER_T = 1300</code> constant. It had no provenance anywhere in the repository and corresponds to roughly what <em>gas</em>-fired steam costs; Baghewala does not burn gas.</li>
+          </ul>
+        </div>
+
+        <h3>Gross vs. incremental &mdash; and why it matters (Economics v2, rev 8/9)</h3>
+        <p>
+          Every SOR figure on this site &mdash; the headline number, the benchmark comparisons &mdash; is <b>gross</b>:
+          steam divided by <em>all</em> the oil the well makes, the same convention every published benchmark this
+          product compares against uses (CalGEM field SOR, Cold Lake's &ldquo;SOR &asymp; 4&rdquo;, the CSS life-cycle
+          &ldquo;SOR &asymp; 6&rdquo;). But a Baghewala well left entirely alone &mdash; no steam, just pumped cold &mdash;
+          still makes oil: at the reference and recommendation set-points it would make roughly <b>85&ndash;125&nbsp;m&sup3;</b>
+          over the same calendar window (inject and soak days included, since the well is shut in for stimulation and
+          forgoes that cold oil). Gross margin credits CSS with <em>all</em> of that oil, including the oil the well
+          would have made anyway. <b>Incremental margin</b> &mdash; oil <em>over</em> that cold, unstimulated
+          counterfactual, net of daily opex (including the cold well's own pumping power) &mdash; is the number that
+          actually answers &ldquo;does stimulating this well beat leaving it alone?&rdquo;, and it is what the
+          optimiser now maximises and what every &#8377; figure on the overview and recommendation pages leads with.
+        </p>
+        <div class="eq">
+          margin<span class="sub">incremental</span>
+          <span class="op">=</span> (revenue<span class="sub">stimulated</span> &minus; steam cost &minus; rig cost
+          &minus; opex &minus; power)
+          <span class="op">&minus;</span>
+          (revenue<span class="sub">cold</span> &minus; opex<span class="sub">cold</span> &minus; power<span class="sub">cold</span>)
+          <span class="where">
+            same calendar window both sides, under the SAME float policy; rev 13: the cold well is shut in
+            (counterfactual cash = 0) when its OWN floating index, at the policy floor, exceeds the alarm line
+            &mdash; a mechanical fact, not an economic one.
+          </span>
+        </div>
+        <p>
+          rev 13: the FAIR comparison is now the SAME-POLICY gain &mdash; the recommendation vs the published-practice
+          baseline (b), BOTH operated VFD-hold. At OIL's CONFIRMED FY25 realisation that gain is
+          <b>+&#8377;3,332/cycle-day</b> (baseline +&#8377;12,064 &rarr; recommendation +&#8377;15,396, net cash), driven
+          mostly by the shorter stroke (57%) letting the VFD hold the float line longer, with the cutoff change second
+          (30%). If the baseline is instead assumed to pull at the first alarm (the rev-12 comparison), the gain reads
+          +&#8377;12,917/cycle-day &mdash; but 68% of THAT number is the operating-rule switch itself, not the
+          set-point, which is why it is no longer the headline. At the $65 FY26-floor deck the fair gain is
+          +&#8377;4,319/cycle-day; net of royalty and cess, +&#8377;5,382/cycle-day (the recommendation's edge GROWS on
+          the levies deck, because it saves steam). See <code>docs/model-improvement/TIER1_PROGRESS_LOG.md</code>
+          &sect;12.6.
+        </p>
+
+        <h3 id="coldwellvsshutin">Cold-well vs shut-in: two honest counterfactuals (resolved in rev 13)</h3>
+        <p>
+          The INCREMENTAL margin formula above nets the stimulated well's economics against a <b>cold, unstimulated
+          well producing for the same calendar window, under the SAME float policy</b>. At Baghewala's ~45%
+          formation water cut the cold stream is a water-in-oil emulsion of roughly 51,000 cP (Pal&ndash;Rhodes,
+          published band), which drives the Mills dynamic polished-rod load to 189 kN against the assumed 86-in
+          unit's 113.9 kN rating &mdash; so at the policy floor its own floating index is 1.0, above the 0.6 alarm
+          line. <b>rev 13:</b> the model now applies the SAME consequence to the cold well that it applies to the
+          stimulated well under that policy: it is <b>shut in</b> (counterfactual cash = 0), not "unpumpable yet
+          producing" (the rev-12 double standard &mdash; now a resolved, passing test,
+          <code>test_cold_well_pumpable_at_2_spm_on_the_assumed_unit</code>). Every absolute incremental &#8377; figure
+          in this product is therefore still an UPPER bound: Baghewala's wells WERE produced cold historically at a
+          few bbl/d, so a genuinely pumpable cold well (slowed to ~0.53 spm, as the field did) is also carried in the
+          model as the <code>pumpable</code> counterfactual convention.
+        </p>
+        <p>
+          Two readings of &ldquo;does CSS beat doing nothing&rdquo; are both worth showing &mdash; and the earlier
+          draft's counterfactual statistic itself needed fixing (see the Uncertainty section's own resolution note
+          above): the robust, always-correct reading is the SAME-POLICY paired win-rate; the recommendation's own
+          <b>P(net cash &gt; 0)</b> (no cold-well counterfactual subtracted at all &mdash; "vs a shut-in well") is
+          shown labelled as such, never silently swapped for the incremental figure.
+        </p>
+        <div class="table-wrap">
+          <table class="dt">
+            <thead><tr><th>Counterfactual</th><th>What it credits</th><th>P(&gt; 0) at the recommendation, 1,500 draws, FY25 deck</th></tr></thead>
+            <tbody>
+              <tr><td class="k">P(recommended &gt; baseline, same policy)<br><span class="muted">(the robust headline)</span></td>
+                <td>a PAIRED comparison &mdash; both set-points see the same draw's physics under VFD-hold</td>
+                <td>96.5%</td></tr>
+              <tr><td class="k">Net cash &gt; 0<br><span class="muted">(&ldquo;positive cash vs a shut-in cold well&rdquo;)</span></td>
+                <td>the recommendation's own absolute cash, no cold-well counterfactual subtracted</td>
+                <td>53.7%</td></tr>
+              <tr><td class="k">Incremental &gt; 0<br><span class="muted">(vs the shut-in cold well, an UPPER bound)</span></td>
+                <td>the recommendation's cash minus the (zero) cold-well cash</td>
+                <td>37.7% &mdash; the stricter, unpaired reading, never the headline</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          The <code>pumpable</code> cold-well convention reads every absolute incremental &#8377; figure roughly
+          &#8377;11.4k/cycle-day LOWER than the <code>policy</code> (shut-in) convention used above &mdash; but the
+          PAIRED gain between two set-points does not depend on this choice at all (the cold-well cash cancels). See
+          &ldquo;What has NOT been validated&rdquo; below for the rod-string-failure cost this model still does not
+          price. Show both readings; do not quote only the more flattering one.
+        </p>
+
+        <h3>Price deck</h3>
+        <div class="assume">
+          <ul>
+            <li><b>Base case (default), &#8377;5,992/bbl:</b> OIL's CONFIRMED FY25 average crude realisation
+              (US$78.09/bbl, OIL India Annual Report 2024-25) minus a <b>$10/bbl heavy-oil discount [ASSUMPTION]</b>
+              (no Baghewala-specific grade discount was found), &times; &#8377;88/$.</li>
+            <li><b>FY26 planning-floor preset, &#8377;4,840/bbl:</b> the CMD's forward planning number ($65/bbl,
+              minus the same $10 discount) &mdash; a conservative budgeting figure, never a market realisation. Kept
+              as a named downside preset on the &ldquo;Your prices&rdquo; panel and in the UQ bake, not deleted.</li>
+            <li><b>Pre-royalty/cess.</b> Both decks are a national-value (pre-levy) basis. OIL's FY25 results also
+              show &#8377;2,987&nbsp;cr royalty and &#8377;2,567&nbsp;cr OID cess; neither is modelled here, so a
+              company-P&amp;L view of the same recommendation would net out materially lower than the figures on
+              this site.</li>
+          </ul>
+        </div>
+        <p class="srcline">
+          <b>Derivation and citations</b> <code>docs/model-improvement/MODEL_IMPROVEMENT_PLAN_ECON_VALIDATION.md</code>
+          &sect;0, &sect;1.2 &middot; <code>docs/research/baghewala_facts.md</code> &sect;4 &middot;
+          <code>params/CHANGELOG.md</code> rev 8/9 &middot; Sources [9], [10], [11], [12]
+        </p>
+      </section>
+
+      <section id="lineage">
+        <h2>Data lineage</h2>
+        <p>
+          Nothing shown in this product came from a sensor. The chain from parameter file to on-screen
+          recommendation is five steps, all reproducible from the repository.
+        </p>
+        <div class="lineage">
+          <div class="ln"><span class="n">01</span><b>Field parameters</b><code>params/field_params.json</code> rev&nbsp;5 (recalibrated 26 Sep 2026) &mdash; merged from the OIL internal presentation, SPE-23APOG-535203 and GEOHORIZONS 2015.</div>
+          <div class="ln"><span class="n">02</span><b>Physics twin</b><code>twin/{thermal,viscosity,ipr,srp,cycle}.py</code> &mdash; the four models above, one day per row.</div>
+          <div class="ln"><span class="n">03</span><b>Design of experiments</b><code>twin/generate_data.py</code> &mdash; 3,000 Latin-hypercube samples over the four set-points, each run through the rev-5 twin, seed&nbsp;42, trained 26 Sep 2026.</div>
+          <div class="ln"><span class="n">04</span><b>Surrogates</b><code>ml/train.py</code> &mdash; XGBoost regressor on log(oil), XGBoost regressor on margin/cycle-day, XGBoost classifier on floating risk. 80/20 split, seed&nbsp;42, single holdout (no cross-validation).</div>
+          <div class="ln"><span class="n">05</span><b>Search</b><code>ml/optimize.py</code> &mdash; skopt <code>gp_minimize</code>, 60 calls, <b>maximising predicted INCREMENTAL margin/cycle-day</b> (rev 9 &mdash; was: maximise gross margin/cycle-day at rev 5, minimise predicted SOR before that) with soak fixed at 10&nbsp;d, subject to p(float)&nbsp;&le;&nbsp;0.30. <b>rev 9:</b> when the raw surrogate argmax and the true-physics grid optimum disagreed by more than ~&#8377;300/cycle-day, the physics-grid point was used as the canonical recommendation instead &mdash; see the recommendation page's own honesty note.</div>
+        </div>
+        <p>
+          The dashboard closes the loop: the winning set-points are snapped to the controller grid and put back
+          through step&nbsp;2, so the number quoted to a GM is a physics result, not a surrogate prediction.
+        </p>
+      </section>
+
+      <section id="surrogate">
+        <h2>Surrogate and search</h2>
+        <table class="dt">
+          <tbody id="surrBody"></tbody>
+        </table>
+        <p>
+          The surrogate exists because the twin is too slow to sit inside a 60-call Bayesian loop and far too slow
+          to sit behind a slider. It is a compression of the twin, and it is only as good as the R&sup2; and MAE
+          above &mdash; both of which are reported on the optimiser page next to every prediction, and both of which
+          measure agreement with the <em>twin</em>, not with Baghewala.
+        </p>
+      </section>
+
+      <section id="uncertainty">
+        <h2>Uncertainty</h2>
+        <p class="lead">
+          Every number elsewhere on this page and product is a <b>point estimate</b> at one set of
+          judgement-call values (water cut, net-pay thickness, the diesel bulk discount, the oil price,
+          daily opex, and so on &mdash; <code>BL_DELTA_FACTOR</code> is no longer one of them; physics v3
+          sourced it as a fixed physical constant). <code>ml/uq.py</code> asks the honest follow-up
+          question: how much does the answer move if those judgement calls are varied over their own
+          defensible ranges, instead of held fixed?
+        </p>
+        <p>
+          A <b>paired</b> Monte Carlo: every one of 1,500 draws (seed 42) samples one joint
+          realisation of 21 uncertain inputs (a selection is in the table below) and runs the
+          reference cycle, the assumed baseline (b) and the recommendation &mdash; each
+          under the VFD-hold policy, plus the same-policy pull/none variants &mdash; through that
+          same realisation, via the true physics twin (<code>twin.cycle.simulate_css_cycle</code> +
+          <code>summary</code>, not the surrogate). Pairing is what makes a probability like
+          &ldquo;P(recommended better than baseline)&rdquo; meaningful: it compares the two
+          set-point choices under the SAME assumed physics on each draw, rather than mixing
+          independently-noisy runs.
+        </p>
+        <div class="table-wrap">
+          <table class="dt" id="uqInputTable">
+            <thead>
+              <tr><th style="width:26%">Input</th><th style="width:16%">Range</th><th style="width:10%">Base</th><th style="width:48%">Why this range</th></tr>
+            </thead>
+            <tbody id="uqInputBody"></tbody>
+          </table>
+        </div>
+        <h3>Result &mdash; NET CASH per cycle-day, p10 / p50 / p90 (FY25 realisation deck, base case)</h3>
+        <p class="note">Net cash (<code>margin_with_opex_inr_per_cycle_day</code>) is counterfactual-free
+          &mdash; no cold-well counterfactual is subtracted, so a positive figure reads as
+          &ldquo;positive cash vs a SHUT-IN cold well&rdquo;. This is the rev-13 optimiser objective
+          and the quantity quoted as the fair gain everywhere on this dashboard.</p>
+        <div class="table-wrap">
+          <table class="dt" id="uqBandTable">
+            <thead>
+              <tr><th style="width:34%">Set-point</th><th style="width:22%">p10</th><th style="width:22%">p50</th><th style="width:22%">p90</th></tr>
+            </thead>
+            <tbody id="uqBandBody"></tbody>
+          </table>
+        </div>
+        <h4>Same, at the $65 FY26 planning-floor deck</h4>
+        <div class="table-wrap">
+          <table class="dt" id="uqBandTableFloor">
+            <thead>
+              <tr><th style="width:34%">Set-point</th><th style="width:22%">p10</th><th style="width:22%">p50</th><th style="width:22%">p90</th></tr>
+            </thead>
+            <tbody id="uqBandBodyFloor"></tbody>
+          </table>
+        </div>
+        <h4>Same, net of royalty + OID cess (~₹3,600/bbl)</h4>
+        <div class="table-wrap">
+          <table class="dt" id="uqBandTableLevies">
+            <thead>
+              <tr><th style="width:34%">Set-point</th><th style="width:22%">p10</th><th style="width:22%">p50</th><th style="width:22%">p90</th></tr>
+            </thead>
+            <tbody id="uqBandBodyLevies"></tbody>
+          </table>
+        </div>
+        <p id="uqProbLine"></p>
+        <p id="uqCounterfactualNote" class="note"></p>
+        <p id="uqHeadlineNote" class="note"></p>
+        <h3>Tornado &mdash; top 3 drivers of recommendation margin variance</h3>
+        <p>
+          Ranked by a one-at-a-time swing (hold every other input at its base value, sweep one from
+          low to high, measure the change in predicted margin/cycle-day at the recommendation), cross-
+          checked against the Monte Carlo sample's own correlation &mdash; both methods are printed in
+          <code>ml/models/uq_summary.json</code>.
+        </p>
+        <div class="table-wrap">
+          <table class="dt" id="uqTornadoTable">
+            <thead>
+              <tr><th style="width:8%">Rank</th><th style="width:42%">Input</th><th style="width:50%">Margin swing at the recommendation (low &rarr; high input)</th></tr>
+            </thead>
+            <tbody id="uqTornadoBody"></tbody>
+          </table>
+        </div>
+        <p id="uqHonestLine" class="note"></p>
+        <div class="assume">
+          <h4>What this is, and is not</h4>
+          <ul>
+            <li>This is uncertainty in the TWIN's own parameters, propagated honestly &mdash; it is not a
+              validation against Baghewala field history (see Validation status below for that gap).</li>
+            <li>The wide bands above are the point: a single point-estimate margin figure elsewhere on
+              this product looks more certain than the underlying judgement calls actually support.</li>
+            <li><code>thermal.py</code> gained one small, additive override point,
+              <code>bl_delta_factor(params)</code>, reading <code>params["thermal"]["bl_delta_factor"]</code>
+              when present and falling back to the existing module constant otherwise &mdash; every
+              caller that passes no <code>"thermal"</code> block (i.e. everything except
+              <code>ml/uq.py</code>) is unaffected.</li>
+          </ul>
+        </div>
+        <p class="srcline"><b>Implementation</b> <code>ml/uq.py</code> &middot; <b>Data</b> <code>ml/models/uq_summary.json</code>, <code>ml/models/uq_samples.csv</code> &middot; <b>Docs</b> <code>ml/README.md</code> &sect;Uncertainty quantification</p>
+      </section>
+
+      <section id="calib">
+        <h2>Calibrate from field data</h2>
+        <p class="lead bi" data-en="Give the twin your cycle records and it re-fits four uncertain constants, then re-recommends. Below: a demonstration on 8 synthetic cycles from 3 fictional wells (not field data)."
+           data-hi="ट्विन को अपने चक्र रिकॉर्ड दें, और यह चार अनिश्चित स्थिरांकों को पुनः-फ़िट कर पुनः-अनुशंसा करता है। नीचे: 3 काल्पनिक कुओं के 8 संश्लेषित चक्रों पर एक प्रदर्शन (क्षेत्र डेटा नहीं)।">
+          Give the twin your cycle records and it re-fits four uncertain constants, then re-recommends. Below: a demonstration on 8 synthetic cycles from 3 fictional wells (not field data).
+        </p>
+
+        <h3 id="calibDemoHeading">Demonstration &mdash; synthetic data, not field data</h3>
+        <p class="note">
+          <b>Dataset</b> <code>data/external/pseudo_real_cycles.csv</code> &mdash; 8 cycles, 3 fictional wells
+          BGW-D1&hellip;D3, generated by running the twin against a HIDDEN &ldquo;true&rdquo; params set with
+          &plusmn;8% multiplicative noise (seed 42). <b>SYNTHETIC &mdash; not Oil India field data</b>
+          (<code>data/external/SOURCE.md</code>). Generated 26&nbsp;Sep&nbsp;2026.
+        </p>
+
+        <h4 id="calibWhatRecoveredHeading">What the fit recovered</h4>
+        <div class="table-wrap">
+          <table class="dt" id="calibDemoRecoveredTable">
+            <thead>
+              <tr>
+                <th style="width:30%">Parameter</th>
+                <th style="width:16%" id="calibColBeforeHead">Before (default)</th>
+                <th style="width:16%" id="calibColFittedHead">Fitted</th>
+                <th style="width:18%" id="calibColTruthHead">Hidden truth (demo only)</th>
+                <th style="width:20%" id="calibColIdentifiedHead">Identified</th>
+              </tr>
+            </thead>
+            <tbody id="calibDemoRecoveredBody"></tbody>
+          </table>
+        </div>
+        <p class="note" id="calibDemoCouplingNote"></p>
+        <p class="note" id="calibDemoFitQualityLine"></p>
+
+        <h4 id="calibDemoBAHeading">Recommendation before &rarr; after calibration</h4>
+        <div class="table-wrap">
+          <table class="dt" id="calibDemoBATable">
+            <thead>
+              <tr>
+                <th style="width:22%">&nbsp;</th>
+                <th>Steam</th><th>Cutoff</th><th>SPM</th><th>SOR</th><th>Oil</th><th>&#8377;/cycle-day (gross)</th><th>&#8377;/cycle-day (incr.)</th>
+              </tr>
+            </thead>
+            <tbody id="calibDemoBABody"></tbody>
+          </table>
+        </div>
+        <p class="note" id="calibDemoBANote"></p>
+
+        <div class="cols cols-2e" style="margin-top:var(--s4)">
+          <div class="panel">
+            <div class="section-head" style="padding:0 0 var(--s2)"><h3 style="margin:0;font-size:var(--t-title);border:none;padding:0" id="calibFitChartTitle">Observed vs simulated oil, per cycle</h3></div>
+            <div class="p-body"><div id="chartCalibDemoFit" class="chart" style="height:230px"></div></div>
+            <div class="p-foot" id="calibDemoFitChartFoot"></div>
+          </div>
+          <div class="panel">
+            <div class="section-head" style="padding:0 0 var(--s2)"><h3 style="margin:0;font-size:var(--t-title);border:none;padding:0" id="calibResidChartTitle">Residual &mdash; oil, % error per cycle</h3></div>
+            <div class="p-body"><div id="chartCalibDemoResid" class="chart" style="height:230px"></div></div>
+            <div class="p-foot" id="calibDemoResidChartFoot"></div>
+          </div>
+        </div>
+
+        <h3 id="calibUseOwnHeading" style="margin-top:var(--s7)">Use your own data</h3>
+        <div class="panel">
+          <div class="p-body">
+            <p class="note" id="calibSchemaNote"></p>
+            <div class="btnbar" style="flex-wrap:wrap;gap:var(--s3)">
+              <input type="file" id="calibFile" accept=".csv,text/csv">
+              <a class="btn btn-sm" id="calibTemplateLink" href="../data/templates/observed_cycles_template.csv" target="_blank" rel="noopener">Download template</a>
+              <span class="spacer"></span>
+              <button class="btn btn-primary btn-sm" id="btnCalibrate" type="button" disabled>Calibrate</button>
+            </div>
+            <div class="note" id="calibUploadStatus" style="margin-top:10px"></div>
+            <div class="table-wrap" id="calibPreviewWrap" hidden style="margin-top:10px">
+              <table class="dt dt-sm" id="calibPreviewTable"><thead><tr id="calibPreviewHead"></tr></thead><tbody id="calibPreviewBody"></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <div id="calibResultPanel" hidden style="margin-top:var(--s5)">
+          <h3 id="calibResultHeading">Your calibration result</h3>
+          <div class="table-wrap">
+            <table class="dt" id="calibLiveRecoveredTable">
+              <thead>
+                <tr>
+                  <th style="width:30%">Parameter</th>
+                  <th style="width:16%">Before (default)</th>
+                  <th style="width:16%">Fitted</th>
+                  <th style="width:18%">Hidden truth (demo only)</th>
+                  <th style="width:20%">Identified</th>
+                </tr>
+              </thead>
+              <tbody id="calibLiveRecoveredBody"></tbody>
+            </table>
+          </div>
+          <p class="note" id="calibLiveCouplingNote"></p>
+          <p class="note" id="calibLiveFitQualityLine"></p>
+          <div class="table-wrap">
+            <table class="dt" id="calibLiveBATable">
+              <thead>
+                <tr>
+                  <th style="width:22%">&nbsp;</th>
+                  <th>Steam</th><th>Cutoff</th><th>SPM</th><th>SOR</th><th>Oil</th><th>&#8377;/cycle-day (gross)</th><th>&#8377;/cycle-day (incr.)</th>
+                </tr>
+              </thead>
+              <tbody id="calibLiveBABody"></tbody>
+            </table>
+          </div>
+          <p class="note" id="calibLiveBANote"></p>
+          <div class="cols cols-2e">
+            <div class="panel">
+              <div class="p-body"><div id="chartCalibLiveFit" class="chart" style="height:230px"></div></div>
+              <div class="p-foot" id="calibLiveFitChartFoot"></div>
+            </div>
+            <div class="panel">
+              <div class="p-body"><div id="chartCalibLiveResid" class="chart" style="height:230px"></div></div>
+              <div class="p-foot" id="calibLiveResidChartFoot"></div>
+            </div>
+          </div>
+          <div class="btnbar" style="margin-top:var(--s3)">
+            <button class="btn btn-primary" id="btnLoadCalibrated" type="button" data-en="Load calibrated recommendation into Simulator" data-hi="अंशांकित अनुशंसा सिम्युलेटर में लोड करें">Load calibrated recommendation into Simulator</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="field">
+        <h2 class="bi" data-en="Field view: which well gets steam next (demo, 12 synthetic wells)"
+            data-hi="क्षेत्र दृश्य: अगली भाप किस कूप को (डेमो, 12 कृत्रिम कूप)">Field view: which well gets steam next (demo, 12 synthetic wells)</h2>
+        <p class="lead bi"
+           data-en="PS SIH26120 asks for field-level optimisation, not just one well: Baghewala's ~33 operational wells share ONE steam generator (~74 t/d, the 2018 CSS pilot's own injection rate) — the field's bottleneck. ml/schedule.py runs every well's own physics optimum (ml/recommend_physics.py, FI &le; 0.6 feasibility), then decides which well gets the generator next, how much steam, and when, to maximise the field's total incremental margin over a one-year horizon."
+           data-hi="PS SIH26120 केवल एक कूप नहीं, क्षेत्र-स्तरीय अनुकूलन माँगता है: बाघेवाला के ~33 परिचालन कूप एक ही भाप जनरेटर (~74 t/d, 2018 के CSS पायलट की अपनी इंजेक्शन दर) साझा करते हैं — यही क्षेत्र का अवरोधक है। ml/schedule.py प्रत्येक कूप का अपना भौतिकी इष्टतम (ml/recommend_physics.py, FI &le; 0.6 व्यवहार्यता) निकालता है, फिर तय करता है कि अगला जनरेटर किस कूप को मिले, कितनी भाप, और कब — एक वर्ष की समय-सीमा में क्षेत्र के कुल वृद्धिशील मार्जिन को अधिकतम करने हेतु।">
+          PS SIH26120 asks for field-level optimisation, not just one well: Baghewala's ~33 operational wells share ONE
+          steam generator (~74 t/d, the 2018 CSS pilot's own injection rate) — the field's bottleneck. ml/schedule.py
+          runs every well's own physics optimum (ml/recommend_physics.py, FI &le; 0.6 feasibility), then decides which
+          well gets the generator next, how much steam, and when, to maximise the field's total incremental margin
+          over a one-year horizon.
+        </p>
+        <p class="note bi"
+           data-en="Demonstration on 12 SYNTHETIC wells (BGW-S01…S12, data/external/field_wells_synthetic.csv, seed 42) — NOT real Baghewala per-well data (data/external/SOURCE.md). Three schedules are computed: an exact schedule (bitmask-subset search × earliest-release-date order — provably optimal, see ml/schedule.py), a fast greedy heuristic, and a naive counterfactual (the same fixed 1,500 t for every well, worst-producer-first order, no per-well tuning). Only the exact schedule is charted below; all three are compared in the KPIs and in ml/README.md."
+           data-hi="12 कृत्रिम (SYNTHETIC) कूपों पर प्रदर्शन (BGW-S01…S12, data/external/field_wells_synthetic.csv, बीज 42) — वास्तविक बाघेवाला प्रति-कूप डेटा नहीं (data/external/SOURCE.md)। तीन अनुसूचियाँ गणना की जाती हैं: एक सटीक अनुसूची (बिटमास्क-उपसमुच्चय खोज × न्यूनतम-प्रारंभ-दिनांक क्रम — प्रामाणिक रूप से इष्टतम, देखें ml/schedule.py), एक तीव्र लालची (greedy) ह्यूरिस्टिक, और एक नैव प्रति-तथ्यात्मक (हर कूप को समान निश्चित 1,500 t, सबसे कमज़ोर उत्पादक पहले, कोई प्रति-कूप ट्यूनिंग नहीं)। नीचे केवल सटीक अनुसूची आलेखित है; तीनों की तुलना KPI में और ml/README.md में है।">
+          Demonstration on 12 SYNTHETIC wells (BGW-S01…S12, data/external/field_wells_synthetic.csv, seed 42) — NOT
+          real Baghewala per-well data (data/external/SOURCE.md). Three schedules are computed: an exact schedule
+          (bitmask-subset search × earliest-release-date order — provably optimal, see ml/schedule.py), a fast greedy
+          heuristic, and a naive counterfactual (the same fixed 1,500 t for every well, worst-producer-first order, no
+          per-well tuning). Only the exact schedule is charted below; all three are compared in the KPIs and in
+          ml/README.md.
+        </p>
+        <p class="note bi"
+           data-en="rev 12 (float-onset produce-end rule): the naive, no-per-well-tuning policy now LOSES money field-wide (negative ₹/cycle-day at several of its fixed-set-point wells) — greedy and exact, which tune steam/cutoff/spm per well, turn the field profitable. Say so; a scheduler demo that only shows the upside is not honest about what per-well tuning is buying."
+           data-hi="rev 12 (float-अलार्म चक्र-अंत नियम): नैव, बिना प्रति-कूप ट्यूनिंग वाली नीति अब क्षेत्र-व्यापी रूप से घाटे में है (कई निश्चित-सेटिंग कूपों पर ऋणात्मक ₹/चक्र-दिन) — लालची (greedy) और सटीक अनुसूचियाँ, जो प्रति कूप भाप/कटऑफ़/spm ट्यून करती हैं, क्षेत्र को लाभदायक बनाती हैं। यह स्पष्ट कहा गया है — केवल लाभ दिखाने वाला प्रदर्शन ईमानदार नहीं होगा।">
+          rev 12 (float-onset produce-end rule): the naive, no-per-well-tuning policy now LOSES money field-wide
+          (negative ₹/cycle-day at several of its fixed-set-point wells) — greedy and exact, which tune
+          steam/cutoff/spm per well, turn the field profitable. Say so; a scheduler demo that only shows the upside
+          is not honest about what per-well tuning is buying.
+        </p>
+
+        <div class="panel">
+          <div class="section-head" style="padding:0 0 var(--s2)">
+            <h3 class="bi" style="margin:0;font-size:var(--t-title);border:none;padding:0"
+                data-en="Generator timeline — exact schedule" data-hi="जनरेटर समयरेखा — सटीक अनुसूची">Generator timeline — exact schedule</h3>
+          </div>
+          <div class="p-body"><div id="chartFieldGantt" class="chart" style="height:180px"></div></div>
+          <div class="p-foot" id="fieldGanttFoot"></div>
+        </div>
+
+        <div class="statrow" style="margin:var(--s4) 0">
+          <span><span data-en="Field ₹/yr, exact vs naive" data-hi="क्षेत्र ₹/वर्ष, सटीक बनाम नैव">Field ₹/yr, exact vs naive</span> <b id="fieldKpiGainPct">&mdash;</b></span>
+          <span><span data-en="Field incremental ₹, exact" data-hi="क्षेत्र वृद्धिशील ₹, सटीक">Field incremental ₹, exact</span> <b id="fieldKpiMarginPerYear">&mdash;</b></span>
+          <span><span data-en="Generator utilisation" data-hi="जनरेटर उपयोग">Generator utilisation</span> <b id="fieldKpiUtil">&mdash;</b> <span class="u">%</span></span>
+          <span><span data-en="Wells served / deferred" data-hi="सेवित / स्थगित कूप">Wells served / deferred</span> <b id="fieldKpiServed">&mdash;</b></span>
+          <span><span data-en="Steam / CO₂, exact" data-hi="भाप / CO₂, सटीक">Steam / CO₂, exact</span> <b id="fieldKpiSteamCo2">&mdash;</b></span>
+          <span><span data-en="Field ₹/cycle-day, naive (no tuning)" data-hi="क्षेत्र ₹/चक्र-दिन, नैव (बिना ट्यूनिंग)">Field ₹/cycle-day, naive (no tuning)</span> <b id="fieldKpiNaive">&mdash;</b></span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="dt">
+            <thead>
+              <tr>
+                <th data-en="Order" data-hi="क्रम">Order</th>
+                <th data-en="Well" data-hi="कूप">Well</th>
+                <th data-en="Start" data-hi="प्रारंभ">Start</th>
+                <th data-en="Steam (t)" data-hi="भाप (t)">Steam (t)</th>
+                <th data-en="Cutoff (m³/d)" data-hi="कटऑफ़ (m³/d)">Cutoff (m³/d)</th>
+                <th data-en="SPM" data-hi="SPM">SPM</th>
+                <th data-en="₹/cycle-day (incr.)" data-hi="₹/चक्र-दिन (वृद्धि.)">₹/cycle-day (incr.)</th>
+                <th data-en="Cycle days" data-hi="चक्र दिन">Cycle days</th>
+              </tr>
+            </thead>
+            <tbody id="fieldScheduleBody"></tbody>
+          </table>
+        </div>
+
+        <p class="note bi" data-en="Deferred this year (higher-value wells took the generator's time first):"
+           data-hi="इस वर्ष स्थगित (उच्च-मूल्य कूपों ने पहले जनरेटर समय लिया):">Deferred this year (higher-value wells took the generator's time first):</p>
+        <ul id="fieldDeferredList"></ul>
+
+        <p class="note bi"
+           data-en="Caveats: all 12 wells are synthetic (no real Baghewala per-well data). Generator capacity (~74 t/d) and a 1-day move time between wells are assumed; interference between wells (pressure communication, shared surface facilities beyond the one generator) is NOT modelled. &ldquo;Cycle days&rdquo; is each well's own full production cycle (until its economic cutoff), which continues well past the 1-year scheduling horizon — only the injection + move time occupies the shared generator."
+           data-hi="सावधानियाँ: सभी 12 कूप कृत्रिम हैं (कोई वास्तविक बाघेवाला प्रति-कूप डेटा नहीं)। जनरेटर क्षमता (~74 t/d) और कूपों के बीच 1-दिन स्थानांतरण समय मान लिया गया है; कूपों के बीच पारस्परिक हस्तक्षेप (दाब संचार, एक जनरेटर से परे साझा सतह सुविधाएँ) मॉडल नहीं किया गया है। &ldquo;चक्र दिन&rdquo; प्रत्येक कूप का अपना पूर्ण उत्पादन चक्र है (अपने आर्थिक कटऑफ़ तक), जो 1-वर्षीय समय-सीमा से काफी आगे तक चलता है — केवल इंजेक्शन + स्थानांतरण समय साझा जनरेटर को व्यस्त रखता है।">
+          Caveats: all 12 wells are synthetic (no real Baghewala per-well data). Generator capacity (~74 t/d) and a
+          1-day move time between wells are assumed; interference between wells (pressure communication, shared
+          surface facilities beyond the one generator) is NOT modelled. &ldquo;Cycle days&rdquo; is each well's own
+          full production cycle (until its economic cutoff), which continues well past the 1-year scheduling horizon
+          — only the injection + move time occupies the shared generator.
+        </p>
+      </section>
+
+      <section id="coverage">
+        <h2 class="bi" data-en="Coverage of the problem statement" data-hi="समस्या-कथन की कवरेज">Coverage of the problem statement</h2>
+        <p>
+          PS SIH26120 asks for a digital twin that optimises the field's controllable parameters, ingests the
+          available data, and scales to more than one well in real time. The tables below say plainly which of
+          those the twin actually does, which it fixes at a defensible practice value, and which it represents
+          through another lever rather than modelling directly &mdash; so a judge can see the honest boundary of
+          the build, not just its headline numbers.
+        </p>
+        <div class="table-wrap">
+          <table class="dt">
+            <thead><tr><th>Control (problem statement)</th><th>Coverage</th><th>How</th></tr></thead>
+            <tbody>
+              <tr><td class="k">Steam volume</td><td><span class="tag pass">optimised</span></td><td>5-D physics grid search, 1,000&ndash;2,000 t envelope (500&ndash;3,000 t full range)</td></tr>
+              <tr><td class="k">Injection (wellhead) pressure</td><td><span class="tag pass">optimised</span></td><td>85&ndash;97 kgf/cm&sup2; (CONFIRMED range, OIL deck BGW-08); sets the saturated-steam T&ndash;P state (thermal.steam_state)</td></tr>
+              <tr><td class="k">Soak period</td><td><span class="tag warn">modelled, fixed</span></td><td>Simulated but held at 10 d field practice &mdash; no meaningful interior optimum found (strict xfail, TIER1 &sect;7.4); searching it would overclaim</td></tr>
+              <tr><td class="k">Economic cutoff</td><td><span class="tag pass">optimised</span></td><td>0.6&ndash;2.0 m&sup3;/d; a rate BACKSTOP under the float-onset produce-end rule that never actually binds first, but its Shapley share is NOT zero (rev 13, VFD-hold): with the 64-in stroke, the baseline's own 1.3 m&sup3;/d cutoff would bind before its float pull, so lowering it is worth ~30% of the fair gain (interaction with stroke)</td></tr>
+              <tr><td class="k">Stroke length</td><td><span class="tag pass">optimised</span></td><td>6 discrete API sizes (64&ndash;144 in); changes the rod string's static loads and the pump's fall-velocity limit</td></tr>
+              <tr><td class="k">Pump speed (SPM)</td><td><span class="tag pass">optimised</span></td><td>3&ndash;6 spm practice band (3&ndash;12 spm full mechanical range on the console)</td></tr>
+              <tr><td class="k">VFD (variable-frequency drive)</td><td><span class="tag info">modelled as the SPM schedule</span></td><td>A VFD's job on a beam pump is to set the SPM set-point; the twin's declining SPM schedule (start speed = the SPM lever, lowered daily to the rods' fall-velocity limit, 2-spm floor) IS that set-point trajectory. The intra-stroke speed profile a VFD can also shape is out of scope (no intra-stroke kinematics in a day-by-day model).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap" style="margin-top:var(--s4)">
+          <table class="dt">
+            <thead><tr><th>Data input (problem statement)</th><th>Coverage</th><th>How</th></tr></thead>
+            <tbody>
+              <tr><td class="k">Reservoir &amp; fluid parameters (thickness, porosity, water cut, AOF, viscosity, &hellip;)</td><td><span class="tag pass">ingested</span></td><td><code>twin/calibrate.py</code> fits formation_water_cut, aof_ref_m3d, thickness_m from field cycle records (see &ldquo;Calibrate from field data&rdquo; above); the rest are literature/typical defaults until OIL supplies more</td></tr>
+              <tr><td class="k">Historical CSS cycle records (steam, soak, cutoff, spm, oil, produce days)</td><td><span class="tag pass">ingested</span></td><td>CSV upload (<code>/calibrate</code>, &sect;7.3) &mdash; the demo runs on 8 synthetic cycles; a real upload recalibrates the same way</td></tr>
+              <tr><td class="k">Real-time wellhead / dynamometer telemetry</td><td><span class="tag warn">derived, not ingested</span></td><td>The twin computes a physics-consistent state at each <code>/simulate</code> or <code>/api/dyno/cards</code> call and the &ldquo;Check a measured card&rdquo; panel classifies an uploaded card &mdash; but there is no live SCADA feed wired in; every reading on these pages is simulated or user-supplied, never sensor-sourced</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:var(--s4)">
+          <b>Multi-well / field scale.</b> <code>ml/schedule.py</code> (&sect; Field-level scheduling above) runs
+          every well's own physics optimum, then schedules the field's ONE shared steam generator across up to 12
+          wells over a one-year horizon &mdash; a working demonstration of field-scale optimisation, on 12 synthetic
+          wells, not yet exercised against real Baghewala per-well data.<br>
+          <b>Real time.</b> <code>/simulate</code> and <code>/api/dyno/cards</code> both return in well under 100 ms
+          (batch, on demand) and the dashboard polls them live when NOT running from <code>file://</code>; there is
+          no live SCADA/historian feed, so &ldquo;real time&rdquo; here means &ldquo;fast enough to drive an
+          interactive console&rdquo;, not &ldquo;continuously fed by field instruments&rdquo; &mdash; see &ldquo;No
+          SCADA link&rdquo; below.
+        </p>
+      </section>
+
+      <section id="validation">
+        <h2>Validation status</h2>
+        <p>
+          <b>263</b> property-based physics and published-benchmark tests run under pytest (265 collected), plus
+          <b>two</b> declared, marked <code>xfail</code> gaps &mdash; not a silent skip: (1) soak has no meaningful
+          interior optimum in 5&ndash;15 d in this model, and (2) at the calibration-anchor diesel discount (0.15,
+          mid of the U[0,0.30] range) the gross-margin-optimum slug size is below BGW-8's published 1,040&ndash;1,560 t
+          &mdash; read as revealed preference, OIL's actual slug sizes argue its steam is cheaper than the mid-range
+          (TIER1_PROGRESS_LOG.md &sect;12.2). <b>The rev-12 cold-well-pumpability xfail is RESOLVED, not carried
+          forward</b>: rev 13 makes the cold counterfactual obey the SAME float policy as the stimulated well, so at
+          the base 45% formation water cut it is correctly SHUT IN (not "unpumpable yet producing") &mdash; see the
+          cold-well note below. These tests assert behaviour the models must
+          exhibit &mdash; monotonicity, bounds, conservation, limiting cases &mdash; and, in
+          <code>test_benchmarks.py</code>, that the rev-13 twin reproduces published Baghewala and
+          analogue-field numbers (SOR 3.0&ndash;4.6, 5&ndash;6&times; uplift, 15&ndash;40&nbsp;bbl/d) UNDER THE DEFAULT
+          <code>pull</code> policy (the calibration anchor), rather than fitting to data &mdash; under VFD-hold the
+          reference SOR (3.46) and a 500-t slug (2.65) both miss those bands by a hair, pinned as findings, not
+          re-specified.
+        </p>
+        <div class="table-wrap">
+          <table class="dt">
+            <thead>
+              <tr><th style="width:24%">Module</th><th style="width:10%">Tests</th><th style="width:52%">What is asserted</th><th style="width:14%">Status</th></tr>
+            </thead>
+            <tbody id="testBody"></tbody>
+          </table>
+        </div>
+        <div class="assume">
+          <h4>What has NOT been validated</h4>
+          <ul>
+            <li><b>No history match.</b> No measured Baghewala production, temperature or dynamometer data has been compared against the twin. Every figure in this product is synthetic.</li>
+            <li><b>Diesel bulk discount is unsourced and load-bearing.</b> Base moved 0.15 (rev 13, the mid of an unsourced U[0,0.30] range); 0.30 (bulk) and 0 (retail) are named presets. At full retail price every sensible cycle is gross-margin-loss-making, and at 0.15 the gross-margin-optimum slug size drops below BGW-8's published practice (the new xfail above) &mdash; this judgement call moves the headline by &#8377;5&ndash;10k/cycle-day, not just its sign.</li>
+            <li><b>Rod-string failure is not priced.</b> Holding the float index at 0.6 for ~60 days/cycle under VFD-hold has a graded damage exposure (&Sigma;FI&sup3;) about 5&times; the pull policy's, but the model has no rod-failure or workover cost term &mdash; so "float avoidance" cannot show up in &#8377; anywhere on this dashboard. One OIL rod-failure/workover cost and frequency would close this (TIER1_PROGRESS_LOG.md &sect;12.13/&sect;12.15).</li>
+            <li><b>Fixed opex, &#8377;5,000/day <code>[ASSUMPTION]</code>.</b> No per-well Indian onshore lifting-cost figure was found; cross-checked only against a rough $/bbl sense-check, not a cited source. It cancels in the incremental margin unless the cold well itself becomes uneconomic.</li>
+            <li><b>$10/bbl heavy-oil discount <code>[ASSUMPTION]</code>.</b> No Baghewala-specific crude-marketing discount off OIL's blended FY25 realisation was found; applied as a flat haircut to both price-deck presets.</li>
+            <li><b>Royalty/cess: now a third deck, not netted from the other two.</b> FY25 and $65 are both national pre-levy values; a THIRD deck (~&#8377;3,600/bbl, rev 13) nets OIL's own royalty (20%) and OID cess (20%) off the FY25 base &mdash; on it, every feasible grid point is negative, even against a shut-in cold well. The 2018 ER-policy 50% cess waiver a qualifying CSS job might get is NOT netted.</li>
+            <li><b><code>fluid.formation_water_cut</code> = 0.45</b> is an assumption, not a Baghewala measurement (no field datum, OIL_DATA_REQUEST item 2) &mdash; the native water cut of the reservoir liquid the water-cut STATE model (condensate flowback + formation blend) declines toward late in the cycle. It is the #4 driver of the recommendation's net-cash variance (rev 13, 1,500-draw tornado) &mdash; behind the cold heavy-oil viscosity, the cold well's own skin factor, and oil price.</li>
+            <li><b>The Pal&ndash;Rhodes emulsion law and the water-in-oil &rarr; oil-in-water inversion point</b> (<code>fluid.emulsion_inversion_wc</code>) are taken from the PUBLISHED band, not fit to a Baghewala emulsion sample; the 10&times; relative-viscosity cap near inversion is an explicit <code>[ASSUMPTION]</code>. This law is what the whole rev-12 recommendation's mechanism (delayed float onset) rests on.</li>
+            <li><b><code>fluid.condensate_recovery_frac</code> = 0.70</b> (fraction of injected steam mass produced back as condensate) is an <code>[ASSUMPTION]</code>, not measured &mdash; the #2 UQ driver, since it sets WHEN the produced stream crosses the emulsion inversion.</li>
+            <li><b><code>reservoir.P_current_kPa</code> defaults to the virgin pressure</b> (no depletion) &mdash; Baghewala's actual current (post-38-cycle) reservoir pressure is unknown (top OIL data ask); the UQ band U[7.4, 9.4] MPa is a placeholder range, not a measurement.</li>
+            <li><b>Cold-well pumpability &mdash; resolved in rev 13, but still an upper bound.</b> The cold counterfactual now obeys the SAME float policy as the stimulated well: at the base 45% formation water cut, its floating index at the policy floor exceeds the alarm line, so it is correctly SHUT IN (cash 0) under every policy except "none" &mdash; the old rev-12 "unpumpable yet producing" double standard is gone (the xfail is un-xfailed, a passing test). But Baghewala's wells WERE produced cold historically (~2&ndash;3 bbl/d), so every absolute incremental &#8377; figure here is still an UPPER bound: a "pumpable" counterfactual (slowed to ~0.53 spm, as the field did) is carried in the model and reads ~&#8377;11.4k/cycle-day LOWER at every set-point &mdash; the paired gain between two set-points does not depend on this choice. One measured cold-well dynamometer card would settle which counterfactual is right &mdash; see the cold-well-vs-shut-in note in &sect;7.2 above.</li>
+            <li><b>Pump geometry is typical, not Baghewala-specific</b> (1.75&nbsp;in &times; 86&nbsp;in class), same status as the plunger diameter and rod string in the field-parameters table above.</li>
+            <li><b>Net-pay vs gross-pay conflict.</b> <code>reservoir.thickness_m</code> = 12&nbsp;m is treated as net pay (GEOHORIZONS 2015); the problem statement's column suggests a gross thickness nearer 50&nbsp;m. The twin uses the conservative (thinner, net) figure; the discrepancy is printed, not resolved silently &mdash; same policy as the API-gravity conflict below.</li>
+            <li><b>No uncertainty on model form.</b> The hold-out R&sup2;/MAE figures quoted on the optimiser page are surrogate-vs-twin agreement only, not twin-vs-Baghewala agreement.</li>
+            <li><b>No SCADA link.</b> The API contract (<code>MOCK</code> / <code>API_BASE</code>) is implemented and exercised, but nothing on these pages has ever been fed by a live instrument.</li>
+          </ul>
+        </div>
+        <h3>Recalibration plan, given OIL data</h3>
+        <ol>
+          <li>History-match the thermal model against measured injection and observation-well temperature, freeing the drainage radius and (now that <code>BL_DELTA_FACTOR</code> is sourced physics) <code>fluid.formation_water_cut</code>/<code>fluid.condensate_recovery_frac</code> instead.</li>
+          <li>Replace the Walther anchor with lab viscosity&ndash;temperature points; set <code>walther_A</code> and <code>walther_B</code> in the parameter file.</li>
+          <li>Get a sourced bulk-diesel price (or confirm the &minus;30% discount), a sourced per-well opex figure, and a Baghewala-specific heavy-oil marketing discount &mdash; these three plus the oil-price deck are what the headline incremental-margin sign depends on.</li>
+          <li>Re-run the P<sub>res</sub>-depletion sensitivity against a wider set of analogue fields to further test the Darcy-band re-specification.</li>
+          <li>Get a measured or assumed-typical water cut and pump geometry specific to Baghewala, and resolve the net-pay/gross-pay conflict with OIL.</li>
+          <li>Regenerate the 600-cycle design of experiments (now incl. the float-policy dimension), retrain all surrogates, and republish R&sup2; and MAE alongside a residual plot against held-out twin runs.</li>
+        </ol>
+      </section>
+
+      <section id="limits">
+        <h2>What this cannot do</h2>
+        <ul>
+          <li>It cannot predict an individual cycle at Baghewala to engineering accuracy. It predicts the <em>direction and rough magnitude</em> of the response to a set-point change.</li>
+          <li>It cannot size a pumping unit, specify a rod string or certify a mechanical design.</li>
+          <li>It cannot represent steam override, gravity segregation, channelling, formation damage, sand production or wellbore heat loss &mdash; none of which are in the model.</li>
+          <li>It cannot see a second well. All economics on the overview page are explicitly labelled &ldquo;one well&rdquo;.</li>
+          <li>It cannot be run against a controller. Staging set-points writes to session state; nothing is transmitted.</li>
+        </ul>
+      </section>
+
+      <section id="refs">
+        <h2>Sources</h2>
+        <ol class="refs">
+          <li>Marx, J.W. and Langenheim, R.H., &ldquo;Reservoir Heating by Hot Fluid Injection&rdquo;, <em>Petroleum Transactions AIME</em>, 216 (1959), 312&ndash;315. &mdash; heated-zone growth and the thermal-efficiency function.</li>
+          <li>Andrade, E.N. da C., &ldquo;The Viscosity of Liquids&rdquo;, <em>Nature</em> 125 (1930), 309&ndash;310. &mdash; the &mu; = <em>A</em>e<sup><em>B</em>/<em>T</em></sup> form underlying heavy-oil viscosity&ndash;temperature charts.</li>
+          <li>Vogel, J.V., &ldquo;Inflow Performance Relationships for Solution-Gas Drive Wells&rdquo;, <em>Journal of Petroleum Technology</em> (January 1968), 83&ndash;92.</li>
+          <li>API RP 11L, <em>Recommended Practice for Design Calculations for Sucker Rod Pumping Systems</em>, American Petroleum Institute. &mdash; the polished-rod load calculation this module lumps.</li>
+          <li>SPE-23APOG-535203 &mdash; Baghewala heavy-oil field characterisation: 15.5&deg; API, 11,500&nbsp;cP at 50&nbsp;&deg;C, 1,150&nbsp;m depth.</li>
+          <li>GEOHORIZONS (2015) &mdash; Bikaner&ndash;Nagaur basin, Jodhpur Group reservoir description.</li>
+          <li>Oil India Limited, internal presentation on Baghewala heavy-oil development. &mdash; steam generation capability, injection rate and quality.</li>
+          <li>Problem statement SIH26120, Smart India Hackathon 2026, Oil India Limited. &mdash; scope, deliverables, and the 17&ndash;19&deg; API figure noted above.</li>
+          <li>Oil India Limited, internal operations deck, 12&nbsp;July&nbsp;2025 &mdash; BGW-08 first-cycle parameters: ~220&nbsp;kg/hr HSD fuel consumption against ~3,100&nbsp;kg/hr steam. The basis of every fuel, cost and carbon figure in this product.</li>
+          <li>Oil India Limited, FY2025-26 operational disclosure &mdash; 19 cyclic-steam-stimulation jobs completed field-wide. The only multiplier used for programme-scale figures.</li>
+          <li>IPCC default fuel-combustion factors &mdash; 74.1&nbsp;kgCO<sub>2</sub>/GJ for diesel.</li>
+          <li>Rajasthan retail high-speed-diesel price, August 2026 &mdash; &#8377;97.80/L. Pump price; treated as an upper bound.</li>
+          <li>ASTM D341, <em>Standard Practice for Viscosity-Temperature Charts for Liquid Petroleum Products</em>. &mdash; the Walther two-constant log-log viscosity&ndash;temperature form used by physics rev 5 (26 Sep), superseding the Andrade form above as the default.</li>
+        </ol>
+      </section>
+
+    </div>
+
+    <aside class="doc-rail" aria-label="Document control">
+      <div class="card">
+        <h3>Document control</h3>
+        <dl>
+          <div><dt>Document</dt><dd>Model basis</dd></div>
+          <div><dt>Project</dt><dd>PS SIH26120</dd></div>
+          <div><dt>Asset</dt><dd>BGW-07, Baghewala</dd></div>
+          <div><dt>Revision</dt><dd>2.5 (v4, physics rev 13)</dd></div>
+          <div><dt>Issued</dt><dd>27 Sep 2026</dd></div>
+          <div><dt>Issued by</dt><dd>Team SIH26120<br>MNIT Jaipur</dd></div>
+          <div><dt>Status</dt><dd><span class="tag warn">Demonstration</span></dd></div>
+        </dl>
+      </div>
+      <div class="card">
+        <h3>At a glance</h3>
+        <dl>
+          <div><dt>Physics models</dt><dd>4</dd></div>
+          <div><dt>Unit tests</dt><dd><span class="tag pass">263/265 (2 declared gaps)</span></dd></div>
+          <div><dt>Training cycles</dt><dd id="railN">600</dd></div>
+          <div><dt>Surrogate R&sup2; (net cash, env.)</dt><dd id="railR2">0.953</dd></div>
+          <div><dt>Surrogate MAE (net cash, env.)</dt><dd id="railMae">&plusmn;&#8377;1,205/cycle-day</dd></div>
+          <div><dt>Tuned constants</dt><dd>6</dd></div>
+          <div><dt>History match</dt><dd><span class="tag fail">none</span></dd></div>
+          <div><dt>Live SCADA</dt><dd><span class="tag fail">none</span></dd></div>
+        </dl>
+      </div>
+      <div class="card">
+        <h3>Related</h3>
+        <ul>
+          <li><a href="index.html" data-xlink="index.html">Cycle result &rarr;</a></li>
+          <li><a href="console.html" data-xlink="console.html">Twin console &rarr;</a></li>
+          <li><a href="optimizer.html" data-xlink="optimizer.html">Optimiser recommendation &rarr;</a></li>
+        </ul>
+        <p>Source tree: <code>twin/</code>, <code>ml/</code>, <code>params/</code>, <code>tests/</code>.
+           Every equation on this page maps to one named module.</p>
+      </div>
+    </aside>
+  </div>
+</main>

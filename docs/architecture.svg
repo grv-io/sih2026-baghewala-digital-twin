@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1200" height="700" fill="#0d1117"/>
+
+  <!-- Title -->
+  <text x="600" y="32" text-anchor="middle" font-size="24" font-weight="700" fill="#f59e0b">Baghewala CSS + SRP Digital Twin — System Architecture</text>
+  <text x="600" y="52" text-anchor="middle" font-size="14" fill="#8b949e">SIH26120 · Oil India · physics-to-dashboard data flow</text>
+
+  <!-- Box 1: Field Data / Synthetic Data -->
+  <rect x="130" y="65" width="870" height="115" rx="16" fill="#161b22" stroke="#f59e0b" stroke-width="2"/>
+  <text x="565" y="100" text-anchor="middle" font-size="20" font-weight="700" fill="#f59e0b">FIELD DATA / SYNTHETIC DATA</text>
+  <text x="565" y="130" text-anchor="middle" font-size="16" fill="#ffffff">Oil India Baghewala field logs  +  twin/generate_data.py — synthetic CSS cycles</text>
+  <text x="565" y="155" text-anchor="middle" font-size="14" fill="#8b949e">≥ 3000 rows, Latin-hypercube / random sampling, seed = 42</text>
+
+  <!-- Arrow 1 -->
+  <line x1="565" y1="180" x2="565" y2="214" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Box 2: Physics Engine -->
+  <rect x="130" y="215" width="870" height="115" rx="16" fill="#161b22" stroke="#f59e0b" stroke-width="2"/>
+  <text x="565" y="250" text-anchor="middle" font-size="20" font-weight="700" fill="#f59e0b">PHYSICS ENGINE</text>
+  <text x="565" y="280" text-anchor="middle" font-size="16" fill="#ffffff">Marx-Langenheim thermal  ·  Andrade viscosity  ·  Vogel IPR  ·  SRP dynamics</text>
+  <text x="565" y="305" text-anchor="middle" font-size="14" fill="#8b949e">twin/thermal.py · twin/viscosity.py · twin/ipr.py · twin/srp.py · twin/cycle.py</text>
+
+  <!-- Arrow 2 -->
+  <line x1="565" y1="330" x2="565" y2="364" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Box 3: ML Layer -->
+  <rect x="130" y="365" width="870" height="115" rx="16" fill="#161b22" stroke="#f59e0b" stroke-width="2"/>
+  <text x="565" y="400" text-anchor="middle" font-size="20" font-weight="700" fill="#f59e0b">ML LAYER</text>
+  <text x="565" y="430" text-anchor="middle" font-size="16" fill="#ffffff">SOR predictor  ·  floating-risk classifier  ·  Bayesian optimizer</text>
+  <text x="565" y="455" text-anchor="middle" font-size="14" fill="#8b949e">ml/train.py (XGBoost) · ml/optimize.py (scikit-optimize gp_minimize)</text>
+
+  <!-- Arrow 3 -->
+  <line x1="565" y1="480" x2="565" y2="514" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Box 4: Digital Twin Dashboard -->
+  <rect x="130" y="515" width="870" height="115" rx="16" fill="#161b22" stroke="#f59e0b" stroke-width="2"/>
+  <text x="565" y="550" text-anchor="middle" font-size="20" font-weight="700" fill="#f59e0b">DIGITAL TWIN DASHBOARD</text>
+  <text x="565" y="580" text-anchor="middle" font-size="16" fill="#ffffff">time-series  ·  dynamometer card  ·  floating-risk alerts  ·  recommendations</text>
+  <text x="565" y="605" text-anchor="middle" font-size="14" fill="#8b949e">dashboard/index.html (Plotly) — calls FastAPI /simulate  /optimize  /params</text>
+
+  <!-- Feedback loop: dashboard -> field data -->
+  <path d="M1000,573 H1050 Q1075,573 1075,548 V148 Q1075,123 1050,123 H1000"
+        fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+  <text x="1108" y="348" text-anchor="middle" font-size="16" font-weight="600" fill="#f59e0b"
+        transform="rotate(-90 1108 348)">recommended set-points → VFD / steam control</text>
+</svg>

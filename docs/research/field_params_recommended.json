@@ -1,0 +1,64 @@
+{
+  "reservoir": {
+    "T_initial_C": 50.0,
+    "P_initial_kPa": 11400,
+    "depth_m": 1150,
+    "thickness_m": 12.0,
+    "porosity": 0.09,
+    "k_thermal_W_mK": 2.5,
+    "rock_heat_capacity_Jm3K": 2.3e6
+  },
+  "fluid": {
+    "api_gravity": 15.5,
+    "mu_ref_cP": 11500.0,
+    "T_ref_C": 50.0,
+    "andrade_A": 1.164e-6,
+    "andrade_B_K": 7436.6,
+    "bubble_point_kPa": 3000
+  },
+  "steam": {
+    "quality": 0.65,
+    "T_injection_C": 290.0,
+    "latent_heat_Jkg": 1.3e6,
+    "injection_rate_tpd": 74.0
+  },
+  "srp": {
+    "stroke_m": 3.0,
+    "spm_range": [4, 12],
+    "rod_length_m": 1150,
+    "plunger_d_m": 0.057,
+    "rod_mass_kgm": 3.8
+  },
+  "css": {
+    "steam_volume_t_range": [500, 3000],
+    "soak_days_range": [3, 15],
+    "cutoff_rate_m3d_range": [1, 8]
+  },
+  "_sources": {
+    "reservoir.T_initial_C": "CONFIRMED: bottom-hole temperature ~50C for Jodhpur Sandstone, Baghewala. Source: OIL internal presentation 'Baghewala PPT, Oil India Limited, 12.07.2025' (slideshare.net/slideshow/baghewala-ppt-oil-india-limited-12-07-2025-pptx/282258575). Was 47.0 in spec default.",
+    "reservoir.P_initial_kPa": "CONFIRMED: reservoir pressure ~116 kgf/cm2 = ~11,376 kPa (rounded 11400). Same OIL PPT source. Cross-check: 116 kgf/cm2 / 1150 m depth = ~0.101 kgf/cm2/m, i.e. close to a hydrostatic gradient, which is a good internal consistency check. Was 6000 in spec default.",
+    "reservoir.depth_m": "CONFIRMED: average depth of Jodhpur Sandstone (primary producing zone) is ~1100-1150 m. Sources: oil-india.com/rajasthan-fields; SPE-23APOG-535203 (onepetro.org, 'Case Study for Enhancement of Production of Heavy and Highly Viscous Crude Oil Using Electrical Downhole Heater', 2023); OIL internal PPT. Was 500 in spec default (placeholder, not supported by any source found).",
+    "reservoir.porosity": "CONFIRMED (as an upper bound): Jodhpur sandstone has porosity <10%. Set to 0.09 as a representative point estimate. Source: Basha et al., 'Rock physics modeling and simultaneous inversion to map heavy-oil bearing sands in Baghewala area, Bikaner-Nagaur basin, India', GEOHORIZONS Jan 2015 (spgindia.org). Was 0.28 in spec default -- not supported.",
+    "reservoir.thickness_m": "NOT FOUND / TYPICAL: no Baghewala-specific net-pay thickness located in any source searched. Kept spec default (12.0 m) unchanged as an unconfirmed placeholder.",
+    "reservoir.k_thermal_W_mK": "TYPICAL: no field-specific value found; kept spec default (2.5 W/mK), which is within the standard literature range for sandstone (2-3 W/mK).",
+    "reservoir.rock_heat_capacity_Jm3K": "TYPICAL: no field-specific value found; kept spec default (2.3e6 J/m3K), within standard sandstone literature range (2.0-2.5e6).",
+    "fluid.api_gravity": "CONFIRMED: current producing crude from Jodhpur Sandstone is 14-17 API (two independent sources agree); set to midpoint 15.5. Note the original 1991 discovery-test API at well Baghewala-1 was ~19.5-20 API (much lighter than current production), and some secondary sources cite a broader 14-18 range. Sources: SPE-23APOG-535203; OIL internal PPT; GEOHORIZONS Jan 2015. Was 18.0 in spec default -- close to the discovery value but not the current producing-zone value.",
+    "fluid.mu_ref_cP": "CONFIRMED: viscosity of Jodhpur Sandstone crude is 10,000-13,000 cP at 50C per OIL internal PPT, and a wider 8,000-15,000 cP at 50C per SPE-23APOG-535203. Set to 11,500 cP (midpoint of the tighter, more specific PPT range). Was 2000.0 in spec default -- off by roughly 5x from confirmed field data; this is the single most important correction in this file.",
+    "fluid.T_ref_C": "CONFIRMED: matches the 50C bottom-hole temperature at which the viscosity anchor above was measured/reported. Was 47.0 in spec default (close, kept aligned with T_initial_C).",
+    "fluid.andrade_A": "FITTED, not directly confirmed. Derived by solving mu = A*exp(B/T_K) using two anchor points: (1) CONFIRMED mu_ref_cP=11500 at T_ref_C=50 (323.15 K); (2) ASSUMPTION high-temperature anchor of 50 cP at 150C (423.15K), per the SPEC's own suggested fallback assumption since no Baghewala high-T viscosity measurement was found. Result: A=1.164e-6, B_K=7436.6. ASSUMPTION: the true high-T viscosity of Baghewala crude was not found in any source; if the team measures/finds a real high-T data point, refit both andrade_A and andrade_B_K from it plus the confirmed 50C anchor instead of using the 150C/50cP assumption.",
+    "fluid.andrade_B_K": "FITTED -- see fluid.andrade_A note. Was null in spec default (to be filled by research agent, as instructed).",
+    "fluid.bubble_point_kPa": "TYPICAL: not found; kept spec default (3000 kPa) unchanged.",
+    "steam.quality": "CONFIRMED: first CSS cycle at well BGW-08 used steam quality of 60-70%. Set to 0.65 (midpoint). Source: OIL internal PPT. Was 0.75 in spec default -- slightly high vs. confirmed field practice.",
+    "steam.T_injection_C": "CONFIRMED: BGW-08 first cycle steam temperature was 280-305C (steam pressure 85-97 kgf/cm2, consistent with saturated steam at that T/P). Set to 290.0 (near midpoint). Source: OIL internal PPT. Was 250.0 in spec default -- somewhat low vs. confirmed field practice.",
+    "steam.latent_heat_Jkg": "CALCULATED (not directly measured at Baghewala): standard steam tables give latent heat of vaporization ~1.25-1.35e6 J/kg for saturated steam at ~8.5-9.7 MPa (matching the confirmed 85-97 kgf/cm2 injection pressure), versus ~1.7e6 J/kg at the spec's original assumed ~250C/4 MPa condition. Set to 1.3e6 J/kg to be consistent with the CONFIRMED higher injection pressure/temperature above. Was 1.7e6 in spec default.",
+    "steam.injection_rate_tpd": "CONFIRMED: BGW-08 first cycle steam injection rate was ~3100 kg/hr = ~74.4 tonnes/day. Set to 74.0. Source: OIL internal PPT. Was 100 in spec default (same order of magnitude, no strong reason it was wrong, but 74 t/d is the actual reported value for one real cycle).",
+    "srp.stroke_m": "TYPICAL: no Baghewala-specific SRP mechanical spec found; kept spec default (3.0 m), which is a common stroke length for medium-depth SRP installations.",
+    "srp.spm_range": "TYPICAL: kept spec default [4,12]; low-to-moderate SPM is standard practice for viscous/heavy-oil SRP wells to limit rod/tubing wear and fluid pound, consistent with this range.",
+    "srp.rod_length_m": "CONFIRMED (by association): updated from 500 to 1150 to match the CONFIRMED Baghewala well/pump depth (see reservoir.depth_m) -- rod string length in a sucker-rod installation is set by pump setting depth, which is close to reservoir depth for these wells. Sources: oil-india.com/rajasthan-fields (confirms SRP is the artificial lift method used); OIL internal PPT.",
+    "srp.plunger_d_m": "TYPICAL: no Baghewala-specific value found; kept spec default (0.057 m, ~2.25in), a common plunger size for this depth/rate class.",
+    "srp.rod_mass_kgm": "TYPICAL: no Baghewala-specific value found; kept spec default (3.8 kg/m). Note: this is on the heavy side for standard 7/8-1in API steel sucker rods (typical linear mass for those sizes is roughly 2.0-2.7 kg/m per general oilfield references), so 3.8 kg/m likely represents a larger (~1-1/8 to 1-1/4in) rod or includes coupling weight; could not verify an exact API 11B weight table this session (source site blocked the fetch). Flagged for the SRP-module owner to sanity check if precise rod-grade fidelity matters.",
+    "css.steam_volume_t_range": "TYPICAL (kept default), CONFIRMED subset noted: BGW-08 first cycle injected an estimated ~1040-1560 tonnes total (3100 kg/hr x 24h x 14-21 days), which falls comfortably inside the default [500,3000] sampling range, so range kept unchanged.",
+    "css.soak_days_range": "TYPICAL (kept default), CONFIRMED subset noted: BGW-08 soak period was 50-60% of a 14-21 day injection, i.e. ~7-13 days, which falls inside the default [3,15] sampling range, so range kept unchanged.",
+    "css.cutoff_rate_m3d_range": "TYPICAL: not found; kept spec default [1,8] unchanged."
+  }
+}

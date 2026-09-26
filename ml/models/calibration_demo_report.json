@@ -1,0 +1,719 @@
+{
+  "hidden_truth": {
+    "bl_delta_factor": 0.5,
+    "formation_water_cut": 0.38,
+    "thickness_m": 15.0,
+    "aof_ref_m3d": 0.65
+  },
+  "recovered_vs_truth": [
+    {
+      "param": "bl_delta_factor",
+      "truth": 0.5,
+      "fitted": 0.5,
+      "free": false,
+      "pct_error": 0.0
+    },
+    {
+      "param": "formation_water_cut",
+      "truth": 0.38,
+      "fitted": 0.36020994859999417,
+      "free": true,
+      "pct_error": -5.207908263159431
+    },
+    {
+      "param": "thickness_m",
+      "truth": 15.0,
+      "fitted": 13.371872885725733,
+      "free": true,
+      "pct_error": -10.854180761828449
+    },
+    {
+      "param": "aof_ref_m3d",
+      "truth": 0.65,
+      "fitted": 0.6439776531534391,
+      "free": true,
+      "pct_error": -0.9265148994709059
+    }
+  ],
+  "fitted_params": {
+    "formation_water_cut": 0.36020994859999417,
+    "aof_ref_m3d": 0.6439776531534391,
+    "thickness_m": 13.371872885725733
+  },
+  "bounds": {
+    "formation_water_cut": [
+      0.3,
+      0.6
+    ],
+    "aof_ref_m3d": [
+      0.3,
+      0.9
+    ],
+    "thickness_m": [
+      8.0,
+      20.0
+    ]
+  },
+  "rmse": {
+    "oil_m3_pct": 2.945306647399237,
+    "produce_days_pct": 4.795748544336921,
+    "peak_oil_m3d_pct": 5.659938230903442
+  },
+  "residual_table": [
+    {
+      "well_id": "BGW-D1",
+      "steam_t": 1200.0,
+      "soak_days": 7.0,
+      "cutoff_m3d_assumed": 0.9,
+      "spm": 4.5,
+      "obs_oil_m3": 396.47,
+      "sim_oil_m3": 388.6368438333205,
+      "oil_m3_pct_error": -1.9757248131458984,
+      "obs_produce_days": 185.4,
+      "sim_produce_days": 190.21621621621622,
+      "produce_days_pct_error": 2.597743374442405,
+      "obs_peak_oil_m3d": 2.719,
+      "sim_peak_oil_m3d": 2.599543515076734,
+      "peak_oil_m3d_pct_error": -4.393397753705995,
+      "obs_sor": 3.0267,
+      "sim_sor": 3.0877154830813183
+    },
+    {
+      "well_id": "BGW-D1",
+      "steam_t": 1500.0,
+      "soak_days": 10.0,
+      "cutoff_m3d_assumed": 0.85,
+      "spm": 5.0,
+      "obs_oil_m3": 443.93,
+      "sim_oil_m3": 435.8545399365775,
+      "oil_m3_pct_error": -1.8190841041205814,
+      "obs_produce_days": 193.8,
+      "sim_produce_days": 208.27027027027026,
+      "produce_days_pct_error": 7.466599726661634,
+      "obs_peak_oil_m3d": 2.868,
+      "sim_peak_oil_m3d": 2.695379937429146,
+      "peak_oil_m3d_pct_error": -6.018830633572317,
+      "obs_sor": 3.3789,
+      "sim_sor": 3.441515144521081
+    },
+    {
+      "well_id": "BGW-D1",
+      "steam_t": 1800.0,
+      "soak_days": 12.0,
+      "cutoff_m3d_assumed": 0.75,
+      "spm": 5.5,
+      "obs_oil_m3": 486.38,
+      "sim_oil_m3": 470.69580337047904,
+      "oil_m3_pct_error": -3.224679598158015,
+      "obs_produce_days": 230.4,
+      "sim_produce_days": 220.32432432432432,
+      "produce_days_pct_error": -4.3731231231231265,
+      "obs_peak_oil_m3d": 2.587,
+      "sim_peak_oil_m3d": 2.7834341129315567,
+      "peak_oil_m3d_pct_error": 7.593123808718846,
+      "obs_sor": 3.7008,
+      "sim_sor": 3.8241258730391556
+    },
+    {
+      "well_id": "BGW-D2",
+      "steam_t": 1000.0,
+      "soak_days": 8.0,
+      "cutoff_m3d_assumed": 1.0,
+      "spm": 4.0,
+      "obs_oil_m3": 341.12,
+      "sim_oil_m3": 353.82936336488774,
+      "oil_m3_pct_error": 3.725774907624219,
+      "obs_produce_days": 172.9,
+      "sim_produce_days": 180.51351351351352,
+      "produce_days_pct_error": 4.403420192893875,
+      "obs_peak_oil_m3d": 2.651,
+      "sim_peak_oil_m3d": 2.5071467052911585,
+      "peak_oil_m3d_pct_error": -5.426378525418384,
+      "obs_sor": 2.9315,
+      "sim_sor": 2.8262210645551953
+    },
+    {
+      "well_id": "BGW-D2",
+      "steam_t": 1600.0,
+      "soak_days": 9.0,
+      "cutoff_m3d_assumed": 0.8,
+      "spm": 5.0,
+      "obs_oil_m3": 461.08,
+      "sim_oil_m3": 454.27359115369643,
+      "oil_m3_pct_error": -1.47618826370772,
+      "obs_produce_days": 224.7,
+      "sim_produce_days": 213.6216216216216,
+      "produce_days_pct_error": -4.930297453661939,
+      "obs_peak_oil_m3d": 2.68,
+      "sim_peak_oil_m3d": 2.735588541643667,
+      "peak_oil_m3d_pct_error": 2.0741993150622013,
+      "obs_sor": 3.4701,
+      "sim_sor": 3.5221065700441847
+    },
+    {
+      "well_id": "BGW-D2",
+      "steam_t": 2000.0,
+      "soak_days": 11.0,
+      "cutoff_m3d_assumed": 0.7,
+      "spm": 5.5,
+      "obs_oil_m3": 478.74,
+      "sim_oil_m3": 500.10606057796895,
+      "oil_m3_pct_error": 4.462977937496123,
+      "obs_produce_days": 233.0,
+      "sim_produce_days": 229.02702702702703,
+      "produce_days_pct_error": -1.7051386150098577,
+      "obs_peak_oil_m3d": 2.618,
+      "sim_peak_oil_m3d": 2.849264018523036,
+      "peak_oil_m3d_pct_error": 8.833614152904351,
+      "obs_sor": 4.1776,
+      "sim_sor": 3.999151695319618
+    },
+    {
+      "well_id": "BGW-D3",
+      "steam_t": 1300.0,
+      "soak_days": 10.0,
+      "cutoff_m3d_assumed": 0.9,
+      "spm": 4.5,
+      "obs_oil_m3": 424.81,
+      "sim_oil_m3": 412.6401312143182,
+      "oil_m3_pct_error": -2.8647792626543125,
+      "obs_produce_days": 203.8,
+      "sim_produce_days": 202.56756756756755,
+      "produce_days_pct_error": -0.6047264143437,
+      "obs_peak_oil_m3d": 2.7,
+      "sim_peak_oil_m3d": 2.621876395773294,
+      "peak_oil_m3d_pct_error": -2.893466823211339,
+      "obs_sor": 3.0602,
+      "sim_sor": 3.150444907465392
+    },
+    {
+      "well_id": "BGW-D3",
+      "steam_t": 1900.0,
+      "soak_days": 13.0,
+      "cutoff_m3d_assumed": 0.75,
+      "spm": 6.0,
+      "obs_oil_m3": 451.22,
+      "sim_oil_m3": 463.66080984292705,
+      "oil_m3_pct_error": 2.7571494709735878,
+      "obs_produce_days": 234.1,
+      "sim_produce_days": 216.67567567567568,
+      "produce_days_pct_error": -7.44311162935682,
+      "obs_peak_oil_m3d": 2.95,
+      "sim_peak_oil_m3d": 2.808699511079086,
+      "peak_oil_m3d_pct_error": -4.789847082064887,
+      "obs_sor": 4.2108,
+      "sim_sor": 4.097823149305324
+    }
+  ],
+  "identifiability": {
+    "free_params": [
+      "formation_water_cut",
+      "aof_ref_m3d",
+      "thickness_m"
+    ],
+    "at_bound": [],
+    "correlated_pairs": [
+      {
+        "params": [
+          "formation_water_cut",
+          "aof_ref_m3d"
+        ],
+        "correlation": 0.9773503689576066
+      },
+      {
+        "params": [
+          "formation_water_cut",
+          "thickness_m"
+        ],
+        "correlation": 0.9704797524177656
+      },
+      {
+        "params": [
+          "aof_ref_m3d",
+          "thickness_m"
+        ],
+        "correlation": 0.998718361701895
+      }
+    ],
+    "correlation_matrix": [
+      [
+        1.0,
+        0.9773503689576066,
+        0.9704797524177656
+      ],
+      [
+        0.9773503689576065,
+        0.9999999999999998,
+        0.998718361701895
+      ],
+      [
+        0.970479752417767,
+        0.9987183617018952,
+        1.0000000000000002
+      ]
+    ],
+    "known_couplings": [],
+    "note": "With only oil_m3/produce_days per cycle (no downhole temperature or pressure log), parameters that act through the same physical channel (e.g. aof_ref_m3d and thickness_m both scale what the heated zone delivers) can trade off against each other. 'correlated_pairs' lists any pair with |correlation| >= 0.8 in the Jacobian-implied covariance at the solution; 'at_bound' lists any fitted value the data pushed to (or within 1% of) its bound, which means the data wants to go further than the bound allows and the value is not really identified by this dataset."
+  },
+  "n_cycles": 8,
+  "recommendation_before_calibration": {
+    "aggressive": {
+      "fi_max": 0.6,
+      "fi_alarm_line": 0.6,
+      "feasible_point_found": true,
+      "best_settings": {
+        "steam_t": 857.1428571428571,
+        "soak_days": 10.0,
+        "cutoff_m3d": 0.6,
+        "spm": 3.0
+      },
+      "physics_verified_optimum": {
+        "SOR_t_per_m3": 3.3046858614124788,
+        "oil_total_m3": 259.3719624462277,
+        "days_total": 158.58301158301157,
+        "margin_inr": 2180104.848411925,
+        "margin_inr_per_cycle_day": 13747.404760759833,
+        "SOR_incremental": 3.3046858614124788,
+        "oil_incremental_m3": 259.3719624462277,
+        "margin_with_opex_inr_per_cycle_day": 7868.026513589842,
+        "margin_incremental_inr": 1255603.3662536498,
+        "margin_incremental_inr_per_cycle_day": 7868.026513589842,
+        "max_floating_index": 0.6249977391656664,
+        "steam_cost_inr": 6095246.12736661,
+        "co2_t": 191.81314285714285,
+        "failures_expected": 3,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 3
+      },
+      "objective_value": 7868.026513589842,
+      "objective_given_up_vs_aggressive": 0.0
+    },
+    "conservative": {
+      "fi_max": 0.5,
+      "fi_alarm_line": 0.5,
+      "feasible_point_found": true,
+      "best_settings": {
+        "steam_t": 678.5714285714286,
+        "soak_days": 10.0,
+        "cutoff_m3d": 0.6,
+        "spm": 3.0
+      },
+      "physics_verified_optimum": {
+        "SOR_t_per_m3": 3.319396973597005,
+        "oil_total_m3": 204.42611533627652,
+        "days_total": 129.16988416988417,
+        "margin_inr": 1379118.951458334,
+        "margin_inr_per_cycle_day": 10676.783991263144,
+        "SOR_incremental": 3.319396973597005,
+        "oil_incremental_m3": 204.42611533627652,
+        "margin_with_opex_inr_per_cycle_day": 4886.1540954002385,
+        "margin_incremental_inr": 636030.1126344542,
+        "margin_incremental_inr_per_cycle_day": 4886.1540954002385,
+        "max_floating_index": 0.5239433924958332,
+        "steam_cost_inr": 4825403.184165233,
+        "co2_t": 151.8520714285714,
+        "failures_expected": 0,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 0
+      },
+      "objective_value": 4886.1540954002385,
+      "objective_given_up_vs_aggressive": 2981.872418189603
+    },
+    "fi_levels": {
+      "aggressive": 0.6,
+      "conservative": 0.5
+    },
+    "method": "Grid search directly on twin.cycle.simulate_css_cycle + summary (steam_t x cutoff_m3d x spm); no ML surrogate used. soak_days held fixed.",
+    "objective": "margin_incremental_inr_per_cycle_day",
+    "grid_shape": {
+      "steam_t": 15,
+      "cutoff_m3d": 15,
+      "spm": 7
+    },
+    "n_grid_points_evaluated": 1575,
+    "best_settings": {
+      "steam_t": 857.1428571428571,
+      "soak_days": 10.0,
+      "cutoff_m3d": 0.6,
+      "spm": 3.0
+    },
+    "fixed_variables": {
+      "soak_days": 10.0
+    },
+    "pinned_variables": {
+      "cutoff_m3d": "lower",
+      "spm": "lower"
+    },
+    "pinned_variables_note": "Variables within 2% of a search-range bound. An optimum on a bound is a statement about the search box, not necessarily about the field.",
+    "feasible_point_found": true,
+    "produce_end_rule": "either",
+    "feasibility_note": "rev 12: under the float-onset / 'either' produce-end rule the aggressive level requires float-alarm days (FI > 0.6) <= css.fi_alarm_days (FI may cross the line only on the days that trigger the pull); the conservative level, and every level under the rate-cutoff rule (rev <= 11): summary()['max_floating_index'] <= 0.6 at the grid point -- the same raw-physics threshold the ML classifier's own training label uses (ml/train.py: (max_floating_index > 0.6) OR (alarm_days > 0)), used directly here because the trained classifier does not match a recalibrated params tree.",
+    "warning": null,
+    "physics_verified_optimum": {
+      "SOR_t_per_m3": 3.3046858614124788,
+      "oil_total_m3": 259.3719624462277,
+      "days_total": 158.58301158301157,
+      "margin_inr": 2180104.848411925,
+      "margin_inr_per_cycle_day": 13747.404760759833,
+      "SOR_incremental": 3.3046858614124788,
+      "oil_incremental_m3": 259.3719624462277,
+      "margin_with_opex_inr_per_cycle_day": 7868.026513589842,
+      "margin_incremental_inr": 1255603.3662536498,
+      "margin_incremental_inr_per_cycle_day": 7868.026513589842,
+      "max_floating_index": 0.6249977391656664,
+      "steam_cost_inr": 6095246.12736661,
+      "co2_t": 191.81314285714285,
+      "failures_expected": 3,
+      "produce_end_reason": "float_onset",
+      "float_policy": "pull",
+      "cold_status": "shut_in_float",
+      "injection_margin_kPa": 721.1427757636557,
+      "injection_ok": true,
+      "alarm_days": 0,
+      "float_alarm_days": 3
+    },
+    "baseline_param_midpoint": {
+      "settings": {
+        "steam_t": 1750.0,
+        "cutoff_m3d": 1.3,
+        "spm": 4.5,
+        "soak_days": 10.0
+      },
+      "physics_verified": {
+        "SOR_t_per_m3": 4.538214223134136,
+        "oil_total_m3": 385.61423369552455,
+        "days_total": 204.64864864864865,
+        "margin_inr": 588777.2139632627,
+        "margin_inr_per_cycle_day": 2877.0149123931224,
+        "SOR_incremental": 4.538214223134136,
+        "oil_incremental_m3": 385.61423369552455,
+        "margin_with_opex_inr_per_cycle_day": -3007.025212338227,
+        "margin_incremental_inr": -618390.6713697722,
+        "margin_incremental_inr_per_cycle_day": -3007.025212338227,
+        "max_floating_index": 0.6326324506304427,
+        "steam_cost_inr": 12444460.843373496,
+        "co2_t": 391.6184999999999,
+        "failures_expected": 3,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 3
+      }
+    },
+    "vs_baseline_param_midpoint": {
+      "SOR_pct_change": -27.180919654113865,
+      "margin_inr_per_cycle_day_pct_change": 377.83571442542996,
+      "margin_incremental_inr_per_cycle_day_delta": 10875.051725928068,
+      "note": "% change of the physics-verified optimum vs this physics-verified baseline; negative SOR_pct_change = lower (better) SOR."
+    },
+    "baseline_published_practice": {
+      "settings": {
+        "steam_t": 1300.0,
+        "soak_days": 10.0,
+        "cutoff_m3d": 1.3,
+        "spm": 5.0,
+        "p_wellhead_kgf_cm2": 91.0,
+        "stroke_in": 86.0,
+        "float_policy": "vfd_hold"
+      },
+      "physics_verified": {
+        "SOR_t_per_m3": 4.35144940955816,
+        "oil_total_m3": 298.75103158604804,
+        "days_total": 166.56756756756755,
+        "margin_inr": 515034.03156757914,
+        "margin_inr_per_cycle_day": 3092.042701281913,
+        "SOR_incremental": 4.35144940955816,
+        "oil_incremental_m3": 298.75103158604804,
+        "margin_with_opex_inr_per_cycle_day": -2893.795810369296,
+        "margin_incremental_inr": -484906.32498080085,
+        "margin_incremental_inr_per_cycle_day": -2893.795810369296,
+        "max_floating_index": 0.6342829511413121,
+        "steam_cost_inr": 9244456.626506025,
+        "co2_t": 290.91659999999996,
+        "failures_expected": 3,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 3
+      },
+      "source": "docs/research/baghewala_facts.md section 4, BGW-8 first CSS cycle (Dec 2018): injection rate ~3,100 kg/hr (~74.4 t/d) x 14-21 d injection -> ~1,040-1,560 t steam (1,300 t used as midpoint); soak 50-60% of the injection length (~7-13 d, 10 d used); cutoff not published, params-range midpoint used; spm not published, 5.0 (typical heavy-oil mid-practice) used.",
+      "warning": "Derived from one published first-cycle job, not OIL's current operating practice."
+    },
+    "vs_baseline_published_practice": {
+      "SOR_pct_change": -24.055514602707248,
+      "margin_inr_per_cycle_day_pct_change": 344.605915534749,
+      "margin_incremental_inr_per_cycle_day_delta": 10761.822323959137,
+      "note": "% change of the physics-verified optimum vs this physics-verified baseline; negative SOR_pct_change = lower (better) SOR."
+    },
+    "search_ranges": {
+      "steam_t": [
+        500,
+        3000
+      ],
+      "cutoff_m3d": [
+        0.6,
+        2.0
+      ],
+      "spm": [
+        3,
+        6
+      ]
+    },
+    "controls_coverage": {
+      "steam_volume": "optimised",
+      "injection_pressure": "modelled-fixed",
+      "soak": "modelled-fixed",
+      "cutoff": "optimised",
+      "stroke_length": "modelled-fixed",
+      "spm": "optimised",
+      "vfd": "modelled-as-spm-schedule"
+    },
+    "controls_coverage_note": "VFD = the SPM set-point over the cycle: the twin's declining SPM schedule (start speed = the 'spm' lever, lowered daily to the rods' fall-velocity limit, 2-spm floor) is what a VFD executes; the intra-stroke speed profile is out of scope. Soak is simulated but held at the 10-d practice value (no meaningful interior optimum, TIER1_PROGRESS_LOG 5b/7.4). This 3-D search holds pressure and stroke at params; best_settings_physics_5d optimises them."
+  },
+  "recommendation_after_calibration": {
+    "aggressive": {
+      "fi_max": 0.6,
+      "fi_alarm_line": 0.6,
+      "feasible_point_found": true,
+      "best_settings": {
+        "steam_t": 1214.2857142857142,
+        "soak_days": 10.0,
+        "cutoff_m3d": 0.6,
+        "spm": 3.0
+      },
+      "physics_verified_optimum": {
+        "SOR_t_per_m3": 2.7068651927465655,
+        "oil_total_m3": 448.5948238351756,
+        "days_total": 232.40926640926642,
+        "margin_inr": 6771952.629999736,
+        "margin_inr_per_cycle_day": 29138.049160546427,
+        "SOR_incremental": 2.7068651927465655,
+        "oil_incremental_m3": 448.5948238351756,
+        "margin_with_opex_inr_per_cycle_day": 23124.146134735398,
+        "margin_incremental_inr": 5397389.985649263,
+        "margin_incremental_inr_per_cycle_day": 23124.146134735398,
+        "max_floating_index": 0.6224098853118567,
+        "steam_cost_inr": 8634932.013769364,
+        "co2_t": 271.7352857142857,
+        "failures_expected": 3,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 3
+      },
+      "objective_value": 23124.146134735398,
+      "objective_given_up_vs_aggressive": 0.0
+    },
+    "conservative": {
+      "fi_max": 0.5,
+      "fi_alarm_line": 0.5,
+      "feasible_point_found": true,
+      "best_settings": {
+        "steam_t": 1035.7142857142858,
+        "soak_days": 10.0,
+        "cutoff_m3d": 0.6,
+        "spm": 3.0
+      },
+      "physics_verified_optimum": {
+        "SOR_t_per_m3": 2.7437112592121036,
+        "oil_total_m3": 377.4866186217081,
+        "days_total": 197.996138996139,
+        "margin_inr": 5361831.028600663,
+        "margin_inr_per_cycle_day": 27080.482759844224,
+        "SOR_incremental": 2.7437112592121036,
+        "oil_incremental_m3": 377.4866186217081,
+        "margin_with_opex_inr_per_cycle_day": 21143.44941393637,
+        "margin_incremental_inr": 4207464.798433515,
+        "margin_incremental_inr_per_cycle_day": 21143.44941393637,
+        "max_floating_index": 0.5179967226975346,
+        "steam_cost_inr": 7365089.070567988,
+        "co2_t": 231.7742142857143,
+        "failures_expected": 0,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 0
+      },
+      "objective_value": 21143.44941393637,
+      "objective_given_up_vs_aggressive": 1980.6967207990274
+    },
+    "fi_levels": {
+      "aggressive": 0.6,
+      "conservative": 0.5
+    },
+    "method": "Grid search directly on twin.cycle.simulate_css_cycle + summary (steam_t x cutoff_m3d x spm); no ML surrogate used. soak_days held fixed.",
+    "objective": "margin_incremental_inr_per_cycle_day",
+    "grid_shape": {
+      "steam_t": 15,
+      "cutoff_m3d": 15,
+      "spm": 7
+    },
+    "n_grid_points_evaluated": 1575,
+    "best_settings": {
+      "steam_t": 1214.2857142857142,
+      "soak_days": 10.0,
+      "cutoff_m3d": 0.6,
+      "spm": 3.0
+    },
+    "fixed_variables": {
+      "soak_days": 10.0
+    },
+    "pinned_variables": {
+      "cutoff_m3d": "lower",
+      "spm": "lower"
+    },
+    "pinned_variables_note": "Variables within 2% of a search-range bound. An optimum on a bound is a statement about the search box, not necessarily about the field.",
+    "feasible_point_found": true,
+    "produce_end_rule": "either",
+    "feasibility_note": "rev 12: under the float-onset / 'either' produce-end rule the aggressive level requires float-alarm days (FI > 0.6) <= css.fi_alarm_days (FI may cross the line only on the days that trigger the pull); the conservative level, and every level under the rate-cutoff rule (rev <= 11): summary()['max_floating_index'] <= 0.6 at the grid point -- the same raw-physics threshold the ML classifier's own training label uses (ml/train.py: (max_floating_index > 0.6) OR (alarm_days > 0)), used directly here because the trained classifier does not match a recalibrated params tree.",
+    "warning": null,
+    "physics_verified_optimum": {
+      "SOR_t_per_m3": 2.7068651927465655,
+      "oil_total_m3": 448.5948238351756,
+      "days_total": 232.40926640926642,
+      "margin_inr": 6771952.629999736,
+      "margin_inr_per_cycle_day": 29138.049160546427,
+      "SOR_incremental": 2.7068651927465655,
+      "oil_incremental_m3": 448.5948238351756,
+      "margin_with_opex_inr_per_cycle_day": 23124.146134735398,
+      "margin_incremental_inr": 5397389.985649263,
+      "margin_incremental_inr_per_cycle_day": 23124.146134735398,
+      "max_floating_index": 0.6224098853118567,
+      "steam_cost_inr": 8634932.013769364,
+      "co2_t": 271.7352857142857,
+      "failures_expected": 3,
+      "produce_end_reason": "float_onset",
+      "float_policy": "pull",
+      "cold_status": "shut_in_float",
+      "injection_margin_kPa": 721.1427757636557,
+      "injection_ok": true,
+      "alarm_days": 0,
+      "float_alarm_days": 3
+    },
+    "baseline_param_midpoint": {
+      "settings": {
+        "steam_t": 1750.0,
+        "cutoff_m3d": 1.3,
+        "spm": 4.5,
+        "soak_days": 10.0
+      },
+      "physics_verified": {
+        "SOR_t_per_m3": 3.4631109155294397,
+        "oil_total_m3": 505.3260038979896,
+        "days_total": 235.64864864864865,
+        "margin_inr": 5100539.235671569,
+        "margin_inr_per_cycle_day": 21644.678486047487,
+        "SOR_incremental": 3.4631109155294397,
+        "oil_incremental_m3": 505.3260038979896,
+        "margin_with_opex_inr_per_cycle_day": 15337.64062327369,
+        "margin_incremental_inr": 3629631.926956336,
+        "margin_incremental_inr_per_cycle_day": 15337.64062327369,
+        "max_floating_index": 0.6168561792053481,
+        "steam_cost_inr": 12444460.843373496,
+        "co2_t": 391.6184999999999,
+        "failures_expected": 3,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 3
+      }
+    },
+    "vs_baseline_param_midpoint": {
+      "SOR_pct_change": -21.837178803360953,
+      "margin_inr_per_cycle_day_pct_change": 34.6199213785009,
+      "margin_incremental_inr_per_cycle_day_delta": 7786.505511461708,
+      "note": "% change of the physics-verified optimum vs this physics-verified baseline; negative SOR_pct_change = lower (better) SOR."
+    },
+    "baseline_published_practice": {
+      "settings": {
+        "steam_t": 1300.0,
+        "soak_days": 10.0,
+        "cutoff_m3d": 1.3,
+        "spm": 5.0,
+        "p_wellhead_kgf_cm2": 91.0,
+        "stroke_in": 86.0,
+        "float_policy": "vfd_hold"
+      },
+      "physics_verified": {
+        "SOR_t_per_m3": 3.289014590359371,
+        "oil_total_m3": 395.255163601435,
+        "days_total": 193.56756756756755,
+        "margin_inr": 4152134.0178810507,
+        "margin_inr_per_cycle_day": 21450.566693884233,
+        "SOR_incremental": 3.289014590359371,
+        "oil_incremental_m3": 395.255163601435,
+        "margin_with_opex_inr_per_cycle_day": 14992.902115839759,
+        "margin_incremental_inr": 2917132.495457579,
+        "margin_incremental_inr_per_cycle_day": 14992.902115839759,
+        "max_floating_index": 0.6164012286704506,
+        "steam_cost_inr": 9244456.626506025,
+        "co2_t": 290.91659999999996,
+        "failures_expected": 3,
+        "produce_end_reason": "float_onset",
+        "float_policy": "pull",
+        "cold_status": "shut_in_float",
+        "injection_margin_kPa": 721.1427757636557,
+        "injection_ok": true,
+        "alarm_days": 0,
+        "float_alarm_days": 3
+      },
+      "source": "docs/research/baghewala_facts.md section 4, BGW-8 first CSS cycle (Dec 2018): injection rate ~3,100 kg/hr (~74.4 t/d) x 14-21 d injection -> ~1,040-1,560 t steam (1,300 t used as midpoint); soak 50-60% of the injection length (~7-13 d, 10 d used); cutoff not published, params-range midpoint used; spm not published, 5.0 (typical heavy-oil mid-practice) used.",
+      "warning": "Derived from one published first-cycle job, not OIL's current operating practice."
+    },
+    "vs_baseline_published_practice": {
+      "SOR_pct_change": -17.699811953378948,
+      "margin_inr_per_cycle_day_pct_change": 35.838132280458446,
+      "margin_incremental_inr_per_cycle_day_delta": 8131.244018895639,
+      "note": "% change of the physics-verified optimum vs this physics-verified baseline; negative SOR_pct_change = lower (better) SOR."
+    },
+    "search_ranges": {
+      "steam_t": [
+        500,
+        3000
+      ],
+      "cutoff_m3d": [
+        0.6,
+        2.0
+      ],
+      "spm": [
+        3,
+        6
+      ]
+    },
+    "controls_coverage": {
+      "steam_volume": "optimised",
+      "injection_pressure": "modelled-fixed",
+      "soak": "modelled-fixed",
+      "cutoff": "optimised",
+      "stroke_length": "modelled-fixed",
+      "spm": "optimised",
+      "vfd": "modelled-as-spm-schedule"
+    },
+    "controls_coverage_note": "VFD = the SPM set-point over the cycle: the twin's declining SPM schedule (start speed = the 'spm' lever, lowered daily to the rods' fall-velocity limit, 2-spm floor) is what a VFD executes; the intra-stroke speed profile is out of scope. Soak is simulated but held at the 10-d practice value (no meaningful interior optimum, TIER1_PROGRESS_LOG 5b/7.4). This 3-D search holds pressure and stroke at params; best_settings_physics_5d optimises them."
+  }
+}

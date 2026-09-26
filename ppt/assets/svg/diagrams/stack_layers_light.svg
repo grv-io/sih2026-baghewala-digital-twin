@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" width="900" height="900" role="img" aria-label="Software stack for the Baghewala digital twin: Python NumPy SciPy foundation, XGBoost and scikit-optimize ML layer, FastAPI service layer, and a Plotly web dashboard on top, all open-source">
+  <rect x="0" y="0" width="900" height="900" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#51687e"/>
+    </marker>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#0f2540" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+<text x="450.0" y="58.0" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#0f2540" text-anchor="middle">Technology Stack</text>
+<text x="450.0" y="84.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle">Baghewala digital twin — software layers</text>
+<rect x="220.0" y="174.0" width="460.0" height="140.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<rect x="220.0" y="174.0" width="10" height="140" rx="5" fill="#f59e0b"/>
+<text x="455.0" y="236.0" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#0f2540" text-anchor="middle">Web Dashboard</text>
+<text x="455.0" y="266.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle">Plotly · interactive charts &amp; replay</text>
+<line x1="450.0" y1="316.0" x2="450.0" y2="334.0" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="220.0" y="338.0" width="460.0" height="140.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<rect x="220.0" y="338.0" width="10" height="140" rx="5" fill="#f59e0b"/>
+<text x="455.0" y="400.0" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#0f2540" text-anchor="middle">FastAPI</text>
+<text x="455.0" y="430.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle">REST / WebSocket service layer</text>
+<line x1="450.0" y1="480.0" x2="450.0" y2="498.0" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="220.0" y="502.0" width="460.0" height="140.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<rect x="220.0" y="502.0" width="10" height="140" rx="5" fill="#f59e0b"/>
+<text x="455.0" y="564.0" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#0f2540" text-anchor="middle">XGBoost · scikit-optimize</text>
+<text x="455.0" y="594.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle">SOR prediction &amp; Bayesian tuning</text>
+<line x1="450.0" y1="644.0" x2="450.0" y2="662.0" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="220.0" y="666.0" width="460.0" height="140.0" rx="18" fill="#f4f7fb" stroke="#c9d6e3" stroke-width="2" filter="url(#shadow)"/>
+<rect x="220.0" y="666.0" width="10" height="140" rx="5" fill="#f59e0b"/>
+<text x="455.0" y="728.0" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#0f2540" text-anchor="middle">Python · NumPy · SciPy</text>
+<text x="455.0" y="758.0" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="500" fill="#51687e" text-anchor="middle">physics engine &amp; numerics core</text>
+<line x1="700.0" y1="174.0" x2="700.0" y2="806.0" stroke="#c9d6e3" stroke-width="2"/>
+<line x1="680.0" y1="174.0" x2="700.0" y2="174.0" stroke="#c9d6e3" stroke-width="2"/>
+<line x1="680.0" y1="806.0" x2="700.0" y2="806.0" stroke="#c9d6e3" stroke-width="2"/>
+<line x1="700.0" y1="281.4" x2="718.0" y2="281.4" stroke="#c9d6e3" stroke-width="2"/>
+<rect x="718.0" y="260.4" width="170" height="42" rx="21.0" fill="#eaf0f7" stroke="#f59e0b" stroke-width="1.75"/>
+<text x="803.0" y="286.9" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#0f2540" text-anchor="middle">open-source</text>
+<line x1="700.0" y1="490.0" x2="718.0" y2="490.0" stroke="#c9d6e3" stroke-width="2"/>
+<rect x="718.0" y="469.0" width="170" height="42" rx="21.0" fill="#eaf0f7" stroke="#f59e0b" stroke-width="1.75"/>
+<text x="803.0" y="495.5" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#0f2540" text-anchor="middle">indigenous</text>
+<line x1="700.0" y1="698.6" x2="718.0" y2="698.6" stroke="#c9d6e3" stroke-width="2"/>
+<rect x="718.0" y="677.6" width="170" height="42" rx="21.0" fill="#eaf0f7" stroke="#f59e0b" stroke-width="1.75"/>
+<text x="803.0" y="704.1" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#0f2540" text-anchor="middle">no license cost</text>
+</svg>
