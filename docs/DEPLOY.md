@@ -120,3 +120,11 @@ loaded from the image/checkout, not the database.
   expecting a synchronous response.
 - SQLite has no built-in replication — fine for a demo, not for multi-region
   or high-write-concurrency production use (switch to Postgres above).
+
+## Keeping the free Render service awake
+
+`.github/workflows/keepalive.yml` pings `$SERVICE_URL/api/health` every 10 minutes
+(Render free tier sleeps after 15 idle minutes). After the first deploy, set the
+repository variable `SERVICE_URL` to the service's base URL. Add a second pinger
+(UptimeRobot / cron-job.org, 5-minute interval) as a backup, since GitHub's cron can run
+late. Budget: 750 free instance-hours per month — one always-on service, not two.

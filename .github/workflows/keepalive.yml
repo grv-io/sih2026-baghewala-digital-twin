@@ -1,0 +1,26 @@
+# Keeps the Render free-tier service awake by hitting /api/health every 10 minutes.
+# Set the repo variable SERVICE_URL (Settings → Secrets and variables → Actions → Variables)
+# to the deployed base URL, e.g. https://baghewala-twin.onrender.com — no trailing slash.
+# Note: Render free = 750 instance-hours/month per account, enough for ONE always-on service.
+name: keep-alive
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        env:
+          SERVICE_URL: ${{ vars.SERVICE_URL }}
+        run: |
+          if [ -z "$SERVICE_URL" ]; then
+            echo "SERVICE_URL variable not set — skipping"; exit 0
+          fi
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "$SERVICE_URL/api/health") && break
+            sleep 20
+          done
+          echo "health -> HTTP $code"
+          [ "$code" = "200" ]
