@@ -14,6 +14,13 @@ services:
         value: production
       - key: PORT
         value: 8000
-    # No persistent disk on the free plan: the SQLite run history lives inside the
-    # container and resets on each deploy. Fine for the demo; add a disk (paid) or
-    # set DATABASE_URL to Postgres for persistence.
+      # Keep-alive: set this to the service's own public URL in the Render
+      # dashboard after the first deploy (sync: false = not stored in git).
+      - key: SELF_PING_URL
+        sync: false
+      - key: SELF_PING_MINUTES
+        value: 10
+    disk:
+      name: twin-data
+      mountPath: /app/data
+      sizeGB: 1

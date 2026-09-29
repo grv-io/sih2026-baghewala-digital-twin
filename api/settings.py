@@ -37,6 +37,16 @@ class Settings(BaseSettings):
     env: str = "development"
     port: int = 8000
 
+    # Free-tier keep-alive. When set to the service's own PUBLIC base URL
+    # (e.g. https://baghewala-digital-twin.onrender.com), the app pings
+    # `<url>/api/health` every `self_ping_minutes` from a background thread.
+    # The request leaves the container and comes back through the host's load
+    # balancer, so it counts as inbound traffic and the host (Render 15-min
+    # idle, Hugging Face 48-h idle) never spins the service down. Unset by
+    # default: local runs and tests do nothing.
+    self_ping_url: str | None = None
+    self_ping_minutes: int = 10
+
     # Test-only knobs (never read outside tests/test_api.py): let the test
     # suite shrink the Bayesian optimizer's search budget so `/api/optimize`
     # job tests finish in well under 5 s instead of ml/optimize.py's default

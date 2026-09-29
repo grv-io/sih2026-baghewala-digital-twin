@@ -29,6 +29,8 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     __package__ = "api"
 
+import threading
+import urllib.request
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -53,10 +55,37 @@ TAGS_METADATA = [
 ]
 
 
+def _self_ping_loop(url: str, minutes: int, stop: threading.Event) -> None:
+    """Hit our own public /api/health so a free-tier host sees inbound traffic
+    and never idles the service (see Settings.self_ping_url)."""
+    target = url.rstrip("/") + "/api/health"
+    # Give uvicorn time to bind before the first ping.
+    stop.wait(60)
+    while not stop.is_set():
+        try:
+            with urllib.request.urlopen(target, timeout=30) as r:
+                print(f"[self-ping] {target} -> {r.status}", flush=True)
+        except Exception as exc:  # noqa: BLE001 - never let the pinger die
+            print(f"[self-ping] {target} failed: {exc}", flush=True)
+        stop.wait(max(1, minutes) * 60)
+
+
 @asynccontextmanager
 async def _lifespan(app: FastAPI):
     init_db()
-    yield
+    settings = get_settings()
+    stop = threading.Event()
+    if settings.self_ping_url:
+        threading.Thread(
+            target=_self_ping_loop,
+            args=(settings.self_ping_url, settings.self_ping_minutes, stop),
+            name="self-ping",
+            daemon=True,
+        ).start()
+    try:
+        yield
+    finally:
+        stop.set()
 
 
 def create_app() -> FastAPI:
