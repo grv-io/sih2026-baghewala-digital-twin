@@ -499,7 +499,7 @@ use the system Python 3.13 install for those two only.
 - **PDF export**: PowerPoint COM works on this machine (`New-Object -ComObject PowerPoint.Application`, `SaveAs ..., 32`), and it is the only way to render a .pptx here. Headless Edge cannot open .pptx.
 - **SVG → PNG**: no `cairosvg`. Use headless Edge: `msedge.exe --headless --disable-gpu --force-device-scale-factor=2 --hide-scrollbars --screenshot=out.png --window-size=W,H file:///wrapper.html`. Some invocations need `--headless=new` and/or an explicit `--user-data-dir`.
 - **Mirror sync**: `robocopy` to `Downloads\SIH-2026\sih-baghewala-code`, excluding `.venv` and `.git`.
-- **Subagents**: Gaurav's Fable token budget is low — prefer Opus for subagents.
+- **Subagents**: the token budget is limited — use the cheapest model that fits each task.
 
 ---
 
@@ -1268,3 +1268,29 @@ disclosure line — none of these can be decided from this session.
   repo visibility (private today; slide 5 says "open source"); AI-use disclosure line; confirm
   the two unverified DOIs on slide 6; record the 2-minute demo video; K12 in the ChemE
   lead's words.
+
+### 16.9 · 29 Sep — deployed: live dashboard + API on Render
+
+- **URL:** <https://baghewala-digital-twin.onrender.com> (Render free plan, Docker, via
+  `render.yaml` Blueprint). Verified from outside: `/api/health` → `status ok, db_ok true,
+  physics_rev "rev 13 …"`; `/`, `/console.html`, `/optimizer.html`, `/methodology.html`,
+  `/vendor/plotly.min.js`, `/data/templates/observed_cycles_template.csv`, `/docs` all 200;
+  dashboard runs in live mode (auto-detect: served → API, not baked).
+- **Route not taken:** Hugging Face Docker Spaces returned `402 Payment Required` on
+  `create_repo` (Docker/Gradio Spaces are PRO-only now; only static Spaces are free). Render
+  also asks for a card on the free plan (verification hold only, nothing charged) — the team
+  chose to add the card rather than move to a smaller card-free host (Back4app 256 MB,
+  Leapcell serverless) whose limits would break the background optimiser jobs.
+- **Fix found on the way:** `render.yaml` still carried the `disk:` block (the 27 Sep commit
+  message said it was dropped, the file did not). Removed in both repos; free plan has no
+  disks, so SQLite run/job history resets on each deploy — acceptable, results are recomputed.
+- **Keep-alive:** in-app self-ping via `SELF_PING_URL` (set in the Render dashboard) plus the
+  GitHub Actions cron (`keepalive.yml`, repo variable `SERVICE_URL` set, first dispatch ran).
+- **Free-tier cost to know:** 0.1 vCPU. Locally the live optimiser job takes ~55–60 s and
+  peaks at ~310 MB; on Render it takes several minutes (health stays green while it runs —
+  measured, see below). Synchronous `POST /calibrate` (CSV upload) takes 130–160 s locally
+  and will exceed the proxy timeout on Render — the methodology page's "use your own data"
+  is a local-server feature on this deployment. `docs/DEPLOY.md` and `README.md` updated.
+- **Deck:** slide 2 and slide 6 link strips now carry the live URL and the GitHub repository
+  as real hyperlinks (shown without the scheme, 9.5 pt, link blue); demo video still a
+  placeholder (`VIDEO_URL` in `ppt/build_deck_final.py`, set and rebuild once uploaded).

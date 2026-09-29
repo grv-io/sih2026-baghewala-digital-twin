@@ -28,11 +28,23 @@ non-root user, has a `HEALTHCHECK` against `/api/health`, and excludes
 
 ## Render
 
-`render.yaml` defines a single Docker web service with `healthCheckPath:
-/api/health` and a 1 GB persistent disk mounted at `/app/data` (so
-`data/twin.db` survives restarts/redeploys). In the Render dashboard: **New
-+ → Blueprint**, point at this repo, accept the plan. Free-tier services
-spin down on idle -- see "Known limits" below.
+**Live deployment (29 Sep 2026):** <https://baghewala-digital-twin.onrender.com>
+(free plan; health at `/api/health`, API docs at `/docs`).
+
+`render.yaml` defines a single Docker web service (`plan: free`) with
+`healthCheckPath: /api/health`. There is deliberately **no persistent disk**:
+disks are not available on the free plan, so `data/twin.db` (run history and
+job rows) lives on the container filesystem and resets on every deploy or
+restart -- fine for the demo, since every result is recomputed on request.
+In the Render dashboard: **New + → Blueprint**, point at this repo, and when
+asked for `SELF_PING_URL` enter the service's own public URL (the only
+variable with `sync: false`). Keep-alive is two-fold: the in-app self-ping
+(every `SELF_PING_MINUTES`) and `.github/workflows/keepalive.yml`, which pings
+`${{ vars.SERVICE_URL }}/api/health` every 10 minutes (repo variable
+`SERVICE_URL` is set). Note that Render now asks for a payment card even for
+the free plan (verification only; nothing is charged on `plan: free`), and
+Hugging Face Docker Spaces became PRO-only in 2026, which is why HF was not
+used.
 
 ## Railway
 

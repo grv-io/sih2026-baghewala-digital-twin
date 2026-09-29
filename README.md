@@ -335,6 +335,10 @@ uvicorn api.main:app --reload        # API + dashboard at http://127.0.0.1:8000 
 docker build -t sih-baghewala . && docker run -p 8000:8000 sih-baghewala
 ```
 
+**Live demo:** <https://baghewala-digital-twin.onrender.com> (Render free tier; API docs at
+[`/docs`](https://baghewala-digital-twin.onrender.com/docs), health at
+[`/api/health`](https://baghewala-digital-twin.onrender.com/api/health)).
+
 Served by FastAPI the dashboard switches to **live physics** automatically (status chip
 "Live API"); opened from `file://` it falls back to baked data. Render / Railway / Fly /
 VPS instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).

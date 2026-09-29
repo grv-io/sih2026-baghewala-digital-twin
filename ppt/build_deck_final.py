@@ -115,7 +115,7 @@ def card(pid, x, y, w, h, col, header, icon, sentence, chips, chip_h=0.235,
 
 
 def strip(gid, x, y, w, col, title, items, chip_h=0.46, icon=True, pt=STRIP_PT,
-          hdr_h=0.27, bold=True, fill="FFFFFF"):
+          hdr_h=0.27, bold=True, fill="FFFFFF", pt2=None, color2=None):
     """A bottom strip: header band + a row of chips (icon + 1-2 line label)."""
     h = hdr_h + 0.06 + chip_h + 0.06
     N.add(Box(gid, x, y, w, h, "panel", col, fill=PANEL_FILL[col], line=col, line_w=1.25,
@@ -132,7 +132,9 @@ def strip(gid, x, y, w, col, title, items, chip_h=0.46, icon=True, pt=STRIP_PT,
         cid = f"{gid}{ci + 1}"
         ins_l = 0.50 if (icon and ikey) else 0.08
         N.add(Box(cid, cx, cy, cw, chip_h, "chip", col,
-                  [Para(t, pt, bold, color=C_TEXT) for t in text], fill=fill, line=col,
+                  [Para(t, pt if k == 0 else (pt2 or pt), bold,
+                        color=C_TEXT if (k == 0 or not color2) else color2)
+                   for k, t in enumerate(text)], fill=fill, line=col,
                   line_w=0.75, panel=gid, anchor="ctr", radius=0.06,
                   ins=(ins_l, 0.01, 0.05, 0.01)))
         if icon and ikey:
@@ -147,13 +149,34 @@ def note(lid, x, y, w, text, pt=10.5, align="r", color=C_GREY, italic=True, h=0.
               fill=None, line=None, anchor="ctr", ins=(0.0, 0.0, 0.0, 0.0)))
 
 
+# Filled 29 Sep 2026: live Render deployment (free tier, kept awake by the in-app
+# self-ping + the GitHub Actions cron) and the submission repository. The demo
+# video is still a placeholder -- set VIDEO_URL once it is uploaded and rebuild.
+LIVE_URL = "https://baghewala-digital-twin.onrender.com"
+GITHUB_URL = "https://github.com/grv-io/sih2026-baghewala-digital-twin"
+VIDEO_URL: str | None = None
+PLACEHOLDER = "https://  ________________"
+
+
+def _shown(url):
+    """Display form of a URL (no scheme) -- the hyperlink itself keeps the full URL."""
+    return re.sub(r"^https?://", "", url)
+
+
 def links(gid, y, col=C_SVC):
-    """Three editable link placeholders for the team (website, video, GitHub)."""
-    items = [("dash", ("Live dashboard:", "https://  ________________")),
-             ("sensor", ("Demo video:", "https://  ________________")),
-             ("chip", ("GitHub repository:", "https://  ________________"))]
-    return strip(gid, X0, y, X1 - X0, col, "Links (fill in before submission)", items,
-                 chip_h=0.44, bold=False, pt=10.5)
+    """Three link chips (website, video, GitHub): filled ones are real hyperlinks,
+    unfilled ones stay editable placeholders for the team."""
+    urls = [LIVE_URL, VIDEO_URL, GITHUB_URL]
+    items = [("dash", ("Live dashboard:", _shown(LIVE_URL) if LIVE_URL else PLACEHOLDER)),
+             ("sensor", ("Demo video:", _shown(VIDEO_URL) if VIDEO_URL else PLACEHOLDER)),
+             ("chip", ("GitHub repository:", _shown(GITHUB_URL) if GITHUB_URL else PLACEHOLDER))]
+    title = "Links" if all(urls) else "Links (demo video to be added)"
+    y_end = strip(gid, X0, y, X1 - X0, col, title, items, chip_h=0.44, bold=False, pt=10.5,
+                  pt2=9.5, color2=C_LINK)
+    for ci, url in enumerate(urls):
+        if url:
+            REF_URLS[f"{PREFIX}{gid}{ci + 1}"] = url
+    return y_end
 
 
 # --------------------------------------------------------------------------- #
@@ -512,6 +535,7 @@ def main():
             furniture = prepare(slide, no)
             N.BAND = (0.15, TOP_BOX[1] + TOP_H[no] + 0.02, 13.30, FOOT)
             reset()
+            REF_URLS.clear()
             fn()
             problems, fit_rows = N.run_gates(furniture)
             problems += extra_gates(furniture)
