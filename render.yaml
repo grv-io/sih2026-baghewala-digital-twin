@@ -20,7 +20,6 @@ services:
         sync: false
       - key: SELF_PING_MINUTES
         value: 10
-    disk:
-      name: twin-data
-      mountPath: /app/data
-      sizeGB: 1
+# No `disk:` block on purpose: persistent disks are not available on the free
+# plan. The SQLite run history lives on the container filesystem and resets on
+# each deploy/restart, which is fine for the demo (every result is recomputed).
