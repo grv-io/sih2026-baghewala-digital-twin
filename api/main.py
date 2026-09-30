@@ -29,7 +29,6 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     __package__ = "api"
 
-import logging
 import threading
 import urllib.request
 from contextlib import asynccontextmanager
@@ -39,8 +38,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .db import init_db
-
-logger = logging.getLogger(__name__)
 from .routers import calibrate, dyno, health, jobs, optimize, params, runs, schedule, simulate, uq
 from .settings import ROOT, get_settings
 
@@ -77,7 +74,6 @@ def _self_ping_loop(url: str, minutes: int, stop: threading.Event) -> None:
 async def _lifespan(app: FastAPI):
     init_db()
     settings = get_settings()
-    logger.info("Baghewala Digital Twin API started — self-ping %s", "enabled" if settings.self_ping_url else "disabled")
     stop = threading.Event()
     if settings.self_ping_url:
         threading.Thread(
